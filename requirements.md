@@ -1,6 +1,4 @@
-# Список внешних зависимостей
-
-Ниже представлен полный список пакетов, которые используются для разработки проекта «Киноман». Обратите внимание, все пакеты должны быть установлены определённой версии. Версия пакета вводится после символа `@`. Например:
+# dependencies list
 
 ```bash
 npm i <package>@<version> -E
@@ -8,7 +6,7 @@ npm i dayjs@1.9.5 -E
 npm i eslint@7.13.0 -DE
 ```
 
-## Зависимости приложения (`dependencies`)
+## dependencies
 
 - dayjs@1.10.6
 - flatpickr@4.6.9
@@ -16,7 +14,7 @@ npm i eslint@7.13.0 -DE
 - chart.js@2.9.4
 - chartjs-plugin-datalabels@0.7.0
 
-## Зависимости для разработки (`devDependencies`)
+## devDependencies
 
 - eslint@7.31.0
 - eslint-config-htmlacademy@4.0.2
