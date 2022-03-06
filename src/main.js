@@ -1,5 +1,9 @@
 import { createFooterTemplate } from './view/footer';
-import { reateProfileTemplate } from './view/profile';
+import { createProfileTemplate } from './view/profile';
+import { createNavigationTemplate } from './view/navigation';
+import { createSortTemplate } from './view/sort';
+
+import { createFilmsTemplate } from './view/films';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -7,7 +11,10 @@ const render = (container, template, place) => {
 
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 const siteHeader = document.querySelector('.header');
+const siteMain = document.querySelector('.main');
 
 render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
-render(siteHeader, reateProfileTemplate(), 'beforeend');
-
+render(siteHeader, createProfileTemplate(), 'beforeend');
+render(siteMain, createNavigationTemplate(), 'beforeend');
+render(siteMain, createSortTemplate(), 'beforeend');
+render(siteMain, createFilmsTemplate(), 'beforeend');
