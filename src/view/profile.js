@@ -1,4 +1,4 @@
-export const reateProfileTemplate = () => (
+export const createProfileTemplate = () => (
   `
   <section class="header__profile profile">
     <p class="profile__rating">Movie Buff</p>
