@@ -11,6 +11,7 @@ import { createFilmsListTemplate } from './view/films-list';
 import { createFilmsListTopTemplate } from './view/films-list-top';
 import { createFilmsListCommentedTemplate } from './view/films-list-commented';
 import { createFilmTemplate } from './view/film';
+import { createLoadMoreButton } from './view/loadMoreButton';
 
 import { generateFilm } from './mock/mock';
 
@@ -35,6 +36,7 @@ render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 const FILMS_COUNT = 12;
 const FILMS_COUNT_PER_STEP = 5;
 const filmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
+const siteFilmsList = document.querySelector('.films-list');
 const siteFilmsListContainer = document.querySelector('.films-list__container');
 
 for (let i = 0; i < Math.min(filmsArray.length, FILMS_COUNT_PER_STEP); i++) {
@@ -44,7 +46,7 @@ for (let i = 0; i < Math.min(filmsArray.length, FILMS_COUNT_PER_STEP); i++) {
 if (filmsArray.length > FILMS_COUNT_PER_STEP) {
   let renderedTaskCount = FILMS_COUNT_PER_STEP;
 
-  // render(siteFilmsListContainer, createLoadMoreButtonTemplate(), RenderPosition.BEFOREEND);
+  render(siteFilmsList, createLoadMoreButton(), 'beforeend');
 
   const loadMoreButton = document.querySelector('.films-list__show-more');
 
@@ -56,9 +58,9 @@ if (filmsArray.length > FILMS_COUNT_PER_STEP) {
 
     renderedTaskCount += FILMS_COUNT_PER_STEP;
 
-    // if (renderedTaskCount >= filmsArray.length) {
-    //   loadMoreButton.remove();
-    // }
+    if (renderedTaskCount >= filmsArray.length) {
+      loadMoreButton.remove();
+    }
   });
 }
 
