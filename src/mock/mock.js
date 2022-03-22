@@ -58,7 +58,7 @@ export const generateFilm = () => ({
   title: fishText.getRandomRangeWords({min: 1, max: 4, dataType: 'string', lang: 'eng', repeat: false}),
   description: fishText.getRandomRangeWords({min: 10, max: 25, dataType: 'string', lang: 'eng', repeat: false}),
   poster: getRandomPoster(),
-  rating: `${getRandomInt(1, 9)  }.${  getRandomInt(0, 10)}`,
+  rating: `${getRandomInt(1, 9)  }.${  getRandomInt(0, 9)}`,
   year: getRandomInt(1940, 2010),
   genre: GENRE[getRandomInt(0, GENRE.length - 1)],
   comments: getComments(),
