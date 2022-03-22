@@ -43,7 +43,7 @@ const getRandomPoster = () => {
 
 const getComments = () => {
   let comments = [];
-  for(let i = 0; i < getRandomInt(1, 8); i++) {
+  for(let i = 0; i < getRandomInt(1, 12); i++) {
     comments.push({
       'id': getUNID(),
       'author': fishText.getNames({count: 1, type: 'full', lang: 'eng', dataType: 'string'}),

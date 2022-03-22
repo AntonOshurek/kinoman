@@ -52,17 +52,16 @@ const sortByField = (field) => {
   return result;
 };
 
-const commentedFilmsArray = filmsArray.sort(sortByField('rating'));
-
-console.log(commentedFilmsArray);
-
+const topFilmsArray = filmsArray.sort(sortByField('rating'));
 for (let i = 0; i < 2; i++) {
-  render(siteTopFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
+  render(siteTopFilmContainer, createFilmTemplate(topFilmsArray[i]), 'beforeend');
 }
 
 //show commented films list
+const commentedFilmsArray = filmsArray.sort(sortByField('comments'));
+console.log(commentedFilmsArray)
 for (let i = 0; i < 2; i++) {
-  render(siteCommentedFilmContainer, createFilmTemplate(filmsArray[i]), 'beforeend');
+  render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
 
 //main films list pagination logick
