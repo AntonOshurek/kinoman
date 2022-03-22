@@ -1,4 +1,5 @@
 import { render } from './services/render';
+import { sortByField } from './utils/utils';
 
 //main views
 import { createFooterTemplate } from './view/footer';
@@ -31,7 +32,13 @@ render(siteFilms, createFilmsListTemplate(), 'beforeend');
 render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 
+// footer block
+render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
+
+//show ALL films logick
 const FILMS_COUNT = 12;
+const COMMENTED_FILMS_COUNT = 2;
+const TOP_FILMS_COUNT = 2;
 const FILMS_COUNT_PER_STEP = 5;
 
 const filmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
@@ -47,20 +54,14 @@ for (let i = 0; i < Math.min(filmsArray.length, FILMS_COUNT_PER_STEP); i++) {
 }
 
 //show top films list
-const sortByField = (field) => {
-  let result = (a, b) => a[field] < b[field] ? 1 : -1;
-  return result;
-};
-
 const topFilmsArray = filmsArray.sort(sortByField('rating'));
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < TOP_FILMS_COUNT; i++) {
   render(siteTopFilmContainer, createFilmTemplate(topFilmsArray[i]), 'beforeend');
 }
 
 //show commented films list
 const commentedFilmsArray = filmsArray.sort(sortByField('comments'));
-console.log(commentedFilmsArray)
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
 
@@ -85,6 +86,3 @@ if (filmsArray.length > FILMS_COUNT_PER_STEP) {
     }
   });
 }
-
-// footer block
-render(siteFooterStatistics, createFooterTemplate(), 'beforeend');

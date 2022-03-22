@@ -42,6 +42,7 @@ const getRandomPoster = () => {
 };
 
 const getComments = () => {
+  // eslint-disable-next-line prefer-const
   let comments = [];
   for(let i = 0; i < getRandomInt(1, 12); i++) {
     comments.push({
