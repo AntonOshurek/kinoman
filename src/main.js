@@ -1,4 +1,5 @@
 import { render } from './services/render';
+import { generateFilm } from './mock/mock';
 
 //views
 import { createFooterTemplate } from './view/footer';
@@ -16,3 +17,5 @@ render(siteMain, createNavigationTemplate(), 'beforeend');
 render(siteMain, createSortTemplate(), 'beforeend');
 render(siteMain, createFilmsTemplate(), 'beforeend');
 render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
+
+console.log(generateFilm());
