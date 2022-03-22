@@ -25,26 +25,20 @@ export const createFilmsListTemplate = () => {
     `;
   };
 
-  const FILMS_COUNT = 2;
+  const FILMS_COUNT = 12;
   const filmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 
-  const generateFilmsList = () => {
-    let filmsList;
+  let filmsList = '';
 
-    filmsArray.forEach((film) => {
-      filmsList += generateOneFilm(film);
-    });
-
-    return filmsList;
-  };
-
-  console.log(generateFilmsList());
+  filmsArray.forEach((film) => {
+    filmsList += generateOneFilm(film);
+  });
 
   return `
     <section class="films-list">
       <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
       <div class="films-list__container">
-        ${generateFilmsList()}
+        ${filmsList}
       </div>
       <button class="films-list__show-more">Show more</button>
     </section>

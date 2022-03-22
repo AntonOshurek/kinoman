@@ -18,7 +18,7 @@ const getRandomPoster = () => {
 
 const getComments = () => {
   let comments = [];
-  for(let i = 0; i < getRandomInt(0, 8); i++) {
+  for(let i = 0; i < getRandomInt(1, 8); i++) {
     comments.push(fishText.getRandomRangeWords({min: 3, max: 12, dataType: 'string', lang: 'eng', repeat: false}));
   }
   return comments;
@@ -28,6 +28,6 @@ export const generateFilm = () => ({
   title: fishText.getRandomRangeWords({min: 1, max: 4, dataType: 'string', lang: 'eng', repeat: false}),
   description: fishText.getRandomRangeWords({min: 10, max: 25, dataType: 'string', lang: 'eng', repeat: false}),
   poster: getRandomPoster(),
-  rating: `${getRandomInt(0, 10)  }.${  getRandomInt(0, 10)}`,
+  rating: `${getRandomInt(1, 9)  }.${  getRandomInt(0, 10)}`,
   comments: getComments(),
 });
