@@ -102,11 +102,11 @@ export const generateFilm = () => ({
       GENRE[getRandomInt(0, GENRE.length - 1)],
     ],
     'description': fishText.getRandomRangeWords({min: 10, max: 25}),
-    'user_details': {
-      'watchlist': booleanGenerate(),
-      'already_watched': booleanGenerate(),
-      'watching_date': generateRandomDate(-5000),
-      'favorite': booleanGenerate(),
-    },
+  },
+  'user_details': {
+    'watchlist': booleanGenerate(),
+    'already_watched': booleanGenerate(),
+    'watching_date': generateRandomDate(-5000),
+    'favorite': booleanGenerate(),
   },
 });

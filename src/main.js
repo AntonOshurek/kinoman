@@ -16,7 +16,7 @@ import { createLoadMoreButton } from './view/loadMoreButton';
 //data
 import { generateFilm } from './mock/mock';
 
-const FILMS_COUNT = 38;
+const FILMS_COUNT = 5;
 const COMMENTED_FILMS_COUNT = 2;
 const TOP_FILMS_COUNT = 2;
 const FILMS_COUNT_PER_STEP = 5;
@@ -61,6 +61,7 @@ for (let i = 0; i < TOP_FILMS_COUNT; i++) {
 
 //show commented films list
 const commentedFilmsArray = filmsArray.sort(sortByField('comments'));
+// console.log(commentedFilmsArray[0].comments.length);
 for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
