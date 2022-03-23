@@ -16,6 +16,13 @@ import { createLoadMoreButton } from './view/loadMoreButton';
 //data
 import { generateFilm } from './mock/mock';
 
+const FILMS_COUNT = 5;
+const COMMENTED_FILMS_COUNT = 2;
+const TOP_FILMS_COUNT = 2;
+const FILMS_COUNT_PER_STEP = 5;
+
+const filmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
+
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 const siteHeader = document.querySelector('.header');
 const siteMain = document.querySelector('.main');
@@ -33,16 +40,9 @@ render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 
 // footer block
-render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
+render(siteFooterStatistics, createFooterTemplate(+filmsArray.length), 'beforeend');
 
 //show ALL films logick
-const FILMS_COUNT = 12;
-const COMMENTED_FILMS_COUNT = 2;
-const TOP_FILMS_COUNT = 2;
-const FILMS_COUNT_PER_STEP = 5;
-
-const filmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
-
 const siteFilmsList = document.querySelector('.films-list--main');
 const siteFilmsListContainer = document.querySelector('.films-list__container--main');
 const siteTopFilmContainer = document.querySelector('.films-list__container--top');
@@ -61,6 +61,7 @@ for (let i = 0; i < TOP_FILMS_COUNT; i++) {
 
 //show commented films list
 const commentedFilmsArray = filmsArray.sort(sortByField('comments'));
+// console.log(commentedFilmsArray[0].comments.length);
 for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
