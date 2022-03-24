@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 export const createFilmTemplate = (filmData) => {
   const {comments, film_info: filmInfo } = filmData;
-  const formatDate = dayjs(filmInfo.release.date).format('DD MM YYYY');
+  const formatDate = dayjs(filmInfo.release.date).format('DD MMMM YYYY');
   return `
     <article class="film-card">
       <h3 class="film-card__title">${filmInfo.title}</h3>

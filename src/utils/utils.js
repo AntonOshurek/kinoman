@@ -6,14 +6,19 @@ export const getUNID = () => (
   Date.now().toString(36) + Math.random().toString(36).substr(2)
 );
 
-export function sortFilmsByField (dataArray, field) {
+export function sortFilmsByField (dataArray, field, count = 0) {
+  let result;
   if(field === 'total_rating') {
-    const result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2.film_info[field] - item1.film_info[field]);
-    return result.slice(0, 2);
+    result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2.film_info[field] - item1.film_info[field]);
   }
   if(field === 'comments') {
-    const result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2[field].length - item1[field].length);
-    return result.slice(0, 2);
+    result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2[field].length - item1[field].length);
+  }
+
+  if(count !== 0) {
+    return result.slice(0, count);
+  } else {
+    return result;
   }
 }
 

@@ -54,13 +54,13 @@ for (let i = 0; i < Math.min(filmsArray.length, FILMS_COUNT_PER_STEP); i++) {
 }
 
 //show top films list
-const topFilmsArray = sortFilmsByField(filmsArray, 'total_rating');
+const topFilmsArray = sortFilmsByField(filmsArray, 'total_rating', COMMENTED_FILMS_COUNT);
 for (let i = 0; i < TOP_FILMS_COUNT; i++) {
   render(siteTopFilmContainer, createFilmTemplate(topFilmsArray[i]), 'beforeend');
 }
 
 //show commented films list
-const commentedFilmsArray = sortFilmsByField(filmsArray, 'comments');
+const commentedFilmsArray = sortFilmsByField(filmsArray, 'comments', COMMENTED_FILMS_COUNT);
 for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
