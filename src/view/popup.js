@@ -151,4 +151,4 @@ export const createpopupTemplate = (filmData, commentsArray) => {
   </form>
 </section>
   `;
-}
+};

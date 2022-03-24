@@ -43,7 +43,7 @@ render(siteFilms, createFilmsListTemplate(), 'beforeend');
 render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 //popup block
-render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
+// render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
 // footer block
 render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
