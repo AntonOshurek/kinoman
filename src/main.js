@@ -16,7 +16,7 @@ import { createLoadMoreButton } from './view/loadMoreButton';
 //popup view
 import { createpopupTemplate } from './view/popup';
 //data
-import { generateFilm } from './mock/mock';
+import { generateFilm, commentsArray } from './mock/mock';
 
 const FILMS_COUNT = 20;
 const COMMENTED_FILMS_COUNT = 2;
@@ -25,7 +25,7 @@ const FILMS_COUNT_PER_STEP = 5;
 
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
-let currentFilm = defaultFilmsArray[0];
+const currentFilm = defaultFilmsArray[0];
 
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 const siteHeader = document.querySelector('.header');
@@ -43,10 +43,10 @@ render(siteFilms, createFilmsListTemplate(), 'beforeend');
 render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 //popup block
-render(siteMain, createSortTemplate(), 'beforeend');
+render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
 // footer block
-render(siteFooterStatistics, createpopupTemplate(currentFilm), 'beforeend');
+render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');

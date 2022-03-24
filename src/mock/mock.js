@@ -87,6 +87,7 @@ export const generateFilm = () => ({
     'director': fishText.getNames({count: 1, type: 'full'}),
     'writers': [
       fishText.getNames({count: 1, type: 'full'}),
+      fishText.getNames({count: 1, type: 'full'}),
     ],
     'actors': [
       fishText.getNames({count: 1, type: 'full'}),
@@ -101,7 +102,7 @@ export const generateFilm = () => ({
     'genre': [
       GENRE[getRandomInt(0, GENRE.length - 1)],
     ],
-    'description': fishText.getRandomRangeWords({min: 10, max: 25}),
+    'description': fishText.getRandomRangeWords({min: 40, max: 120}),
   },
   'user_details': {
     'watchlist': booleanGenerate(),
@@ -110,3 +111,5 @@ export const generateFilm = () => ({
     'favorite': booleanGenerate(),
   },
 });
+
+export { commentsArray };

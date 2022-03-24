@@ -42,3 +42,5 @@ export const generateRandomDate = (range) => {
 export const booleanGenerate = () => (
   Boolean(getRandomInt(0, 1))
 );
+
+export const dateFormater = (date) => dayjs(date).format('DD MMMM YYYY');
