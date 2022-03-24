@@ -13,6 +13,8 @@ import { createFilmsListTopTemplate } from './view/films-list-top';
 import { createFilmsListCommentedTemplate } from './view/films-list-commented';
 import { createFilmTemplate } from './view/film';
 import { createLoadMoreButton } from './view/loadMoreButton';
+//popup view
+import { createpopupTemplate } from './view/popup';
 //data
 import { generateFilm } from './mock/mock';
 
@@ -23,6 +25,7 @@ const FILMS_COUNT_PER_STEP = 5;
 
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
+let currentFilm = defaultFilmsArray[0];
 
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 const siteHeader = document.querySelector('.header');
@@ -39,9 +42,11 @@ const siteFilms = document.querySelector('.films');
 render(siteFilms, createFilmsListTemplate(), 'beforeend');
 render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
+//popup block
+render(siteMain, createSortTemplate(), 'beforeend');
 
 // footer block
-render(siteFooterStatistics, createFooterTemplate(+defaultFilmsArray.length), 'beforeend');
+render(siteFooterStatistics, createpopupTemplate(currentFilm), 'beforeend');
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');
