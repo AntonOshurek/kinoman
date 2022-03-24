@@ -14,6 +14,18 @@ export function sortFilmsByField (dataArray, field, count = 0) {
   if(field === 'comments') {
     result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2[field].length - item1[field].length);
   }
+  if(field === 'date') {
+    result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => {
+      if (item1.film_info.release.date < item2.film_info.release.date) {
+        return 1;
+      }
+      if (item1.film_info.release.date > item2.film_info.release.date) {
+        return -1;
+      }
+      // a должно быть равным b
+      return 0;
+    });
+  }
 
   if(count !== 0) {
     return result.slice(0, count);
