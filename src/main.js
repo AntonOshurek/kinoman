@@ -112,6 +112,25 @@ for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
 
+//show popup logick
+function closePopup() {
+  const losePopupButton = document.querySelector('.film-details__close-btn');
+  losePopupButton.addEventListener('click', () => {
+    document.querySelector('.film-details').remove();
+    siteFilms.addEventListener('click', openPopup);
+  });
+}
+
+function openPopup(evt) {
+  if(evt.target.closest('.film-card')) {
+    render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
+    siteFilms.removeEventListener('click', openPopup);
+    closePopup();
+  }
+}
+
+siteFilms.addEventListener('click', openPopup);
+
 let renderedTaskCount;
 let loadMoreButton;
 
