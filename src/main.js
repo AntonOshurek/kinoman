@@ -13,8 +13,10 @@ import { createFilmsListTopTemplate } from './view/films-list-top';
 import { createFilmsListCommentedTemplate } from './view/films-list-commented';
 import { createFilmTemplate } from './view/film';
 import { createLoadMoreButton } from './view/loadMoreButton';
+//popup view
+import { createpopupTemplate } from './view/popup';
 //data
-import { generateFilm } from './mock/mock';
+import { generateFilm, commentsArray } from './mock/mock';
 
 const FILMS_COUNT = 20;
 const COMMENTED_FILMS_COUNT = 2;
@@ -23,6 +25,7 @@ const FILMS_COUNT_PER_STEP = 5;
 
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
+const currentFilm = defaultFilmsArray[0];
 
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 const siteHeader = document.querySelector('.header');
@@ -39,9 +42,11 @@ const siteFilms = document.querySelector('.films');
 render(siteFilms, createFilmsListTemplate(), 'beforeend');
 render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
+//popup block
+// render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
 // footer block
-render(siteFooterStatistics, createFooterTemplate(+defaultFilmsArray.length), 'beforeend');
+render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');
@@ -106,6 +111,25 @@ const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, 'comments', COMM
 for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
+
+//show popup logick
+function closePopup() {
+  const losePopupButton = document.querySelector('.film-details__close-btn');
+  losePopupButton.addEventListener('click', () => {
+    document.querySelector('.film-details').remove();
+    siteFilms.addEventListener('click', openPopup);
+  });
+}
+
+function openPopup(evt) {
+  if(evt.target.closest('.film-card')) {
+    render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
+    siteFilms.removeEventListener('click', openPopup);
+    closePopup();
+  }
+}
+
+siteFilms.addEventListener('click', openPopup);
 
 let renderedTaskCount;
 let loadMoreButton;
