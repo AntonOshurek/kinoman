@@ -67,12 +67,19 @@ const getRandomPoster = () => {
 };
 
 const getCommentsID = () => {
-  // eslint-disable-next-line prefer-const
-  let commentsID = [];
+  const commentsID = [];
   for(let i = 0; i < getRandomInt(1, 12); i++) {
     commentsID.push(commentsUNIDArray[getRandomInt(0, commentsUNIDArray.length - 1)]);
   }
   return commentsID;
+};
+
+const generateGenres = () => {
+  const genres = [];
+  for(let i = 0; i < getRandomInt(1, 4); i++) {
+    genres.push(GENRE[getRandomInt(0, GENRE.length - 1)]);
+  }
+  return genres;
 };
 
 export const generateFilm = () => ({
@@ -99,9 +106,7 @@ export const generateFilm = () => ({
       'release_country': fishText.getCountries({}),
     },
     'runtime': getRandomInt(40, 180),
-    'genre': [
-      GENRE[getRandomInt(0, GENRE.length - 1)],
-    ],
+    'genre': generateGenres(),
     'description': fishText.getRandomRangeWords({min: 40, max: 120}),
   },
   'user_details': {

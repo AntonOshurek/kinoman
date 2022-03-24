@@ -2,8 +2,17 @@ import { dateFormater } from '../utils/utils';
 
 export const createpopupTemplate = (filmData, commentsArray) => {
   const {comments, film_info: filmInfo } = filmData;
-  // console.log(filmData);
-  // console.log(commentsArray)
+
+  const generateGeneresTemplates = () => {
+    let generesMarkup = '';
+    filmInfo.genre.forEach((gen) => {
+      generesMarkup += `
+      <span class="film-details__genre">${gen}</span>
+      `;
+    });
+    return generesMarkup;
+  };
+
   return `
   <section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -58,9 +67,8 @@ export const createpopupTemplate = (filmData, commentsArray) => {
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">Drama</span>
-                <span class="film-details__genre">Film-Noir</span>
-                <span class="film-details__genre">Mystery</span></td>
+                ${generateGeneresTemplates()}
+              </td>
             </tr>
           </table>
 
