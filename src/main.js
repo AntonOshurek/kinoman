@@ -1,5 +1,5 @@
 import { render } from './services/render';
-import { sortByField } from './utils/utils';
+import { sortFilmsByField } from './utils/utils';
 
 //main views
 import { createFooterTemplate } from './view/footer';
@@ -16,7 +16,7 @@ import { createLoadMoreButton } from './view/loadMoreButton';
 //data
 import { generateFilm } from './mock/mock';
 
-const FILMS_COUNT = 5;
+const FILMS_COUNT = 20;
 const COMMENTED_FILMS_COUNT = 2;
 const TOP_FILMS_COUNT = 2;
 const FILMS_COUNT_PER_STEP = 5;
@@ -54,14 +54,13 @@ for (let i = 0; i < Math.min(filmsArray.length, FILMS_COUNT_PER_STEP); i++) {
 }
 
 //show top films list
-const topFilmsArray = filmsArray.sort(sortByField('rating'));
+const topFilmsArray = sortFilmsByField(filmsArray, 'total_rating');
 for (let i = 0; i < TOP_FILMS_COUNT; i++) {
   render(siteTopFilmContainer, createFilmTemplate(topFilmsArray[i]), 'beforeend');
 }
 
 //show commented films list
-const commentedFilmsArray = filmsArray.sort(sortByField('comments'));
-// console.log(commentedFilmsArray[0].comments.length);
+const commentedFilmsArray = sortFilmsByField(filmsArray, 'comments');
 for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
   render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
 }
