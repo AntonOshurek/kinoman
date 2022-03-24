@@ -28,13 +28,21 @@ export const createpopupTemplate = (filmData, commentsArray) => {
   };
 
   const generateGeneresTemplates = () => {
-    let generesMarkup = '';
+    let generesItem = '';
+    const title = filmInfo.genre.length > 1 ? 'Genres' : 'Genre';
     filmInfo.genre.forEach((gen) => {
-      generesMarkup += `
-      <span class="film-details__genre">${gen}</span>
+      generesItem += `
+        <span class="film-details__genre">${gen}</span>
       `;
     });
-    return generesMarkup;
+
+    const generesTemplate = `
+      <td class="film-details__term">${title}</td>
+      <td class="film-details__cell">
+        ${generesItem}
+      </td>
+    `;
+    return generesTemplate;
   };
 
   return `
@@ -89,10 +97,7 @@ export const createpopupTemplate = (filmData, commentsArray) => {
               <td class="film-details__cell">${filmInfo.release.release_country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
-              <td class="film-details__cell">
-                ${generateGeneresTemplates()}
-              </td>
+              ${generateGeneresTemplates()}
             </tr>
           </table>
 
