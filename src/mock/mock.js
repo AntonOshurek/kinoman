@@ -39,7 +39,7 @@ const EMOTIONS = [
 const commentsArray = [];
 const commentsUNIDArray = [];
 
-const COMMENTS_COUNT = 100;
+const COMMENTS_COUNT = 1000;
 
 for(let i = 0; i < COMMENTS_COUNT; i++) {
   commentsUNIDArray.push(getUNID());
