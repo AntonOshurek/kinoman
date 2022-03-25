@@ -27,6 +27,8 @@ const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
 const currentFilm = defaultFilmsArray[0];
 
+const filmsCount = +defaultFilmsArray.length;
+
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 const siteHeader = document.querySelector('.header');
 const siteMain = document.querySelector('.main');
@@ -46,7 +48,7 @@ render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 // render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
 // footer block
-render(siteFooterStatistics, createFooterTemplate(defaultFilmsArray.length), 'beforeend');
+render(siteFooterStatistics, createFooterTemplate(filmsCount), 'beforeend');
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');
