@@ -48,6 +48,7 @@ render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 // render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
 // footer block
+//test text
 render(siteFooterStatistics, createFooterTemplate(filmsCount), 'beforeend');
 
 //show ALL films logick
