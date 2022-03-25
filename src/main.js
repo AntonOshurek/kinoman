@@ -46,7 +46,7 @@ render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
 // render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
 // footer block
-render(siteFooterStatistics, createFooterTemplate(), 'beforeend');
+render(siteFooterStatistics, createFooterTemplate(defaultFilmsArray.length), 'beforeend');
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');
