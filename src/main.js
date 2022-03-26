@@ -1,9 +1,10 @@
-import { render } from './services/render';
+import { render, renderElement, RenderPosition } from './services/render';
 import { sortFilmsByField } from './utils/utils';
 
 //main views
 import { createFooterTemplate } from './view/footer';
-import { createProfileTemplate } from './view/profile';
+// import { createProfileTemplate } from './view/profile';
+import ProfileView from './view/profile.js';
 import { createNavigationTemplate } from './view/navigation';
 import { createSortTemplate } from './view/sort';
 import { createFilmsTemplate } from './view/films';
@@ -34,7 +35,8 @@ const siteHeader = document.querySelector('.header');
 const siteMain = document.querySelector('.main');
 
 //show header block
-render(siteHeader, createProfileTemplate(), 'beforeend');
+// render(siteHeader, new ProfileView().getElement(), 'beforeend');
+renderElement(siteHeader, new ProfileView().element, RenderPosition.BEFOREEND);
 render(siteMain, createNavigationTemplate(), 'beforeend');
 render(siteMain, createSortTemplate(), 'beforeend');
 

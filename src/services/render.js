@@ -9,7 +9,7 @@ export const RenderPosition = {
   AFTEREND: 'afterend',
 };
 
-export const renderTemplate = (container, element, place) => {
+export const renderElement = (container, element, place) => {
   switch (place) {
     case RenderPosition.BEFOREBEGIN:
       container.before(element);
@@ -31,10 +31,10 @@ export const renderTemplate = (container, element, place) => {
 // 2. берём HTML в виде строки и вкладываем в этот div-блок, превращая в DOM-элемент
 // 3. возвращаем этот DOM-элемент
 export const createElement = (template) => {
-  const newElement = document.createElement('div'); // 1
-  newElement.innerHTML = template; // 2
+  const newElement = document.createElement('div').innerHTML = template; // 1
+  // newElement.innerHTML = template; // 2
 
-  return newElement.firstChild; // 3
+  return newElement; // 3
 };
 // Единственный нюанс, что HTML в строке должен иметь общую обёртку,
 // то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
