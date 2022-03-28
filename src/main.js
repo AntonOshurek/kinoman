@@ -15,7 +15,7 @@ import FilmsListCommentedView from './view/films-list-commented';
 import FilmView from './view/film';
 import LoadMoreButtonView from './view/loadMoreButton';
 //popup view
-import { createpopupTemplate } from './view/popup';
+import PopupView from './view/popup';
 //get data
 import { generateFilm, commentsArray } from './mock/mock';
 
@@ -121,7 +121,8 @@ function closePopup() {
 
 function openPopup(evt) {
   if(evt.target.closest('.film-card')) {
-    render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
+    // render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
+    renderElement(siteMain, new PopupView(currentFilm, commentsArray).element, RenderPosition.BEFOREEND);
     siteFilms.removeEventListener('click', openPopup);
     closePopup();
   }
