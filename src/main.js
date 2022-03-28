@@ -13,7 +13,7 @@ import FilmsList from './view/films-list';
 import FilmsListTopView from './view/films-list-top';
 import FilmsListCommentedView from './view/films-list-commented';
 import FilmView from './view/film';
-import { createLoadMoreButton } from './view/loadMoreButton';
+import LoadMoreButtonView from './view/loadMoreButton';
 //popup view
 import { createpopupTemplate } from './view/popup';
 //get data
@@ -149,8 +149,8 @@ const loadMoreFilms = (evt) => {
 function mainFilmsPagination() {
   if(sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
     renderedTaskCount = FILMS_COUNT_PER_STEP;
-    loadMoreButton ? loadMoreButton.remove() : null;
-    render(siteFilmsList, createLoadMoreButton(), 'beforeend');
+    loadMoreButton ? loadMoreButton.removeElement : null;
+    renderElement(siteFilmsList, new LoadMoreButtonView().element, RenderPosition.BEFOREEND);
 
     loadMoreButton = document.querySelector('.films-list__show-more');
 
