@@ -12,7 +12,7 @@ import FooterView from './view/footer';
 import FilmsList from './view/films-list';
 import FilmsListTopView from './view/films-list-top';
 import FilmsListCommentedView from './view/films-list-commented';
-import { createFilmTemplate } from './view/film';
+import FilmView from './view/film';
 import { createLoadMoreButton } from './view/loadMoreButton';
 //popup view
 import { createpopupTemplate } from './view/popup';
@@ -55,7 +55,7 @@ const siteCommentedFilmContainer = document.querySelector('.films-list__containe
 //show main films list
 const showMainFilmsList = (data) => {
   for (let i = 0; i < Math.min(data.length, FILMS_COUNT_PER_STEP); i++) {
-    render(siteFilmsListContainer, createFilmTemplate(data[i]), 'beforeend');
+    renderElement(siteFilmsListContainer, new FilmView(data[i]).element, RenderPosition.BEFOREEND);
   }
 };
 showMainFilmsList(defaultFilmsArray); //call for this function on first launch
@@ -101,13 +101,13 @@ sort.addEventListener('click', (evt) => {
 //show top films list
 const topFilmsArray = sortFilmsByField(defaultFilmsArray, 'total_rating', COMMENTED_FILMS_COUNT);
 for (let i = 0; i < TOP_FILMS_COUNT; i++) {
-  render(siteTopFilmContainer, createFilmTemplate(topFilmsArray[i]), 'beforeend');
+  renderElement(siteTopFilmContainer, new FilmView(topFilmsArray[i]).element, RenderPosition.BEFOREEND);
 }
 
 //show commented films list
 const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, 'comments', COMMENTED_FILMS_COUNT);
 for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
-  render(siteCommentedFilmContainer, createFilmTemplate(commentedFilmsArray[i]), 'beforeend');
+  renderElement(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).element, RenderPosition.BEFOREEND);
 }
 
 //show popup logick
@@ -136,7 +136,7 @@ const loadMoreFilms = (evt) => {
   evt.preventDefault();
   sortFilmsArray
     .slice(renderedTaskCount, renderedTaskCount + FILMS_COUNT_PER_STEP)
-    .forEach((film) => render(siteFilmsListContainer, createFilmTemplate(film), 'beforeend'));
+    .forEach((film) => renderElement(siteFilmsListContainer, new FilmView(film).element, RenderPosition.BEFOREEND));
 
   renderedTaskCount += FILMS_COUNT_PER_STEP;
 
