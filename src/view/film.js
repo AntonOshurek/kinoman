@@ -1,7 +1,8 @@
 // import dayjs from 'dayjs';
+import { createElement } from '../services/render';
 import { dateFormater } from '../utils/utils';
 
-export const createFilmTemplate = (filmData) => {
+const createFilmTemplate = (filmData) => {
   const {comments, film_info: filmInfo } = filmData;
   const formatDate = dateFormater(filmInfo.release.date);
 
@@ -35,3 +36,26 @@ export const createFilmTemplate = (filmData) => {
     </article>
   `;
 };
+
+export default class Film {
+  constructor(filmData) {
+    this.filmData = filmData;
+    this._element = null;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return createFilmTemplate(this.filmData);
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

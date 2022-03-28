@@ -1,6 +1,7 @@
+import { createElement } from '../services/render';
 import { dateFormater } from '../utils/utils';
 
-export const createpopupTemplate = (filmData, commentsArray) => {
+const createpopupTemplate = (filmData, commentsArray) => {
   const {comments, film_info: filmInfo } = filmData;
 
   const searchFilmComments = () => {
@@ -157,3 +158,27 @@ export const createpopupTemplate = (filmData, commentsArray) => {
 </section>
   `;
 };
+
+export default class Popup {
+  constructor(filmData, commentsArray) {
+    this.filmData = filmData;
+    this.commentsArray = commentsArray;
+    this._element = null;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return createpopupTemplate(this.filmData, this.commentsArray);
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

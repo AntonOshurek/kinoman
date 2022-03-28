@@ -1,4 +1,6 @@
-export const createNavigationTemplate = () => (
+import { createElement } from '../services/render';
+
+const createNavigationTemplate = () => (
   `
   <nav class="main-navigation">
     <div class="main-navigation__items">
@@ -11,3 +13,26 @@ export const createNavigationTemplate = () => (
   </nav>
   `
 );
+
+export default class Naigation {
+  constructor() {
+    this._element = null;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return createNavigationTemplate();
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
