@@ -2,20 +2,20 @@ import { render, renderElement, RenderPosition } from './services/render';
 import { sortFilmsByField } from './utils/utils';
 
 //main views
-import FooterView from './view/footer';
 import ProfileView from './view/profile';
 import NavigationView from './view/navigation';
 import SortView from './view/sort';
-import { createFilmsTemplate } from './view/films';
+import FilmsView from './view/films';
+import FooterView from './view/footer';
 //films views
-import { createFilmsListTemplate } from './view/films-list';
-import { createFilmsListTopTemplate } from './view/films-list-top';
-import { createFilmsListCommentedTemplate } from './view/films-list-commented';
+import FilmsList from './view/films-list';
+import FilmsListTopView from './view/films-list-top';
+import FilmsListCommentedView from './view/films-list-commented';
 import { createFilmTemplate } from './view/film';
 import { createLoadMoreButton } from './view/loadMoreButton';
 //popup view
 import { createpopupTemplate } from './view/popup';
-//data
+//get data
 import { generateFilm, commentsArray } from './mock/mock';
 
 const FILMS_COUNT = 20;
@@ -23,6 +23,7 @@ const COMMENTED_FILMS_COUNT = 2;
 const TOP_FILMS_COUNT = 2;
 const FILMS_COUNT_PER_STEP = 5;
 
+//Get and Transfom DATA
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
 const currentFilm = defaultFilmsArray[0];
@@ -39,11 +40,11 @@ renderElement(siteMain, new NavigationView().element, RenderPosition.BEFOREEND);
 renderElement(siteMain, new SortView().element, RenderPosition.BEFOREEND);
 
 //show films block
-render(siteMain, createFilmsTemplate(), 'beforeend');
+renderElement(siteMain, new FilmsView().element, RenderPosition.BEFOREEND);
 const siteFilms = document.querySelector('.films');
-render(siteFilms, createFilmsListTemplate(), 'beforeend');
-render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
-render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
+renderElement(siteFilms, new FilmsList().element, RenderPosition.BEFOREEND);
+renderElement(siteFilms, new FilmsListTopView().element, RenderPosition.BEFOREEND);
+renderElement(siteFilms, new FilmsListCommentedView().element, RenderPosition.BEFOREEND);
 
 //show footer block
 renderElement(siteFooterStatistics, new FooterView(filmsCount).element, RenderPosition.BEFOREEND);
