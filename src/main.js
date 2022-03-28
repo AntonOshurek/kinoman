@@ -3,9 +3,8 @@ import { sortFilmsByField } from './utils/utils';
 
 //main views
 import { createFooterTemplate } from './view/footer';
-// import { createProfileTemplate } from './view/profile';
 import ProfileView from './view/profile';
-import { createNavigationTemplate } from './view/navigation';
+import NavigationView from './view/navigation';
 import SortView from './view/sort';
 import { createFilmsTemplate } from './view/films';
 //films views
@@ -36,7 +35,7 @@ const siteMain = document.querySelector('.main');
 
 //show header block
 renderElement(siteHeader, new ProfileView().element, RenderPosition.BEFOREEND);
-render(siteMain, createNavigationTemplate(), 'beforeend');
+renderElement(siteMain, new NavigationView().element, RenderPosition.BEFOREEND);
 renderElement(siteMain, new SortView().element, RenderPosition.BEFOREEND);
 
 //show films block
