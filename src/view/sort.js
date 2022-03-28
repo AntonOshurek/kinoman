@@ -1,4 +1,6 @@
-export const createSortTemplate = () => (
+import { createElement } from '../services/render';
+
+const createSortTemplate = () => (
   `
   <ul class="sort">
     <li><a href="#" class="sort__button sort__button--default sort__button--active">Sort by default</a></li>
@@ -7,3 +9,25 @@ export const createSortTemplate = () => (
   </ul>
   `
 );
+
+export default class Sort {
+  constructor() {
+    this._element = null;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return createSortTemplate();
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

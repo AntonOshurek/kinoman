@@ -6,7 +6,7 @@ import { createFooterTemplate } from './view/footer';
 // import { createProfileTemplate } from './view/profile';
 import ProfileView from './view/profile';
 import { createNavigationTemplate } from './view/navigation';
-import { createSortTemplate } from './view/sort';
+import SortView from './view/sort';
 import { createFilmsTemplate } from './view/films';
 //films views
 import { createFilmsListTemplate } from './view/films-list';
@@ -37,7 +37,7 @@ const siteMain = document.querySelector('.main');
 //show header block
 renderElement(siteHeader, new ProfileView().element, RenderPosition.BEFOREEND);
 render(siteMain, createNavigationTemplate(), 'beforeend');
-render(siteMain, createSortTemplate(), 'beforeend');
+renderElement(siteMain, new SortView().element, RenderPosition.BEFOREEND);
 
 //show films block
 render(siteMain, createFilmsTemplate(), 'beforeend');
