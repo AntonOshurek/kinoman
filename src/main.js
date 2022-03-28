@@ -1,5 +1,6 @@
 import { render, renderElement, RenderPosition } from './services/render';
 import { sortFilmsByField } from './utils/utils';
+import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP } from './utils/variables';
 
 //main views
 import ProfileView from './view/profile';
@@ -18,11 +19,6 @@ import { createpopupTemplate } from './view/popup';
 //get data
 import { generateFilm, commentsArray } from './mock/mock';
 
-const FILMS_COUNT = 20;
-const COMMENTED_FILMS_COUNT = 2;
-const TOP_FILMS_COUNT = 2;
-const FILMS_COUNT_PER_STEP = 5;
-
 //Get and Transfom DATA
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
@@ -30,9 +26,10 @@ const currentFilm = defaultFilmsArray[0];
 
 const filmsCount = +defaultFilmsArray.length;
 
-const siteFooterStatistics = document.querySelector('.footer__statistics');
+//get containers for views
 const siteHeader = document.querySelector('.header');
 const siteMain = document.querySelector('.main');
+const siteFooterStatistics = document.querySelector('.footer__statistics');
 
 //show header block
 renderElement(siteHeader, new ProfileView().element, RenderPosition.BEFOREEND);
