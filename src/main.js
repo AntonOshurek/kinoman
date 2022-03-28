@@ -2,7 +2,7 @@ import { render, renderElement, RenderPosition } from './services/render';
 import { sortFilmsByField } from './utils/utils';
 
 //main views
-import { createFooterTemplate } from './view/footer';
+import FooterView from './view/footer';
 import ProfileView from './view/profile';
 import NavigationView from './view/navigation';
 import SortView from './view/sort';
@@ -44,11 +44,9 @@ const siteFilms = document.querySelector('.films');
 render(siteFilms, createFilmsListTemplate(), 'beforeend');
 render(siteFilms, createFilmsListTopTemplate(), 'beforeend');
 render(siteFilms, createFilmsListCommentedTemplate(), 'beforeend');
-//popup block
-// render(siteMain, createpopupTemplate(currentFilm, commentsArray), 'beforeend');
 
-// footer block
-render(siteFooterStatistics, createFooterTemplate(filmsCount), 'beforeend');
+//show footer block
+renderElement(siteFooterStatistics, new FooterView(filmsCount).element, RenderPosition.BEFOREEND);
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');
