@@ -22,7 +22,6 @@ import { generateFilm, commentsArray } from './mock/mock';
 //Get and Transfom DATA
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
-const currentFilm = defaultFilmsArray[0];
 
 //get containers for views
 const siteHeader = document.querySelector('.header');
@@ -113,25 +112,42 @@ sort.addEventListener('click', (evt) => {
 const siteBody = document.querySelector('.body');
 //show popup logick
 function closePopup() {
-  const losePopupButton = document.querySelector('.film-details__close-btn');
-  losePopupButton.addEventListener('click', () => {
-    siteBody.classList.remove('hide-overflow');
-    document.querySelector('.film-details').remove();
-    siteFilms.addEventListener('click', openPopup);
-  });
+  siteBody.classList.remove('hide-overflow');
+  document.querySelector('.film-details').remove();
+  siteFilms.addEventListener('click', openPopup);
 }
+
+const onEscKeyDown = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    closePopup();
+    document.removeEventListener('keydown', onEscKeyDown);
+  }
+};
 
 function openPopup(evt) {
   if(evt.target.closest('.film-card')) {
-    render(siteMain, new PopupView(currentFilm, commentsArray).element, RenderPosition.BEFOREEND);
-    siteBody.classList.add('hide-overflow');
+    //search current film
+    const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
+    const currentFilm = defaultFilmsArray.find((film) => film.id === filmUNID);
+    //generate popup markup
+    const popupComponent = new PopupView(currentFilm, commentsArray);
+    //show popup
+    render(siteMain, popupComponent.element, RenderPosition.BEFOREEND);
+
+    siteBody.classList.add('hide-overflow'); //hide scroll
     siteFilms.removeEventListener('click', openPopup);
-    closePopup();
+    //listeners for closed popup
+    popupComponent.element.querySelector('.film-details__close-btn').addEventListener('click', () => {
+      closePopup();
+    });
+    document.addEventListener('keydown', onEscKeyDown);
   }
 }
 
 siteFilms.addEventListener('click', openPopup);
 
+//load more films logik
 let renderedTaskCount;
 let loadMoreButton;
 
