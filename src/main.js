@@ -9,7 +9,7 @@ import SortView from './view/sort';
 import FilmsView from './view/films';
 import FooterView from './view/footer';
 //films views
-import FilmsList from './view/films-list';
+import FilmsListView from './view/films-list';
 import FilmsListTopView from './view/films-list-top';
 import FilmsListCommentedView from './view/films-list-commented';
 import FilmView from './view/film';
@@ -22,6 +22,9 @@ import { generateFilm, commentsArray } from './mock/mock';
 //Get and Transfom DATA
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
+
+const filmsCount = +defaultFilmsArray.length;
+console.log(Boolean(filmsCount))
 
 //get containers for views
 const siteHeader = document.querySelector('.header');
@@ -36,12 +39,11 @@ render(siteMain, new SortView().element, RenderPosition.BEFOREEND);
 //show films block
 render(siteMain, new FilmsView().element, RenderPosition.BEFOREEND);
 const siteFilms = document.querySelector('.films');
-render(siteFilms, new FilmsList().element, RenderPosition.BEFOREEND);
+render(siteFilms, new FilmsListView(Boolean(filmsCount)).element, RenderPosition.BEFOREEND);
 render(siteFilms, new FilmsListTopView().element, RenderPosition.BEFOREEND);
 render(siteFilms, new FilmsListCommentedView().element, RenderPosition.BEFOREEND);
 
 //show footer block
-const filmsCount = +defaultFilmsArray.length;
 render(siteFooterStatistics, new FooterView(filmsCount).element, RenderPosition.BEFOREEND);
 
 //show ALL films logick
@@ -50,25 +52,33 @@ const siteFilmsListContainer = document.querySelector('.films-list__container--m
 const siteTopFilmContainer = document.querySelector('.films-list__container--top');
 const siteCommentedFilmContainer = document.querySelector('.films-list__container--commented');
 
+const showTopFilms = () => {
+  //show top films list
+  const topFilmsArray = sortFilmsByField(defaultFilmsArray, 'total_rating', COMMENTED_FILMS_COUNT);
+  for (let i = 0; i < TOP_FILMS_COUNT; i++) {
+    render(siteTopFilmContainer, new FilmView(topFilmsArray[i]).element, RenderPosition.BEFOREEND);
+  }
+
+  //show commented films list
+  const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, 'comments', COMMENTED_FILMS_COUNT);
+  for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
+    render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).element, RenderPosition.BEFOREEND);
+  }
+};
+
 //show main films list
 const showMainFilmsList = (data) => {
-  for (let i = 0; i < Math.min(data.length, FILMS_COUNT_PER_STEP); i++) {
-    render(siteFilmsListContainer, new FilmView(data[i]).element, RenderPosition.BEFOREEND);
+  if(filmsCount) {
+    for (let i = 0; i < Math.min(data.length, FILMS_COUNT_PER_STEP); i++) {
+      render(siteFilmsListContainer, new FilmView(data[i]).element, RenderPosition.BEFOREEND);
+    }
+
+    showTopFilms();
   }
+
 };
 showMainFilmsList(defaultFilmsArray); //call for this function on first launch
 
-//show top films list
-const topFilmsArray = sortFilmsByField(defaultFilmsArray, 'total_rating', COMMENTED_FILMS_COUNT);
-for (let i = 0; i < TOP_FILMS_COUNT; i++) {
-  render(siteTopFilmContainer, new FilmView(topFilmsArray[i]).element, RenderPosition.BEFOREEND);
-}
-
-//show commented films list
-const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, 'comments', COMMENTED_FILMS_COUNT);
-for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
-  render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).element, RenderPosition.BEFOREEND);
-}
 
 //sort logick
 const sort = document.querySelector('.sort');

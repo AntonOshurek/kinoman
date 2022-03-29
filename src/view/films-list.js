@@ -1,17 +1,26 @@
 import { createElement } from '../services/render';
 
-const createFilmsListTemplate = () => `
+const createFilmsListTemplate = (filmsArrayIsEmpty) => {
+  let filmsTitle = '';
+
+  if(!filmsArrayIsEmpty) {
+    filmsTitle = 'There are no movies in our database';
+  } else {
+    filmsTitle = 'All movies. Upcoming';
+  }
+  return `
   <section class="films-list films-list--main">
-    <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+    <h2 class="films-list__title">${filmsTitle}</h2>
     <div class="films-list__container films-list__container--main">
 
     </div>
-  </section>
-`;
+  </section>`;
+};
 
 export default class FilmsList {
-  constructor() {
+  constructor(filmsArrayIsEmpty) {
     this._element = null;
+    this._filmsArrayIsEmpty = filmsArrayIsEmpty;
   }
 
   get element() {
@@ -23,7 +32,7 @@ export default class FilmsList {
   }
 
   get template() {
-    return createFilmsListTemplate();
+    return createFilmsListTemplate(this._filmsArrayIsEmpty);
   }
 
   removeElement() {
