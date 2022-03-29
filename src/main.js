@@ -24,7 +24,6 @@ const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 let sortFilmsArray = defaultFilmsArray;
 
 const filmsCount = +defaultFilmsArray.length;
-console.log(Boolean(filmsCount))
 
 //get containers for views
 const siteHeader = document.querySelector('.header');
