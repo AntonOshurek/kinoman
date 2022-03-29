@@ -109,10 +109,13 @@ sort.addEventListener('click', (evt) => {
   }
 });
 
+
+const siteBody = document.querySelector('.body');
 //show popup logick
 function closePopup() {
   const losePopupButton = document.querySelector('.film-details__close-btn');
   losePopupButton.addEventListener('click', () => {
+    siteBody.classList.remove('hide-overflow');
     document.querySelector('.film-details').remove();
     siteFilms.addEventListener('click', openPopup);
   });
@@ -121,6 +124,7 @@ function closePopup() {
 function openPopup(evt) {
   if(evt.target.closest('.film-card')) {
     render(siteMain, new PopupView(currentFilm, commentsArray).element, RenderPosition.BEFOREEND);
+    siteBody.classList.add('hide-overflow');
     siteFilms.removeEventListener('click', openPopup);
     closePopup();
   }
