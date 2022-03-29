@@ -12,7 +12,7 @@ const createpopupTemplate = (filmData, commentsArray) => {
       commentsMarkup += `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${oneComment.emotion}.png" width="55" height="55" alt="emoji-smile">
+          <img src="./images/emoji/${oneComment.emotion}.png" width="55" height="55" alt="emoji-${oneComment.emotion}">
         </span>
         <div>
           <p class="film-details__comment-text">I${oneComment.comment}</p>
@@ -30,15 +30,15 @@ const createpopupTemplate = (filmData, commentsArray) => {
 
   const generateGeneresTemplates = () => {
     let generesItem = '';
-    const title = filmInfo.genre.length > 1 ? 'Genres' : 'Genre';
-    filmInfo.genre.forEach((gen) => {
+    const GenresTitle = filmInfo.genre.length > 1 ? 'Genres' : 'Genre';
+    filmInfo.genre.forEach((gen, i) => {
       generesItem += `
-        <span class="film-details__genre">${gen}</span>
+        <span class="film-details__genre">${gen} ${i === filmInfo.genre.length - 1 ? '.' : ', '}</span>
       `;
     });
 
     const generesTemplate = `
-      <td class="film-details__term">${title}</td>
+      <td class="film-details__term">${GenresTitle}</td>
       <td class="film-details__cell">
         ${generesItem}
       </td>
@@ -55,9 +55,9 @@ const createpopupTemplate = (filmData, commentsArray) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
+          <img class="film-details__poster-img" src="./images/posters/${filmInfo.poster}" alt="">
 
-          <p class="film-details__age">18+</p>
+          <p class="film-details__age">${filmInfo.age_rating}+</p>
         </div>
 
         <div class="film-details__info">
@@ -117,7 +117,7 @@ const createpopupTemplate = (filmData, commentsArray) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
           ${searchFilmComments()}

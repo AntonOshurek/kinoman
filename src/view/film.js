@@ -3,7 +3,7 @@ import { createElement } from '../services/render';
 import { dateFormater } from '../utils/utils';
 
 const createFilmTemplate = (filmData) => {
-  const {comments, film_info: filmInfo } = filmData;
+  const {comments, id, film_info: filmInfo } = filmData;
   const formatDate = dateFormater(filmInfo.release.date);
 
   const checkFilmDesriptionLength = () => {
@@ -17,7 +17,7 @@ const createFilmTemplate = (filmData) => {
   };
 
   return `
-    <article class="film-card">
+    <article class="film-card" data-unid=${id}>
       <h3 class="film-card__title">${filmInfo.title}</h3>
       <p class="film-card__rating">${filmInfo.total_rating}</p>
       <p class="film-card__info">
