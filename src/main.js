@@ -91,25 +91,26 @@ const addActiveClassForSortButton = (activeButton) => {
 
 sortComponent.setEditClickHandler((evt) => {
   const target = evt.target;
+  const filter = target.getAttribute('data-filter');
 
-  const filmCard = siteFilmsListContainer.querySelectorAll('.film-card');
+  const removeAllFilms = () => {siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
 
-  if(target.classList.contains('sort__button--default')) {
-    filmCard.forEach((item) => item.remove());   // delete all film-card
+  if(filter === 'default') {
+    removeAllFilms();
     addActiveClassForSortButton(target);
     sortFilmsArray = defaultFilmsArray;
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
-  if(target.classList.contains('sort__button--date')) {
-    filmCard.forEach((item) => item.remove());   // delete all film-card
+  if(filter === 'date') {
+    removeAllFilms();
     addActiveClassForSortButton(target);
     sortFilmsArray = sortFilmsByField(sortFilmsArray, 'date');
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
-  if(target.classList.contains('sort__button--rating')) {
-    filmCard.forEach((item) => item.remove());   // delete all film-card
+  if(filter === 'rating') {
+    removeAllFilms();
     addActiveClassForSortButton(target);
     sortFilmsArray = sortFilmsByField(sortFilmsArray, 'total_rating');
     showMainFilmsList(sortFilmsArray);
