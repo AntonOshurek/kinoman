@@ -34,7 +34,6 @@ const siteFooterStatistics = document.querySelector('.footer__statistics');
 //show header block
 render(siteHeader, new ProfileView().getElement(), RenderPosition.BEFOREEND);
 render(siteMain, new NavigationView().getElement(), RenderPosition.BEFOREEND);
-
 const sortComponent = new SortView();
 render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
 
@@ -81,35 +80,35 @@ const showMainFilmsList = (data) => {
 showMainFilmsList(defaultFilmsArray); //call for this function on first launch
 
 //sort logick
-const addActiveClassForSortButton = (activeButton) => {
-  const sortButton = document.querySelectorAll('.sort__button');
-  sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
-  activeButton.classList.add('sort__button--active');
-};
-
 sortComponent.setSortClickHandler((evt) => {
   const target = evt.target;
   const filter = target.getAttribute('data-filter');
+  const sortButton = sortComponent.getElement().querySelectorAll('.sort__button');
+
+  const addActiveClassForSortButton = () => {
+    sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
+    target.classList.add('sort__button--active');
+  };
 
   const removeAllFilms = () => {siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
 
   if(filter === SORT_FIELDS.DEFAULT) {
     removeAllFilms();
-    addActiveClassForSortButton(target);
+    addActiveClassForSortButton();
     sortFilmsArray = defaultFilmsArray;
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
   if(filter === SORT_FIELDS.DATE) {
     removeAllFilms();
-    addActiveClassForSortButton(target);
+    addActiveClassForSortButton();
     sortFilmsArray = sortFilmsByField(sortFilmsArray, SORT_FIELDS.DATE);
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
   if(filter === SORT_FIELDS.RATING) {
     removeAllFilms();
-    addActiveClassForSortButton(target);
+    addActiveClassForSortButton();
     sortFilmsArray = sortFilmsByField(sortFilmsArray, SORT_FIELDS.RATING);
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
