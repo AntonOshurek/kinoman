@@ -1,7 +1,7 @@
 import { render } from './utils/render';
 import { RenderPosition } from './utils/constants';
 import { sortFilmsByField } from './utils/common';
-import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP } from './utils/constants';
+import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP, SORT_FIELDS } from './utils/constants';
 
 //main views
 import ProfileView from './view/profile';
@@ -56,17 +56,18 @@ const siteCommentedFilmContainer = document.querySelector('.films-list__containe
 
 const showTopFilms = () => {
   //show top films list
-  const topFilmsArray = sortFilmsByField(defaultFilmsArray, 'total_rating', COMMENTED_FILMS_COUNT);
+  const topFilmsArray = sortFilmsByField(defaultFilmsArray, SORT_FIELDS.RATING, COMMENTED_FILMS_COUNT);
   for (let i = 0; i < TOP_FILMS_COUNT; i++) {
     render(siteTopFilmContainer, new FilmView(topFilmsArray[i]).element, RenderPosition.BEFOREEND);
   }
 
   //show commented films list
-  const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, 'comments', COMMENTED_FILMS_COUNT);
+  const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
   for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
     render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).element, RenderPosition.BEFOREEND);
   }
 };
+showTopFilms(); //call for this function on first launch
 
 //show main films list
 const showMainFilmsList = (data) => {
@@ -74,15 +75,12 @@ const showMainFilmsList = (data) => {
     for (let i = 0; i < Math.min(data.length, FILMS_COUNT_PER_STEP); i++) {
       render(siteFilmsListContainer, new FilmView(data[i]).element, RenderPosition.BEFOREEND);
     }
-
-    showTopFilms();
   }
 
 };
 showMainFilmsList(defaultFilmsArray); //call for this function on first launch
 
 //sort logick
-
 const addActiveClassForSortButton = (activeButton) => {
   const sortButton = document.querySelectorAll('.sort__button');
   sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
@@ -95,29 +93,28 @@ sortComponent.setEditClickHandler((evt) => {
 
   const removeAllFilms = () => {siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
 
-  if(filter === 'default') {
+  if(filter === SORT_FIELDS.DEFAULT) {
     removeAllFilms();
     addActiveClassForSortButton(target);
     sortFilmsArray = defaultFilmsArray;
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
-  if(filter === 'date') {
+  if(filter === SORT_FIELDS.DATE) {
     removeAllFilms();
     addActiveClassForSortButton(target);
-    sortFilmsArray = sortFilmsByField(sortFilmsArray, 'date');
+    sortFilmsArray = sortFilmsByField(sortFilmsArray, SORT_FIELDS.DATE);
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
-  if(filter === 'rating') {
+  if(filter === SORT_FIELDS.RATING) {
     removeAllFilms();
     addActiveClassForSortButton(target);
-    sortFilmsArray = sortFilmsByField(sortFilmsArray, 'total_rating');
+    sortFilmsArray = sortFilmsByField(sortFilmsArray, SORT_FIELDS.RATING);
     showMainFilmsList(sortFilmsArray);
     mainFilmsPagination();
   }
 });
-
 
 const siteBody = document.querySelector('.body');
 //show popup logick

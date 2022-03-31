@@ -12,3 +12,10 @@ export const RenderPosition = {
   BEFOREEND: 'beforeend',
   AFTEREND: 'afterend',
 };
+
+export const SORT_FIELDS = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'total_rating',
+  COMMENTS: 'comments',
+};
