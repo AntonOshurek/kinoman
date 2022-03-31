@@ -1,9 +1,11 @@
-import dayjs from 'dayjs';
-
 export const getRandomInt = (minValue, maxValue) => Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
 
 export const getUNID = () => (
   Date.now().toString(36) + Math.random().toString(36).substr(2)
+);
+
+export const booleanGenerate = () => (
+  Boolean(getRandomInt(0, 1))
 );
 
 export function sortFilmsByField (dataArray, field, count = 0) {
@@ -33,14 +35,3 @@ export function sortFilmsByField (dataArray, field, count = 0) {
     return result;
   }
 }
-
-export const generateRandomDate = (range) => {
-  const bar = getRandomInt(0, range);
-  return dayjs().add(bar, 'day').toDate();
-};
-
-export const booleanGenerate = () => (
-  Boolean(getRandomInt(0, 1))
-);
-
-export const dateFormater = (date) => dayjs(date).format('DD MMMM YYYY');

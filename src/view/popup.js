@@ -1,5 +1,5 @@
-import { createElement } from '../services/render';
-import { dateFormater } from '../utils/utils';
+import { createElement } from '../utils/render';
+import { dateFormater } from '../utils/date';
 
 const createpopupTemplate = (filmData, commentsArray) => {
   const {comments, film_info: filmInfo } = filmData;

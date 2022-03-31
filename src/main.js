@@ -1,6 +1,6 @@
-import { render, RenderPosition } from './services/render';
-import { sortFilmsByField } from './utils/utils';
-import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP } from './utils/variables';
+import { render, RenderPosition } from './utils/render';
+import { sortFilmsByField } from './utils/common';
+import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP } from './utils/constants';
 
 //main views
 import ProfileView from './view/profile';
