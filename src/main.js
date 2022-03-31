@@ -32,8 +32,8 @@ const siteMain = document.querySelector('.main');
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 
 //show header block
-render(siteHeader, new ProfileView().element, RenderPosition.BEFOREEND);
-render(siteMain, new NavigationView().element, RenderPosition.BEFOREEND);
+render(siteHeader, new ProfileView().getElement(), RenderPosition.BEFOREEND);
+render(siteMain, new NavigationView().getElement(), RenderPosition.BEFOREEND);
 render(siteMain, new SortView().element, RenderPosition.BEFOREEND);
 
 //show films block

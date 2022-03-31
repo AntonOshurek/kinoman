@@ -1,4 +1,4 @@
-import { RenderPosition } from "./constants";
+import { RenderPosition } from './constants';
 
 export const render = (container, element, place) => {
   switch (place) {
