@@ -34,7 +34,9 @@ const siteFooterStatistics = document.querySelector('.footer__statistics');
 //show header block
 render(siteHeader, new ProfileView().getElement(), RenderPosition.BEFOREEND);
 render(siteMain, new NavigationView().getElement(), RenderPosition.BEFOREEND);
-render(siteMain, new SortView().getElement(), RenderPosition.BEFOREEND);
+
+const sortComponent = new SortView();
+render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
 
 //show films block
 render(siteMain, new FilmsView().element, RenderPosition.BEFOREEND);
@@ -79,9 +81,7 @@ const showMainFilmsList = (data) => {
 };
 showMainFilmsList(defaultFilmsArray); //call for this function on first launch
 
-
 //sort logick
-const sort = document.querySelector('.sort');
 
 const addActiveClassForSortButton = (activeButton) => {
   const sortButton = document.querySelectorAll('.sort__button');
@@ -89,8 +89,7 @@ const addActiveClassForSortButton = (activeButton) => {
   activeButton.classList.add('sort__button--active');
 };
 
-sort.addEventListener('click', (evt) => {
-  evt.preventDefault();
+sortComponent.setEditClickHandler((evt) => {
   const target = evt.target;
 
   const filmCard = siteFilmsListContainer.querySelectorAll('.film-card');
