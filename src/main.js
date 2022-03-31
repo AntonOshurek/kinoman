@@ -34,7 +34,7 @@ const siteFooterStatistics = document.querySelector('.footer__statistics');
 //show header block
 render(siteHeader, new ProfileView().getElement(), RenderPosition.BEFOREEND);
 render(siteMain, new NavigationView().getElement(), RenderPosition.BEFOREEND);
-render(siteMain, new SortView().element, RenderPosition.BEFOREEND);
+render(siteMain, new SortView().getElement(), RenderPosition.BEFOREEND);
 
 //show films block
 render(siteMain, new FilmsView().element, RenderPosition.BEFOREEND);
