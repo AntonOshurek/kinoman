@@ -14,20 +14,20 @@ export default class Sort extends AbstractView {
   constructor() {
     super();
 
-    this._editClickHandler = this._editClickHandler.bind(this);
+    this._sortClickHandler = this._sortClickHandler.bind(this);
   }
 
   getTemplate() {
     return createSortTemplate();
   }
 
-  _editClickHandler(evt) {
+  _sortClickHandler(evt) {
     evt.preventDefault();
-    this._callback.editClick(evt);
+    this._callback.sortClick(evt);
   }
 
-  setEditClickHandler(callback) {
-    this._callback.editClick = callback;
-    this.getElement().addEventListener('click', this._editClickHandler);
+  setSortClickHandler(callback) {
+    this._callback.sortClick = callback;
+    this.getElement().addEventListener('click', this._sortClickHandler);
   }
 }

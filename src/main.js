@@ -87,7 +87,7 @@ const addActiveClassForSortButton = (activeButton) => {
   activeButton.classList.add('sort__button--active');
 };
 
-sortComponent.setEditClickHandler((evt) => {
+sortComponent.setSortClickHandler((evt) => {
   const target = evt.target;
   const filter = target.getAttribute('data-filter');
 
