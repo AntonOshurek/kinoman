@@ -43,7 +43,7 @@ render(siteFilms, new FilmsListTopView().element, RenderPosition.BEFOREEND);
 render(siteFilms, new FilmsListCommentedView().element, RenderPosition.BEFOREEND);
 
 //show footer block
-render(siteFooterStatistics, new FooterView(filmsCount).element, RenderPosition.BEFOREEND);
+render(siteFooterStatistics, new FooterView(filmsCount).getElement(), RenderPosition.BEFOREEND);
 
 //show ALL films logick
 const siteFilmsList = document.querySelector('.films-list--main');
