@@ -1,5 +1,6 @@
 import { fishText } from '../../node_modules/fish-text/fish-text.js';
-import { getRandomInt, getUNID, generateRandomDate, booleanGenerate } from '../utils/utils';
+import { getRandomInt, getUNID, booleanGenerate } from '../utils/common';
+import { generateRandomDate } from '../utils/date.js';
 
 const POSTERS = [
   'made-for-each-other.png',

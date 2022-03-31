@@ -1,9 +1,4 @@
-export const RenderPosition = {
-  BEFOREBEGIN: 'beforebegin',
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-  AFTEREND: 'afterend',
-};
+import { RenderPosition } from './constants';
 
 export const render = (container, element, place) => {
   switch (place) {

@@ -1,6 +1,6 @@
 // import dayjs from 'dayjs';
-import { createElement } from '../services/render';
-import { dateFormater } from '../utils/utils';
+import { createElement } from '../utils/render';
+import { dateFormater } from '../utils/date';
 
 const createFilmTemplate = (filmData) => {
   const {comments, id, film_info: filmInfo } = filmData;

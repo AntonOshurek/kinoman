@@ -1,4 +1,4 @@
-import { createElement } from '../services/render';
+import { createElement } from '../utils/render';
 
 const createFilmsTemplate = () => (
   `
