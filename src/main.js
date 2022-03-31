@@ -1,4 +1,5 @@
-import { render, RenderPosition } from './utils/render';
+import { render } from './utils/render';
+import { RenderPosition } from './utils/constants';
 import { sortFilmsByField } from './utils/common';
 import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP } from './utils/constants';
 
