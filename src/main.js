@@ -38,7 +38,7 @@ const sortComponent = new SortView();
 render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
 
 //show films block
-render(siteMain, new FilmsView().element, RenderPosition.BEFOREEND);
+render(siteMain, new FilmsView().getElement(), RenderPosition.BEFOREEND);
 const siteFilms = document.querySelector('.films');
 render(siteFilms, new FilmsListView(Boolean(filmsCount)).element, RenderPosition.BEFOREEND);
 render(siteFilms, new FilmsListTopView().element, RenderPosition.BEFOREEND);
