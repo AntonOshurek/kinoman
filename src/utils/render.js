@@ -1,4 +1,5 @@
 import { RenderPosition } from './constants';
+import AbstractView from '../view/abstract-view';
 
 export const render = (container, element, place) => {
   switch (place) {
@@ -30,3 +31,16 @@ export const createElement = (template) => {
 // Единственный нюанс, что HTML в строке должен иметь общую обёртку,
 // то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
 // а не просто <a>Link 1</a><a>Link 2</a>
+
+export const remove = (component) => {
+  if (component === null) {
+    return;
+  }
+
+  if (!(component instanceof AbstractView)) {
+    throw new Error('Can remove only components');
+  }
+
+  component.getElement().remove();
+  component.removeElement();
+};

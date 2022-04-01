@@ -1,4 +1,4 @@
-import { createElement } from '../utils/render';
+import AbstractView from './abstract-view';
 
 const createFilmsListCommentedTemplate = () => (
   `
@@ -12,24 +12,8 @@ const createFilmsListCommentedTemplate = () => (
   `
 );
 
-export default class FilmsListCommented {
-  constructor() {
-    this._element = null;
-  }
-
-  get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
-  }
-
-  get template() {
+export default class FilmsListCommented extends AbstractView {
+  getTemplate() {
     return createFilmsListCommentedTemplate();
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

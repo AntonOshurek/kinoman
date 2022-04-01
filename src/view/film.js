@@ -1,6 +1,5 @@
-// import dayjs from 'dayjs';
-import { createElement } from '../utils/render';
-import { dateFormater } from '../utils/date';
+import AbstractView from './abstract-view';
+import { dateFormater, transformRuntime } from '../utils/date';
 
 const createFilmTemplate = (filmData) => {
   const {comments, id, film_info: filmInfo } = filmData;
@@ -22,7 +21,7 @@ const createFilmTemplate = (filmData) => {
       <p class="film-card__rating">${filmInfo.total_rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${formatDate}</span>
-        <span class="film-card__duration">1h 55m</span>
+        <span class="film-card__duration">${transformRuntime(filmInfo.runtime)}</span>
         <span class="film-card__genre">${filmInfo.genre.join(', ')}</span>
       </p>
       <img src="./images/posters/${filmInfo.poster}" alt="" class="film-card__poster">
@@ -37,25 +36,13 @@ const createFilmTemplate = (filmData) => {
   `;
 };
 
-export default class Film {
+export default class Film extends AbstractView {
   constructor(filmData) {
+    super();
     this.filmData = filmData;
-    this._element = null;
   }
 
-  get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
-  }
-
-  get template() {
+  getTemplate() {
     return createFilmTemplate(this.filmData);
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import { render } from './utils/render';
+import { render, remove } from './utils/render';
 import { RenderPosition } from './utils/constants';
 import { sortFilmsByField } from './utils/common';
 import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP, SORT_FIELDS } from './utils/constants';
@@ -38,32 +38,39 @@ const sortComponent = new SortView();
 render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
 
 //show films block
-render(siteMain, new FilmsView().element, RenderPosition.BEFOREEND);
-const siteFilms = document.querySelector('.films');
-render(siteFilms, new FilmsListView(Boolean(filmsCount)).element, RenderPosition.BEFOREEND);
-render(siteFilms, new FilmsListTopView().element, RenderPosition.BEFOREEND);
-render(siteFilms, new FilmsListCommentedView().element, RenderPosition.BEFOREEND);
+const siteFilmsView = new FilmsView();
+render(siteMain, siteFilmsView.getElement(), RenderPosition.BEFOREEND);
+const siteFilms = siteFilmsView.getElement();
+
+const filmsListView = new FilmsListView(Boolean(filmsCount));
+render(siteFilms, filmsListView.getElement(), RenderPosition.BEFOREEND);
+
+const filmsListTopView = new FilmsListTopView();
+render(siteFilms, filmsListTopView.getElement(), RenderPosition.BEFOREEND);
+
+const filmsListCommentedView = new FilmsListCommentedView();
+render(siteFilms, filmsListCommentedView.getElement(), RenderPosition.BEFOREEND);
 
 //show footer block
 render(siteFooterStatistics, new FooterView(filmsCount).getElement(), RenderPosition.BEFOREEND);
 
 //show ALL films logick
-const siteFilmsList = document.querySelector('.films-list--main');
-const siteFilmsListContainer = document.querySelector('.films-list__container--main');
-const siteTopFilmContainer = document.querySelector('.films-list__container--top');
-const siteCommentedFilmContainer = document.querySelector('.films-list__container--commented');
+const siteFilmsList = filmsListView.getElement();
+const siteFilmsListContainer = filmsListView.getElement().querySelector('.films-list__container--main');
+const siteTopFilmContainer = filmsListTopView.getElement().querySelector('.films-list__container--top');
+const siteCommentedFilmContainer = filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
 
 const showTopFilms = () => {
   //show top films list
   const topFilmsArray = sortFilmsByField(defaultFilmsArray, SORT_FIELDS.RATING, COMMENTED_FILMS_COUNT);
   for (let i = 0; i < TOP_FILMS_COUNT; i++) {
-    render(siteTopFilmContainer, new FilmView(topFilmsArray[i]).element, RenderPosition.BEFOREEND);
+    render(siteTopFilmContainer, new FilmView(topFilmsArray[i]).getElement(), RenderPosition.BEFOREEND);
   }
 
   //show commented films list
   const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
   for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
-    render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).element, RenderPosition.BEFOREEND);
+    render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).getElement(), RenderPosition.BEFOREEND);
   }
 };
 showTopFilms(); //call for this function on first launch
@@ -72,7 +79,7 @@ showTopFilms(); //call for this function on first launch
 const showMainFilmsList = (data) => {
   if(filmsCount) {
     for (let i = 0; i < Math.min(data.length, FILMS_COUNT_PER_STEP); i++) {
-      render(siteFilmsListContainer, new FilmView(data[i]).element, RenderPosition.BEFOREEND);
+      render(siteFilmsListContainer, new FilmView(data[i]).getElement(), RenderPosition.BEFOREEND);
     }
   }
 
@@ -139,12 +146,12 @@ function openPopup(evt) {
     //generate popup markup
     const popupComponent = new PopupView(currentFilm, commentsArray);
     //show popup
-    render(siteMain, popupComponent.element, RenderPosition.BEFOREEND);
+    render(siteMain, popupComponent.getElement(), RenderPosition.BEFOREEND);
 
     siteBody.classList.add('hide-overflow'); //hide scroll
     siteFilms.removeEventListener('click', openPopup);
     //listeners for closed popup
-    popupComponent.element.querySelector('.film-details__close-btn').addEventListener('click', () => {
+    popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
       closePopup();
     });
     document.addEventListener('keydown', onEscKeyDown);
@@ -154,32 +161,24 @@ function openPopup(evt) {
 siteFilms.addEventListener('click', openPopup);
 
 //load more films logik
-let renderedTaskCount;
-let loadMoreButton;
-
-const loadMoreFilms = (evt) => {
-  evt.preventDefault();
-  sortFilmsArray
-    .slice(renderedTaskCount, renderedTaskCount + FILMS_COUNT_PER_STEP)
-    .forEach((film) => render(siteFilmsListContainer, new FilmView(film).element, RenderPosition.BEFOREEND));
-
-  renderedTaskCount += FILMS_COUNT_PER_STEP;
-
-  if (renderedTaskCount >= sortFilmsArray.length) {
-    loadMoreButton.removeEventListener('click', loadMoreFilms);
-    loadMoreButton.remove();
-  }
-};
-
+const loadMoreButton = new LoadMoreButtonView();
 function mainFilmsPagination() {
   if(sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
-    renderedTaskCount = FILMS_COUNT_PER_STEP;
-    loadMoreButton ? loadMoreButton.remove() : null;
-    render(siteFilmsList, new LoadMoreButtonView().element, RenderPosition.BEFOREEND);
+    let renderedTaskCount = FILMS_COUNT_PER_STEP;
 
-    loadMoreButton = document.querySelector('.films-list__show-more');
+    loadMoreButton.getElement() ? render(siteFilmsList, loadMoreButton.getElement(), RenderPosition.BEFOREEND) : null;
 
-    loadMoreButton.addEventListener('click', loadMoreFilms);
+    loadMoreButton.setPaginationClickHandler(() => {
+      sortFilmsArray
+        .slice(renderedTaskCount, renderedTaskCount + FILMS_COUNT_PER_STEP)
+        .forEach((film) => render(siteFilmsListContainer, new FilmView(film).getElement(), RenderPosition.BEFOREEND));
+
+      renderedTaskCount += FILMS_COUNT_PER_STEP;
+
+      if (renderedTaskCount >= sortFilmsArray.length) {
+        remove(loadMoreButton);
+      }
+    });
   }
 }
 
