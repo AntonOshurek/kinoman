@@ -146,12 +146,12 @@ function openPopup(evt) {
     //generate popup markup
     const popupComponent = new PopupView(currentFilm, commentsArray);
     //show popup
-    render(siteMain, popupComponent.element, RenderPosition.BEFOREEND);
+    render(siteMain, popupComponent.getElement(), RenderPosition.BEFOREEND);
 
     siteBody.classList.add('hide-overflow'); //hide scroll
     siteFilms.removeEventListener('click', openPopup);
     //listeners for closed popup
-    popupComponent.element.querySelector('.film-details__close-btn').addEventListener('click', () => {
+    popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
       closePopup();
     });
     document.addEventListener('keydown', onEscKeyDown);

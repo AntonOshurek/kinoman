@@ -1,4 +1,4 @@
-import { createElement } from '../utils/render';
+import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 
 const createpopupTemplate = (filmData, commentsArray) => {
@@ -159,26 +159,15 @@ const createpopupTemplate = (filmData, commentsArray) => {
   `;
 };
 
-export default class Popup {
+export default class Popup extends AbstractView {
   constructor(filmData, commentsArray) {
+    super();
     this.filmData = filmData;
     this.commentsArray = commentsArray;
-    this._element = null;
   }
 
-  get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
-  }
-
-  get template() {
+  getTemplate() {
     return createpopupTemplate(this.filmData, this.commentsArray);
   }
 
-  removeElement() {
-    this._element = null;
-  }
 }
