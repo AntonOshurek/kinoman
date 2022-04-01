@@ -169,5 +169,4 @@ export default class Popup extends AbstractView {
   getTemplate() {
     return createpopupTemplate(this.filmData, this.commentsArray);
   }
-
 }
