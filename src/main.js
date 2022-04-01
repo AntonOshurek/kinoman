@@ -41,9 +41,15 @@ render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
 const siteFilmsView = new FilmsView();
 render(siteMain, siteFilmsView.getElement(), RenderPosition.BEFOREEND);
 const siteFilms = siteFilmsView.getElement();
-render(siteFilms, new FilmsListView(Boolean(filmsCount)).getElement(), RenderPosition.BEFOREEND);
-render(siteFilms, new FilmsListTopView().getElement(), RenderPosition.BEFOREEND);
-render(siteFilms, new FilmsListCommentedView().getElement(), RenderPosition.BEFOREEND);
+
+const filmsListView = new FilmsListView(Boolean(filmsCount));
+render(siteFilms, filmsListView.getElement(), RenderPosition.BEFOREEND);
+
+const filmsListTopView = new FilmsListTopView();
+render(siteFilms, filmsListTopView.getElement(), RenderPosition.BEFOREEND);
+
+const filmsListCommentedView = new FilmsListCommentedView();
+render(siteFilms, filmsListCommentedView.getElement(), RenderPosition.BEFOREEND);
 
 //show footer block
 render(siteFooterStatistics, new FooterView(filmsCount).getElement(), RenderPosition.BEFOREEND);
