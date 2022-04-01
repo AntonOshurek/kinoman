@@ -10,6 +10,14 @@ export const booleanGenerate = () => (
   Boolean(getRandomInt(0, 1))
 );
 
+export const getZero = (num) => {
+  if (num >= 0 && num < 10) {
+    return `0${num}`;
+  } else {
+    return num;
+  }
+};
+
 export function sortFilmsByField (dataArray, field, count = 0) {
   let result;
   if(field === SORT_FIELDS.RATING) {
