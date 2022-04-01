@@ -1,4 +1,4 @@
-import { render } from './utils/render';
+import { render, remove } from './utils/render';
 import { RenderPosition } from './utils/constants';
 import { sortFilmsByField } from './utils/common';
 import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP, SORT_FIELDS } from './utils/constants';
@@ -161,32 +161,24 @@ function openPopup(evt) {
 siteFilms.addEventListener('click', openPopup);
 
 //load more films logik
-let renderedTaskCount;
-let loadMoreButton;
-
-const loadMoreFilms = (evt) => {
-  evt.preventDefault();
-  sortFilmsArray
-    .slice(renderedTaskCount, renderedTaskCount + FILMS_COUNT_PER_STEP)
-    .forEach((film) => render(siteFilmsListContainer, new FilmView(film).getElement(), RenderPosition.BEFOREEND));
-
-  renderedTaskCount += FILMS_COUNT_PER_STEP;
-
-  if (renderedTaskCount >= sortFilmsArray.length) {
-    loadMoreButton.removeEventListener('click', loadMoreFilms);
-    loadMoreButton.remove();
-  }
-};
-
+const loadMoreButton = new LoadMoreButtonView();
 function mainFilmsPagination() {
   if(sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
-    renderedTaskCount = FILMS_COUNT_PER_STEP;
-    loadMoreButton ? loadMoreButton.remove() : null;
-    render(siteFilmsList, new LoadMoreButtonView().element, RenderPosition.BEFOREEND);
+    let renderedTaskCount = FILMS_COUNT_PER_STEP;
 
-    loadMoreButton = document.querySelector('.films-list__show-more');
+    loadMoreButton.getElement() ? render(siteFilmsList, loadMoreButton.getElement(), RenderPosition.BEFOREEND) : null;
 
-    loadMoreButton.addEventListener('click', loadMoreFilms);
+    loadMoreButton.setPaginationClickHandler(() => {
+      sortFilmsArray
+        .slice(renderedTaskCount, renderedTaskCount + FILMS_COUNT_PER_STEP)
+        .forEach((film) => render(siteFilmsListContainer, new FilmView(film).getElement(), RenderPosition.BEFOREEND));
+
+      renderedTaskCount += FILMS_COUNT_PER_STEP;
+
+      if (renderedTaskCount >= sortFilmsArray.length) {
+        remove(loadMoreButton);
+      }
+    });
   }
 }
 
