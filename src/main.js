@@ -124,11 +124,13 @@ sortComponent.setSortClickHandler((evt) => {
 
 const siteBody = document.querySelector('.body');
 //show popup logick
+
+let popupComponent = null;
+
 function closePopup() {
   siteBody.classList.remove('hide-overflow');
-  // document.querySelector('.film-details').remove();
-  remove();
-  // siteFilms.addEventListener('click', openPopup);
+  remove(popupComponent);
+  popupComponent = null;
   siteFilmsView.setOpenPopupClikHandler(openPopup);
 }
 
@@ -146,12 +148,12 @@ function openPopup(evt) {
     const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
     const currentFilm = defaultFilmsArray.find((film) => film.id === filmUNID);
     //generate popup markup
-    const popupComponent = new PopupView(currentFilm, commentsArray);
+    popupComponent = new PopupView(currentFilm, commentsArray);
     //show popup
     render(siteMain, popupComponent.getElement(), RenderPosition.BEFOREEND);
 
     siteBody.classList.add('hide-overflow'); //hide scroll
-    siteFilms.removeEventListener('click', openPopup);
+    siteFilmsView.removeOpenPopupClikHandler();
     //listeners for closed popup
     popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
       closePopup();
