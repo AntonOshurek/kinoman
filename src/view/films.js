@@ -9,9 +9,28 @@ const createFilmsTemplate = () => (
 );
 
 export default class Films extends AbstractView {
+  constructor() {
+    super();
+
+    this._openPopupClikHandler = this._openPopupClikHandler.bind(this);
+  }
 
   getTemplate() {
     return createFilmsTemplate();
+  }
+
+  _openPopupClikHandler(evt) {
+    evt.preventDefault();
+    this._callback.popupClick(evt);
+  }
+
+  setOpenPopupClikHandler(callback) {
+    this._callback.popupClick = callback;
+    this.getElement().addEventListener('click', this._openPopupClikHandler);
+  }
+
+  removeOpenPopupClikHandler() {
+    this.getElement().removeEventListener('click', this._openPopupClikHandler);
   }
 
 }

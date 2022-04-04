@@ -124,11 +124,7 @@ sortComponent.setSortClickHandler((evt) => {
 
 const siteBody = document.querySelector('.body');
 //show popup logick
-function closePopup() {
-  siteBody.classList.remove('hide-overflow');
-  document.querySelector('.film-details').remove();
-  siteFilms.addEventListener('click', openPopup);
-}
+let popupComponent = null;
 
 const onEscKeyDown = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
@@ -138,27 +134,33 @@ const onEscKeyDown = (evt) => {
   }
 };
 
+function closePopup() {
+  siteBody.classList.remove('hide-overflow');
+  remove(popupComponent);
+  popupComponent = null;
+  document.removeEventListener('keydown', onEscKeyDown);
+  siteFilmsView.setOpenPopupClikHandler(openPopup);
+}
+
 function openPopup(evt) {
   if(evt.target.closest('.film-card')) {
     //search current film
     const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
     const currentFilm = defaultFilmsArray.find((film) => film.id === filmUNID);
     //generate popup markup
-    const popupComponent = new PopupView(currentFilm, commentsArray);
+    popupComponent = new PopupView(currentFilm, commentsArray);
     //show popup
     render(siteMain, popupComponent.getElement(), RenderPosition.BEFOREEND);
 
     siteBody.classList.add('hide-overflow'); //hide scroll
-    siteFilms.removeEventListener('click', openPopup);
+    siteFilmsView.removeOpenPopupClikHandler();
     //listeners for closed popup
-    popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
-      closePopup();
-    });
+    popupComponent.setClosePopupButtonClickHandler(closePopup);
     document.addEventListener('keydown', onEscKeyDown);
   }
 }
 
-siteFilms.addEventListener('click', openPopup);
+siteFilmsView.setOpenPopupClikHandler(openPopup);
 
 //load more films logik
 const loadMoreButton = new LoadMoreButtonView();
