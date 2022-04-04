@@ -126,8 +126,10 @@ const siteBody = document.querySelector('.body');
 //show popup logick
 function closePopup() {
   siteBody.classList.remove('hide-overflow');
-  document.querySelector('.film-details').remove();
-  siteFilms.addEventListener('click', openPopup);
+  // document.querySelector('.film-details').remove();
+  remove();
+  // siteFilms.addEventListener('click', openPopup);
+  siteFilmsView.setOpenPopupClikHandler(openPopup);
 }
 
 const onEscKeyDown = (evt) => {
@@ -158,7 +160,9 @@ function openPopup(evt) {
   }
 }
 
-siteFilms.addEventListener('click', openPopup);
+// siteFilms.addEventListener('click', openPopup);
+
+siteFilmsView.setOpenPopupClikHandler(openPopup);
 
 //load more films logik
 const loadMoreButton = new LoadMoreButtonView();
