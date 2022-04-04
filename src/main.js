@@ -1,6 +1,6 @@
 import { render, remove } from './utils/render';
-import { RenderPosition } from './utils/constants';
-import { sortFilmsByField } from './utils/common';
+import { RenderPosition, SITE_BODY, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS } from './utils/constants';
+import { sortFilmsByField, onEscKeyDown } from './utils/common';
 import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_STEP, SORT_FIELDS } from './utils/constants';
 
 //main views
@@ -26,36 +26,29 @@ let sortFilmsArray = defaultFilmsArray;
 
 const filmsCount = +defaultFilmsArray.length;
 
-//get containers for views
-const siteHeader = document.querySelector('.header');
-const siteMain = document.querySelector('.main');
-const siteFooterStatistics = document.querySelector('.footer__statistics');
-
 //show header block
-render(siteHeader, new ProfileView().getElement(), RenderPosition.BEFOREEND);
-render(siteMain, new NavigationView().getElement(), RenderPosition.BEFOREEND);
+render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
+render(SITE_MAIN, new NavigationView(), RenderPosition.BEFOREEND);
 const sortComponent = new SortView();
-render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
+render(SITE_MAIN, sortComponent, RenderPosition.BEFOREEND);
 
 //show films block
 const siteFilmsView = new FilmsView();
-render(siteMain, siteFilmsView.getElement(), RenderPosition.BEFOREEND);
-const siteFilms = siteFilmsView.getElement();
+render(SITE_MAIN, siteFilmsView, RenderPosition.BEFOREEND);
 
 const filmsListView = new FilmsListView(Boolean(filmsCount));
-render(siteFilms, filmsListView.getElement(), RenderPosition.BEFOREEND);
+render(siteFilmsView, filmsListView, RenderPosition.BEFOREEND);
 
 const filmsListTopView = new FilmsListTopView();
-render(siteFilms, filmsListTopView.getElement(), RenderPosition.BEFOREEND);
+render(siteFilmsView, filmsListTopView, RenderPosition.BEFOREEND);
 
 const filmsListCommentedView = new FilmsListCommentedView();
-render(siteFilms, filmsListCommentedView.getElement(), RenderPosition.BEFOREEND);
+render(siteFilmsView, filmsListCommentedView, RenderPosition.BEFOREEND);
 
 //show footer block
-render(siteFooterStatistics, new FooterView(filmsCount).getElement(), RenderPosition.BEFOREEND);
+render(SITE_FOOTER_STATISTICS, new FooterView(filmsCount), RenderPosition.BEFOREEND);
 
 //show ALL films logick
-const siteFilmsList = filmsListView.getElement();
 const siteFilmsListContainer = filmsListView.getElement().querySelector('.films-list__container--main');
 const siteTopFilmContainer = filmsListTopView.getElement().querySelector('.films-list__container--top');
 const siteCommentedFilmContainer = filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
@@ -64,13 +57,13 @@ const showTopFilms = () => {
   //show top films list
   const topFilmsArray = sortFilmsByField(defaultFilmsArray, SORT_FIELDS.RATING, COMMENTED_FILMS_COUNT);
   for (let i = 0; i < TOP_FILMS_COUNT; i++) {
-    render(siteTopFilmContainer, new FilmView(topFilmsArray[i]).getElement(), RenderPosition.BEFOREEND);
+    render(siteTopFilmContainer, new FilmView(topFilmsArray[i]), RenderPosition.BEFOREEND);
   }
 
   //show commented films list
   const commentedFilmsArray = sortFilmsByField(defaultFilmsArray, SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
   for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
-    render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]).getElement(), RenderPosition.BEFOREEND);
+    render(siteCommentedFilmContainer, new FilmView(commentedFilmsArray[i]), RenderPosition.BEFOREEND);
   }
 };
 showTopFilms(); //call for this function on first launch
@@ -79,10 +72,9 @@ showTopFilms(); //call for this function on first launch
 const showMainFilmsList = (data) => {
   if(filmsCount) {
     for (let i = 0; i < Math.min(data.length, FILMS_COUNT_PER_STEP); i++) {
-      render(siteFilmsListContainer, new FilmView(data[i]).getElement(), RenderPosition.BEFOREEND);
+      render(siteFilmsListContainer, new FilmView(data[i]), RenderPosition.BEFOREEND);
     }
   }
-
 };
 showMainFilmsList(defaultFilmsArray); //call for this function on first launch
 
@@ -122,20 +114,11 @@ sortComponent.setSortClickHandler((evt) => {
   }
 });
 
-const siteBody = document.querySelector('.body');
 //show popup logick
 let popupComponent = null;
 
-const onEscKeyDown = (evt) => {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
-    evt.preventDefault();
-    closePopup();
-    document.removeEventListener('keydown', onEscKeyDown);
-  }
-};
-
 function closePopup() {
-  siteBody.classList.remove('hide-overflow');
+  SITE_BODY.classList.remove('hide-overflow');
   remove(popupComponent);
   popupComponent = null;
   document.removeEventListener('keydown', onEscKeyDown);
@@ -150,16 +133,15 @@ function openPopup(evt) {
     //generate popup markup
     popupComponent = new PopupView(currentFilm, commentsArray);
     //show popup
-    render(siteMain, popupComponent.getElement(), RenderPosition.BEFOREEND);
+    render(SITE_MAIN, popupComponent, RenderPosition.BEFOREEND);
 
-    siteBody.classList.add('hide-overflow'); //hide scroll
+    SITE_BODY.classList.add('hide-overflow'); //hide scroll
     siteFilmsView.removeOpenPopupClikHandler();
     //listeners for closed popup
     popupComponent.setClosePopupButtonClickHandler(closePopup);
-    document.addEventListener('keydown', onEscKeyDown);
+    document.addEventListener('keydown', () => onEscKeyDown(evt, closePopup()));
   }
 }
-
 siteFilmsView.setOpenPopupClikHandler(openPopup);
 
 //load more films logik
@@ -168,12 +150,12 @@ function mainFilmsPagination() {
   if(sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
     let renderedTaskCount = FILMS_COUNT_PER_STEP;
 
-    loadMoreButton.getElement() ? render(siteFilmsList, loadMoreButton.getElement(), RenderPosition.BEFOREEND) : null;
+    loadMoreButton.getElement() ? render(filmsListView, loadMoreButton.getElement(), RenderPosition.BEFOREEND) : null;
 
     loadMoreButton.setPaginationClickHandler(() => {
       sortFilmsArray
         .slice(renderedTaskCount, renderedTaskCount + FILMS_COUNT_PER_STEP)
-        .forEach((film) => render(siteFilmsListContainer, new FilmView(film).getElement(), RenderPosition.BEFOREEND));
+        .forEach((film) => render(siteFilmsListContainer, new FilmView(film), RenderPosition.BEFOREEND));
 
       renderedTaskCount += FILMS_COUNT_PER_STEP;
 
@@ -183,5 +165,4 @@ function mainFilmsPagination() {
     });
   }
 }
-
 mainFilmsPagination();

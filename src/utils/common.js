@@ -18,6 +18,13 @@ export const getZero = (num) => {
   }
 };
 
+export const onEscKeyDown = (evt, callback) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    callback();
+  }
+};
+
 export function sortFilmsByField (dataArray, field, count = 0) {
   let result;
   if(field === SORT_FIELDS.RATING) {
