@@ -32,27 +32,26 @@ const siteMain = document.querySelector('.main');
 const siteFooterStatistics = document.querySelector('.footer__statistics');
 
 //show header block
-render(siteHeader, new ProfileView().getElement(), RenderPosition.BEFOREEND);
-render(siteMain, new NavigationView().getElement(), RenderPosition.BEFOREEND);
+render(siteHeader, new ProfileView(), RenderPosition.BEFOREEND);
+render(siteMain, new NavigationView(), RenderPosition.BEFOREEND);
 const sortComponent = new SortView();
-render(siteMain, sortComponent.getElement(), RenderPosition.BEFOREEND);
+render(siteMain, sortComponent, RenderPosition.BEFOREEND);
 
 //show films block
 const siteFilmsView = new FilmsView();
-render(siteMain, siteFilmsView.getElement(), RenderPosition.BEFOREEND);
-const siteFilms = siteFilmsView.getElement();
+render(siteMain, siteFilmsView, RenderPosition.BEFOREEND);
 
 const filmsListView = new FilmsListView(Boolean(filmsCount));
-render(siteFilms, filmsListView.getElement(), RenderPosition.BEFOREEND);
+render(siteFilmsView, filmsListView, RenderPosition.BEFOREEND);
 
 const filmsListTopView = new FilmsListTopView();
-render(siteFilms, filmsListTopView.getElement(), RenderPosition.BEFOREEND);
+render(siteFilmsView, filmsListTopView, RenderPosition.BEFOREEND);
 
 const filmsListCommentedView = new FilmsListCommentedView();
-render(siteFilms, filmsListCommentedView.getElement(), RenderPosition.BEFOREEND);
+render(siteFilmsView, filmsListCommentedView, RenderPosition.BEFOREEND);
 
 //show footer block
-render(siteFooterStatistics, new FooterView(filmsCount).getElement(), RenderPosition.BEFOREEND);
+render(siteFooterStatistics, new FooterView(filmsCount), RenderPosition.BEFOREEND);
 
 //show ALL films logick
 const siteFilmsList = filmsListView.getElement();
