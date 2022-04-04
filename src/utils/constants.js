@@ -19,3 +19,9 @@ export const SORT_FIELDS = {
   RATING: 'total_rating',
   COMMENTS: 'comments',
 };
+
+//site blocks
+export const SITE_BODY = document.querySelector('.body');
+export const SITE_HEADER = document.querySelector('.header');
+export const SITE_MAIN = document.querySelector('.main');
+export const SITE_FOOTER_STATISTICS = document.querySelector('.footer__statistics');
