@@ -162,11 +162,23 @@ const createpopupTemplate = (filmData, commentsArray) => {
 export default class Popup extends AbstractView {
   constructor(filmData, commentsArray) {
     super();
+
     this.filmData = filmData;
     this.commentsArray = commentsArray;
+    this._closePopupButtonClickHandler = this._closePopupButtonClickHandler.bind(this);
   }
 
   getTemplate() {
     return createpopupTemplate(this.filmData, this.commentsArray);
+  }
+
+  _closePopupButtonClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.closePopupButtonClick(evt);
+  }
+
+  setClosePopupButtonClickHandler(callback) {
+    this._callback.closePopupButtonClick = callback;
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._closePopupButtonClickHandler);
   }
 }

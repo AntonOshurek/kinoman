@@ -124,15 +124,7 @@ sortComponent.setSortClickHandler((evt) => {
 
 const siteBody = document.querySelector('.body');
 //show popup logick
-
 let popupComponent = null;
-
-function closePopup() {
-  siteBody.classList.remove('hide-overflow');
-  remove(popupComponent);
-  popupComponent = null;
-  siteFilmsView.setOpenPopupClikHandler(openPopup);
-}
 
 const onEscKeyDown = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
@@ -141,6 +133,14 @@ const onEscKeyDown = (evt) => {
     document.removeEventListener('keydown', onEscKeyDown);
   }
 };
+
+function closePopup() {
+  siteBody.classList.remove('hide-overflow');
+  remove(popupComponent);
+  popupComponent = null;
+  document.removeEventListener('keydown', onEscKeyDown);
+  siteFilmsView.setOpenPopupClikHandler(openPopup);
+}
 
 function openPopup(evt) {
   if(evt.target.closest('.film-card')) {
@@ -155,14 +155,10 @@ function openPopup(evt) {
     siteBody.classList.add('hide-overflow'); //hide scroll
     siteFilmsView.removeOpenPopupClikHandler();
     //listeners for closed popup
-    popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
-      closePopup();
-    });
+    popupComponent.setClosePopupButtonClickHandler(closePopup);
     document.addEventListener('keydown', onEscKeyDown);
   }
 }
-
-// siteFilms.addEventListener('click', openPopup);
 
 siteFilmsView.setOpenPopupClikHandler(openPopup);
 
