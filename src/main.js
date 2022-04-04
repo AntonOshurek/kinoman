@@ -117,14 +117,6 @@ sortComponent.setSortClickHandler((evt) => {
 //show popup logick
 let popupComponent = null;
 
-// const onEscKeyDown = (evt) => {
-//   if (evt.key === 'Escape' || evt.key === 'Esc') {
-//     evt.preventDefault();
-//     closePopup();
-//     document.removeEventListener('keydown', onEscKeyDown);
-//   }
-// };
-
 function closePopup() {
   SITE_BODY.classList.remove('hide-overflow');
   remove(popupComponent);
@@ -150,7 +142,6 @@ function openPopup(evt) {
     document.addEventListener('keydown', () => onEscKeyDown(evt, closePopup()));
   }
 }
-
 siteFilmsView.setOpenPopupClikHandler(openPopup);
 
 //load more films logik
@@ -174,5 +165,4 @@ function mainFilmsPagination() {
     });
   }
 }
-
 mainFilmsPagination();

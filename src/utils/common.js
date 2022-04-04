@@ -19,11 +19,9 @@ export const getZero = (num) => {
 };
 
 export const onEscKeyDown = (evt, callback) => {
-
   if (evt.key === 'Escape' || evt.key === 'Esc') {
     evt.preventDefault();
     callback();
-    document.removeEventListener('keydown', onEscKeyDown);
   }
 };
 
