@@ -7,14 +7,14 @@ import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_ST
 import ProfileView from './view/profile';
 import NavigationView from './view/navigation';
 import SortView from './view/sort';
-import FilmsView from './view/films';
+import FilmsView from './view/films'; //~!!!
 import FooterView from './view/footer';
 //films views
-import FilmsListView from './view/films-list';
-import FilmsListTopView from './view/films-list-top';
-import FilmsListCommentedView from './view/films-list-commented';
-import FilmView from './view/film';
-import LoadMoreButtonView from './view/loadMoreButton';
+import FilmsListView from './view/films-list';  //~!!!
+import FilmsListTopView from './view/films-list-top'; //~!!!
+import FilmsListCommentedView from './view/films-list-commented'; //~!!!
+import FilmView from './view/film'; //~!!!
+import LoadMoreButtonView from './view/loadMoreButton'; //~!!!
 //popup view
 import PopupView from './view/popup';
 //get data
