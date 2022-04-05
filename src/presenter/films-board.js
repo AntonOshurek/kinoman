@@ -1,20 +1,37 @@
+import { render, remove } from '../utils/render';
+import { RenderPosition, SITE_MAIN } from '../utils/constants';
+
 import FilmsView from '../view/films';
 
-import FilmsListView from './view/films-list';
-import FilmsListTopView from './view/films-list-top';
-import FilmsListCommentedView from './view/films-list-commented';
-import FilmView from './view/film';
-import LoadMoreButtonView from './view/loadMoreButton';
+import FilmsListView from '../view/films-list';
+import FilmsListTopView from '../view/films-list-top';
+import FilmsListCommentedView from '../view/films-list-commented';
+import FilmView from '../view/film';
+import LoadMoreButtonView from '../view/loadMoreButton';
 
 export default class FilmsBoardPresenter {
-  constructor(filmsBoardContainer) {
-    this._filmsBoardContainer = filmsBoardContainer;
+  constructor() {
+    // this._filmsBoardContainer = filmsBoardContainer;
+
+    this.filmsArray = [];
+    this.commentsArray = [];
+
+    this.siteFilmsView = new FilmsView();
+    this.filmsListView = new FilmsListView(Boolean(this.filmsArray));
+    this.filmsListTopView = new FilmsListTopView();
+    this.filmsListCommentedView = new FilmsListCommentedView();
   }
 
-  init(filmsArray) {
-    // this._boardTasks = [...boardTasks];
-    // Метод для инициализации (начала работы) модуля,
-    // малая часть текущей функции renderBoard в main.js
+  init(filmsArray, commentsArray) {
+    this.filmsArray = [...filmsArray];
+    this.commentsArray = [...commentsArray];
+
+    render(SITE_MAIN, this.siteFilmsView, RenderPosition.BEFOREEND);
+    render(this.siteFilmsView, this.filmsListView, RenderPosition.BEFOREEND);
+    render(this.siteFilmsView, this.filmsListTopView, RenderPosition.BEFOREEND);
+    render(this.siteFilmsView, this.filmsListCommentedView, RenderPosition.BEFOREEND);
+
+    this._renderFilmsBoard();
   }
 
   _renderSort() {
@@ -40,6 +57,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilmsBoard() {
+
     // Метод для инициализации (начала работы) модуля,
     // бОльшая часть текущей функции renderBoard в main.js
   }
