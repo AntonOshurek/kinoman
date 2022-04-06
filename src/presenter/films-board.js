@@ -69,7 +69,6 @@ export default class FilmsBoardPresenter {
   }
 
   _renderNoFilms() {
-    console.log('no films');
     // Метод для рендеринга заглушки
   }
 
@@ -77,14 +76,11 @@ export default class FilmsBoardPresenter {
     this._loadMoreButton.getElement() ? render(this._filmsListView, this._loadMoreButton.getElement(), RenderPosition.BEFOREEND) : null;
 
     this._loadMoreButton.setPaginationClickHandler(() => {
-      // this.sortFilmsArray
-        // .slice(this.renderedTaskCount, this.renderedTaskCount + FILMS_COUNT_PER_STEP)
-        // .forEach((film) => render(this.siteFilmsListContainer, new FilmView(film), RenderPosition.BEFOREEND));
       this._renderFilms(this.renderedTaskCount, this.renderedTaskCount + FILMS_COUNT_PER_STEP);
 
       this.renderedTaskCount += FILMS_COUNT_PER_STEP;
 
-      if (this.renderedTaskCount >= this.sortFilmsArray.length) {
+      if (this.renderedTaskCount >= this._sortFilmsArray.length) {
         remove(this._loadMoreButton);
       }
     });
