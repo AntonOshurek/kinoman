@@ -24,7 +24,7 @@ import FilmsBoardPresenter from './presenter/films-board';
 
 //Get and Transfom DATA
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
-let sortFilmsArray = defaultFilmsArray;
+// let sortFilmsArray = defaultFilmsArray;
 
 const filmsCount = +defaultFilmsArray.length;
 
