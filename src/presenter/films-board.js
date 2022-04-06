@@ -1,4 +1,4 @@
-import { render } from '../utils/render';
+import { render, remove } from '../utils/render';
 import { sortFilmsByField } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT } from '../utils/constants';
 
@@ -7,13 +7,14 @@ import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
 import FilmsListCommentedView from '../view/films-list-commented';
 import FilmView from '../view/film';
-// import LoadMoreButtonView from '../view/loadMoreButton';
+import LoadMoreButtonView from '../view/loadMoreButton';
 
 export default class FilmsBoardPresenter {
   constructor() {
     this._filmsArray = [];
     this._commentsArray = [];
     this._sortFilmsArray = [];
+    this.renderedTaskCount = null;
 
     this._siteFilmsView = new FilmsView();
     this._filmsListView = new FilmsListView(Boolean(this.filmsArray));
@@ -25,6 +26,7 @@ export default class FilmsBoardPresenter {
     this._filmsArray = [...filmsArray];
     this._commentsArray = [...commentsArray];
     this._sortFilmsArray = filmsArray;
+    this.renderedTaskCount = FILMS_COUNT_PER_STEP;
 
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
@@ -34,6 +36,8 @@ export default class FilmsBoardPresenter {
     this._siteFilmsListContainer = this._filmsListView.getElement().querySelector('.films-list__container--main');
     this._siteTopFilmContainer = this._filmsListTopView.getElement().querySelector('.films-list__container--top');
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
+
+    this._loadMoreButton = new LoadMoreButtonView();
 
     this._renderFilmsBoard();
   }
@@ -70,8 +74,20 @@ export default class FilmsBoardPresenter {
   }
 
   _renderLoadMoreButton() {
-    // Метод, куда уйдёт логика по отрисовке кнопки допоказа задач,
-    // сейчас в main.js является частью renderBoard
+    this._loadMoreButton.getElement() ? render(this._filmsListView, this._loadMoreButton.getElement(), RenderPosition.BEFOREEND) : null;
+
+    this._loadMoreButton.setPaginationClickHandler(() => {
+      // this.sortFilmsArray
+        // .slice(this.renderedTaskCount, this.renderedTaskCount + FILMS_COUNT_PER_STEP)
+        // .forEach((film) => render(this.siteFilmsListContainer, new FilmView(film), RenderPosition.BEFOREEND));
+      this._renderFilms(this.renderedTaskCount, this.renderedTaskCount + FILMS_COUNT_PER_STEP);
+
+      this.renderedTaskCount += FILMS_COUNT_PER_STEP;
+
+      if (this.renderedTaskCount >= this.sortFilmsArray.length) {
+        remove(this._loadMoreButton);
+      }
+    });
   }
 
   _renderFilmsBoard() {
