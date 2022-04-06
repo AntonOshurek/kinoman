@@ -41,18 +41,20 @@ export default class FilmsBoardPresenter {
     // Метод для рендеринга сортировки
   }
 
-  _renderFilm() {
-    // Метод, куда уйдёт логика созданию и рендерингу компонетов задачи,
-    // текущая функция renderTask в main.js
+  _renderFilm(film) {
+    const siteFilmsListContainer = this.filmsListView.getElement().querySelector('.films-list__container--main');
+    render(siteFilmsListContainer, new FilmView(film), RenderPosition.BEFOREEND);
   }
 
   _renderFilms(from, to) {
-    // Метод для рендеринга N-задач за раз
+    this.sortFilmsArray
+      .slice(from, to)
+      .forEach((film) => this._renderFilm(film));
   }
 
   _showTopFilms() {
     const siteTopFilmContainer = this.filmsListTopView.getElement().querySelector('.films-list__container--top');
-    const topFilmsArray = sortFilmsByField(this.filmsArray, SORT_FIELDS.RATING, COMMENTED_FILMS_COUNT);
+    const topFilmsArray = sortFilmsByField(this.filmsArray, SORT_FIELDS.RATING, TOP_FILMS_COUNT);
     for (let i = 0; i < TOP_FILMS_COUNT; i++) {
       render(siteTopFilmContainer, new FilmView(topFilmsArray[i]), RenderPosition.BEFOREEND);
     }
@@ -84,6 +86,7 @@ export default class FilmsBoardPresenter {
       this._renderLoadMoreButton();
     }
 
+    this._renderFilms(0, Math.min(this.sortFilmsArray.length, FILMS_COUNT_PER_STEP));
     this._showTopFilms();
   }
 }
