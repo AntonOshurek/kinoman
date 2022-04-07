@@ -9,6 +9,8 @@ import FilmsListCommentedView from '../view/films-list-commented';
 import FilmView from '../view/film';
 import LoadMoreButtonView from '../view/loadMoreButton';
 
+import PopupPresenter from './popup-presenter';
+
 export default class FilmsBoardPresenter {
   constructor() {
     this._filmsArray = [];
@@ -38,8 +40,10 @@ export default class FilmsBoardPresenter {
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
 
     this._loadMoreButton = new LoadMoreButtonView();
+    this._PopupPresenter = new PopupPresenter();
 
     this._renderFilmsBoard();
+    this._popup();
   }
 
   _renderSort() {
@@ -66,6 +70,10 @@ export default class FilmsBoardPresenter {
     for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
       this._renderFilm(commentedFilmsArray[i], this._siteCommentedFilmContainer, RenderPosition.BEFOREEND);
     }
+  }
+
+  _popup() {
+    this._PopupPresenter.init(this._filmsArray, this._commentsArray);
   }
 
   _renderNoFilms() {
