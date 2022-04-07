@@ -6,10 +6,10 @@ import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
 import FilmsListCommentedView from '../view/films-list-commented';
-import FilmView from '../view/film';
 import LoadMoreButtonView from '../view/loadMoreButton';
 
 import PopupPresenter from './popup-presenter';
+import FilmPresenter from './film-presenter';
 
 export default class FilmsBoardPresenter {
   constructor() {
@@ -51,7 +51,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilm(film, place, position) {
-    render(place, new FilmView(film), position);
+    new FilmPresenter().init(film, position, place);
   }
 
   _renderFilms(from, to) {
