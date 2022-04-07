@@ -73,7 +73,7 @@ export default class FilmsBoardPresenter {
   }
 
   _popup() {
-    this._PopupPresenter.init(this._filmsArray, this._commentsArray);
+    this._PopupPresenter.init(this._filmsArray, this._commentsArray, this._siteFilmsView);
   }
 
   _renderNoFilms() {
