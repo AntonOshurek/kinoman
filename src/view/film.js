@@ -28,9 +28,9 @@ const createFilmTemplate = (filmData) => {
       <p class="film-card__description">${checkFilmDesriptionLength()}</p>
       <a class="film-card__comments">${comments.length}</a>
       <div class="film-card__controls">
-        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-        <button class="film-card__controls-item film-card__controls-item--favorite" type="button">Mark as favorite</button>
+        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist" name="watchlist" type="button">Add to watchlist</button>
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched" name="watched" type="button">Mark as watched</button>
+        <button class="film-card__controls-item film-card__controls-item--favorite" name="favorite" type="button">Mark as favorite</button>
       </div>
     </article>
   `;
@@ -40,9 +40,23 @@ export default class Film extends AbstractView {
   constructor(filmData) {
     super();
     this.filmData = filmData;
+
+    this._controlsButtonsBlock = this.getElement().querySelector('.film-card__controls');
+
+    this._filmControlButtonHandler = this._filmControlButtonHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmTemplate(this.filmData);
+  }
+
+  _filmControlButtonHandler(evt) {
+    evt.preventDefault();
+    this._callback.filmButtonClick(evt);
+  }
+
+  setFilmControlButtonHandler(callback) {
+    this._callback.filmButtonClick = callback;
+    this._controlsButtonsBlock.addEventListener('click', this._filmControlButtonHandler);
   }
 }
