@@ -43,7 +43,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderSort() {
-    // Метод для рендеринга сортировки
+
   }
 
   _renderFilm(film, place, position) {
