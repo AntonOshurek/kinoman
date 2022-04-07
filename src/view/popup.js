@@ -2,23 +2,22 @@ import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 
 const createpopupTemplate = (filmData, commentsArray) => {
-  const {comments, film_info: filmInfo } = filmData;
+  const {film_info: filmInfo } = filmData;
 
-  const searchFilmComments = () => {
+  const generateFilmComments = () => {
     let commentsMarkup = '';
 
-    comments.map((comment) => {
-      const oneComment = commentsArray[commentsArray.findIndex((com) => com.id === comment)];
+    commentsArray.map((comment) => {
       commentsMarkup += `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${oneComment.emotion}.png" width="55" height="55" alt="emoji-${oneComment.emotion}">
+          <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
         </span>
         <div>
-          <p class="film-details__comment-text">I${oneComment.comment}</p>
+          <p class="film-details__comment-text">I${comment.comment}</p>
           <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${oneComment.author}</span>
-            <span class="film-details__comment-day">${dateFormater(oneComment.date)}</span>
+            <span class="film-details__comment-author">${comment.author}</span>
+            <span class="film-details__comment-day">${dateFormater(comment.date)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
@@ -117,10 +116,10 @@ const createpopupTemplate = (filmData, commentsArray) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsArray.length}</span></h3>
 
         <ul class="film-details__comments-list">
-          ${searchFilmComments()}
+          ${generateFilmComments()}
         </ul>
 
         <div class="film-details__new-comment">

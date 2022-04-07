@@ -33,11 +33,13 @@ export default class PopupPresenter {
 
   _openPopup(evt) {
     if(evt.target.closest('.film-card__poster')) {
-      //search current film
       const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
+      //search current film
       const currentFilm = this._defaultFilmsArray.find((film) => film.id === filmUNID);
+      //search film comments
+      const currentFilmComments = currentFilm.comments.map((commentID) => this._commentsArray.find((com) => (com.id === commentID)));
       // generate popup markup
-      this._popupComponent = new PopupView(currentFilm, this._commentsArray);
+      this._popupComponent = new PopupView(currentFilm, currentFilmComments);
       //show popup
       render(SITE_MAIN, this._popupComponent, RenderPosition.BEFOREEND);
 
