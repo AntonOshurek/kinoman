@@ -43,11 +43,19 @@ export default class PopupPresenter {
       //show popup
       render(SITE_MAIN, this._popupComponent, RenderPosition.BEFOREEND);
 
+      this._popupComponent.setPopupMenuButtonsHandler(this._PopupMenuButtonsHandler);
+
       SITE_BODY.classList.add('hide-overflow'); //hide scroll
       this._siteFilmsView.removeOpenPopupClikHandler();
       //listeners for closed popup
       this._popupComponent.setClosePopupButtonClickHandler(this._closePopup);
       document.addEventListener('keydown', () => onEscKeyDown(evt, this._closePopup()));
+    }
+  }
+
+  _PopupMenuButtonsHandler(evt) {
+    if(evt.target.tagName === 'BUTTON') {
+      // const buttonName = evt.target.name;
     }
   }
 }

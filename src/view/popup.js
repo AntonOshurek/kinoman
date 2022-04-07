@@ -4,7 +4,6 @@ import { dateFormater } from '../utils/date';
 const createpopupTemplate = (filmData, commentsArray) => {
   const {film_info: filmInfo, user_details: userDetails } = filmData;
   const {watchlist, already_watched: alredyWatched, favorite} = userDetails;
-  console.log(userDetails)
 
   const generateFilmComments = () => {
     let commentsMarkup = '';
@@ -164,13 +163,17 @@ export default class Popup extends AbstractView {
   constructor(filmData, commentsArray) {
     super();
 
-    this.filmData = filmData;
-    this.commentsArray = commentsArray;
+    this._filmData = filmData;
+    this._commentsArray = commentsArray;
+
+    this._menuButtonsBlock = this.getElement().querySelector('.film-details__controls');
+
     this._closePopupButtonClickHandler = this._closePopupButtonClickHandler.bind(this);
+    this._popupMenuButtonsHandler = this._popupMenuButtonsHandler.bind(this);
   }
 
   getTemplate() {
-    return createpopupTemplate(this.filmData, this.commentsArray);
+    return createpopupTemplate(this._filmData, this._commentsArray);
   }
 
   _closePopupButtonClickHandler(evt) {
@@ -181,5 +184,15 @@ export default class Popup extends AbstractView {
   setClosePopupButtonClickHandler(callback) {
     this._callback.closePopupButtonClick = callback;
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._closePopupButtonClickHandler);
+  }
+
+  _popupMenuButtonsHandler(evt) {
+    evt.preventDefault();
+    this._callback.popupMenuButtonsClick(evt);
+  }
+
+  setPopupMenuButtonsHandler(callback) {
+    this._callback.popupMenuButtonsClick = callback;
+    this._menuButtonsBlock.addEventListener('click', this._popupMenuButtonsHandler);
   }
 }
