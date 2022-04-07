@@ -16,9 +16,17 @@ export default class FilmPresenter {
     this._renderPlace = place;
 
     this._renderFilm();
+    this._filmView.setFilmControlButtonHandler(this._filmControlButtonHandler);
   }
 
   _renderFilm() {
-    render(this._renderPlace, new FilmView(this._filmData), this._renderPosition);
+    render(this._renderPlace, this._filmView, this._renderPosition);
+  }
+
+  _filmControlButtonHandler(evt) {
+    if(evt.target.tagName === 'BUTTON') {
+      // const buttonName = evt.target.name;
+      // const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
+    }
   }
 }
