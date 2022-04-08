@@ -11,13 +11,12 @@ import NavigationPresenter from './presenter/navigation-presenter';
 
 const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 
-const filmsCount = +defaultFilmsArray.length;
-
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
-render(SITE_FOOTER_STATISTICS, new FooterView(filmsCount), RenderPosition.BEFOREEND);
 
 const navigationPresenter = new NavigationPresenter();
 navigationPresenter.init();
 
 const filmsBoardPresenter = new FilmsBoardPresenter();
 filmsBoardPresenter.init(defaultFilmsArray, commentsArray);
+
+render(SITE_FOOTER_STATISTICS, new FooterView(+defaultFilmsArray.length), RenderPosition.BEFOREEND);
