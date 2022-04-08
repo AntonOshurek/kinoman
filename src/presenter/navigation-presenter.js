@@ -19,7 +19,7 @@ export default class NavigationPresenter {
   }
 
   _renderNavigation() {
-    render(SITE_MAIN, this._navigationTemplate, RenderPosition.BEFOREEND);
+    render(SITE_MAIN, this._navigationTemplate, RenderPosition.AFTERBEGIN);
   }
 
   _searchFilmsCounts() {

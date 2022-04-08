@@ -27,6 +27,8 @@ export default class FilmsBoardPresenter {
     this._filmsListCommentedView = new FilmsListCommentedView();
     this._loadMoreButton = new LoadMoreButtonView();
     this._PopupPresenter = new PopupPresenter();
+
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init(filmsArray, commentsArray) {
@@ -36,7 +38,7 @@ export default class FilmsBoardPresenter {
     this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     this._currentFilmFilter = SORT_FIELDS.DEFAULT;
 
-    render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
+    this._renderSort();
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
@@ -48,44 +50,40 @@ export default class FilmsBoardPresenter {
 
     this._renderFilmsBoard(true);
     this._initPopup();
-    this._sort();
   }
 
-  _sort() {
-    this._sortFilmsView.setSortClickHandler((evt) => {
-      const target = evt.target;
-      const filter = target.getAttribute('data-filter');
-      const sortButton = this._sortFilmsView.getElement().querySelectorAll('.sort__button');
+  _handleSortTypeChange(evt) {
+    const filter = evt.target.getAttribute('data-filter');
+    const sortButton = this._sortFilmsView.getElement().querySelectorAll('.sort__button');
 
-      const addActiveClassForSortButton = () => {
-        sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
-        target.classList.add('sort__button--active');
-      };
+    const addActiveClassForSortButton = () => {
+      sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
+      evt.target.classList.add('sort__button--active');
+    };
 
-      const removeAllFilms = () => {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
+    const removeAllFilms = () => {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
 
-      if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
-        this._currentFilmFilter  = SORT_FIELDS.DEFAULT;
-        removeAllFilms();
-        addActiveClassForSortButton();
-        this._sortFilmsArray = this._filmsArray;
-        this._renderFilmsBoard();
-      }
-      if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
-        this._currentFilmFilter  = SORT_FIELDS.DATE;
-        removeAllFilms();
-        addActiveClassForSortButton();
-        this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
-        this._renderFilmsBoard();
-      }
-      if(filter === SORT_FIELDS.RATING && this._currentFilmFilter !== filter) {
-        this._currentFilmFilter  = SORT_FIELDS.RATING;
-        removeAllFilms();
-        addActiveClassForSortButton();
-        this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.RATING);
-        this._renderFilmsBoard();
-      }
-    });
+    if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
+      this._currentFilmFilter  = SORT_FIELDS.DEFAULT;
+      removeAllFilms();
+      addActiveClassForSortButton();
+      this._sortFilmsArray = this._filmsArray;
+      this._renderFilmsBoard();
+    }
+    if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
+      this._currentFilmFilter  = SORT_FIELDS.DATE;
+      removeAllFilms();
+      addActiveClassForSortButton();
+      this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
+      this._renderFilmsBoard();
+    }
+    if(filter === SORT_FIELDS.RATING && this._currentFilmFilter !== filter) {
+      this._currentFilmFilter  = SORT_FIELDS.RATING;
+      removeAllFilms();
+      addActiveClassForSortButton();
+      this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.RATING);
+      this._renderFilmsBoard();
+    }
   }
 
   _renderFilm(film, place, position) {
@@ -96,6 +94,11 @@ export default class FilmsBoardPresenter {
     this._sortFilmsArray
       .slice(from, to)
       .forEach((film) => this._renderFilm(film, this._siteFilmsListContainer, RenderPosition.BEFOREEND));
+  }
+
+  _renderSort() {
+    render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
+    this._sortFilmsView.setSortClickHandler(this._handleSortTypeChange);
   }
 
   _showTopFilms() {
