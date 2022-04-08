@@ -19,6 +19,7 @@ export default class FilmsBoardPresenter {
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
     this._currentFilmFilter = null;
+    this._filmPresenter = new Map();
 
     this._sortFilmsView = new SortView();
     this._siteFilmsView = new FilmsView();
@@ -52,6 +53,10 @@ export default class FilmsBoardPresenter {
     this._initPopup();
   }
 
+  _clearFilmsList() {
+    this._filmPresenter.forEach((film) => film.destroy());
+  }
+
   _handleSortTypeChange(evt) {
     const filter = evt.target.getAttribute('data-filter');
     const sortButton = this._sortFilmsView.getElement().querySelectorAll('.sort__button');
@@ -61,25 +66,25 @@ export default class FilmsBoardPresenter {
       evt.target.classList.add('sort__button--active');
     };
 
-    const removeAllFilms = () => {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
+    // const removeAllFilms = () => {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
 
     if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
       this._currentFilmFilter  = SORT_FIELDS.DEFAULT;
-      removeAllFilms();
+      this._clearFilmsList();
       addActiveClassForSortButton();
       this._sortFilmsArray = this._filmsArray;
       this._renderFilmsBoard();
     }
     if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
       this._currentFilmFilter  = SORT_FIELDS.DATE;
-      removeAllFilms();
+      this._clearFilmsList();
       addActiveClassForSortButton();
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
       this._renderFilmsBoard();
     }
     if(filter === SORT_FIELDS.RATING && this._currentFilmFilter !== filter) {
       this._currentFilmFilter  = SORT_FIELDS.RATING;
-      removeAllFilms();
+      this._clearFilmsList();
       addActiveClassForSortButton();
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.RATING);
       this._renderFilmsBoard();
@@ -87,7 +92,9 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilm(film, place, position) {
-    new FilmPresenter().init(film, position, place);
+    const filmPresenter = new FilmPresenter();
+    filmPresenter.init(film, position, place);
+    this._filmPresenter.set(film.id, filmPresenter);
   }
 
   _renderFilms(from, to) {

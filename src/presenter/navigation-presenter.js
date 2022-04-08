@@ -38,7 +38,7 @@ export default class NavigationPresenter {
 
   _navClickHandler(evt) {
     if(evt.target.tagName === 'A') {
-      console.log(evt.target);
+      // console.log(evt.target);
     }
   }
 }
