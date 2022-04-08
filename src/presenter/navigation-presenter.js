@@ -11,9 +11,17 @@ export default class NavigationPresenter {
   init() {
     this._navigationTemplate = new NavigationView();
     this._renderNavigation();
+
+    this._navigationTemplate.setNavClickHandler(this._navClickHandler);
   }
 
   _renderNavigation() {
     render(SITE_MAIN, this._navigationTemplate, RenderPosition.BEFOREEND);
+  }
+
+  _navClickHandler(evt) {
+    if(evt.target.tagName === 'A') {
+      console.log(evt.target);
+    }
   }
 }

@@ -15,8 +15,25 @@ const createNavigationTemplate = () => (
 );
 
 export default class Naigation extends AbstractView {
+  constructor() {
+    super();
+
+    this._navButtonsBlock = this.getElement();
+    this._navClickHandler = this._navClickHandler.bind(this);
+  }
+
   getTemplate() {
     return createNavigationTemplate();
+  }
+
+  _navClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.navClick(evt);
+  }
+
+  setNavClickHandler(callback) {
+    this._callback.navClick = callback;
+    this._navButtonsBlock.addEventListener('click', this._navClickHandler);
   }
 }
 
