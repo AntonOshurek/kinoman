@@ -17,13 +17,23 @@ export default class Sort extends AbstractView {
     this._sortClickHandler = this._sortClickHandler.bind(this);
   }
 
+  _addActiveClassForSortButton(currentButton) {
+    const sortButton = this.getElement().querySelectorAll('.sort__button');
+    sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
+    currentButton.classList.add('sort__button--active');
+  }
+
   getTemplate() {
     return createSortTemplate();
   }
 
   _sortClickHandler(evt) {
     evt.preventDefault();
-    this._callback.sortClick(evt);
+    if(evt.target.tagName !== 'A') {
+      return;
+    }
+    this._addActiveClassForSortButton(evt.target);
+    this._callback.sortClick(evt.target.getAttribute('data-filter'));
   }
 
   setSortClickHandler(callback) {
