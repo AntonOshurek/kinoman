@@ -6,17 +6,17 @@ import { FILMS_COUNT, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILMS_COUNT_PER_ST
 //main views
 import ProfileView from './view/profile';
 import NavigationView from './view/navigation';
-import SortView from './view/sort';
-import FilmsView from './view/films'; //~!!!
+// import SortView from './view/sort';
+// import FilmsView from './view/films';
 import FooterView from './view/footer';
 //films views
-import FilmsListView from './view/films-list';  //~!!!
-import FilmsListTopView from './view/films-list-top'; //~!!!
-import FilmsListCommentedView from './view/films-list-commented'; //~!!!
-import FilmView from './view/film'; //~!!!
-import LoadMoreButtonView from './view/loadMoreButton'; //~!!!
+// import FilmsListView from './view/films-list';
+// import FilmsListTopView from './view/films-list-top';
+// import FilmsListCommentedView from './view/films-list-commented';
+// import FilmView from './view/film';
+// import LoadMoreButtonView from './view/loadMoreButton';
 //popup view
-import PopupView from './view/popup';
+// import PopupView from './view/popup';
 //get data
 import { generateFilm, commentsArray } from './mock/mock';
 
@@ -31,8 +31,8 @@ const filmsCount = +defaultFilmsArray.length;
 //show header block
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 render(SITE_MAIN, new NavigationView(), RenderPosition.BEFOREEND);
-const sortComponent = new SortView();
-render(SITE_MAIN, sortComponent, RenderPosition.BEFOREEND);
+// const sortComponent = new SortView();
+// render(SITE_MAIN, sortComponent, RenderPosition.BEFOREEND);
 
 const filmsBoardPresenter = new FilmsBoardPresenter();
 filmsBoardPresenter.init(defaultFilmsArray, commentsArray);

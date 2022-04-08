@@ -2,6 +2,7 @@ import { render, remove } from '../utils/render';
 import { sortFilmsByField } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT } from '../utils/constants';
 
+import SortView from '../view/sort';
 import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
@@ -18,6 +19,7 @@ export default class FilmsBoardPresenter {
     this._sortFilmsArray = [];
     this.renderedTaskCount = null;
 
+    this._sortFilmsView = new SortView();
     this._siteFilmsView = new FilmsView();
     this._filmsListView = new FilmsListView(Boolean(this.filmsArray));
     this._filmsListTopView = new FilmsListTopView();
@@ -30,6 +32,7 @@ export default class FilmsBoardPresenter {
     this._sortFilmsArray = filmsArray;
     this.renderedTaskCount = FILMS_COUNT_PER_STEP;
 
+    render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
@@ -44,10 +47,11 @@ export default class FilmsBoardPresenter {
 
     this._renderFilmsBoard();
     this._popup();
+    // this._renderSort();
   }
 
   _renderSort() {
-
+    // render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
   }
 
   _renderFilm(film, place, position) {
