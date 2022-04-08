@@ -1,5 +1,5 @@
 import FilmView from '../view/film';
-import { render } from '../utils/render';
+import { render, remove } from '../utils/render';
 
 export default class FilmPresenter {
   constructor() {
@@ -21,6 +21,10 @@ export default class FilmPresenter {
 
   _renderFilm() {
     render(this._renderPlace, this._filmView, this._renderPosition);
+  }
+
+  destroy() {
+    remove(this._filmView);
   }
 
   _filmControlButtonHandler(evt) {
