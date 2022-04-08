@@ -46,10 +46,47 @@ export default class FilmsBoardPresenter {
 
     this._renderFilmsBoard();
     this._initPopup();
+    this._sort();
   }
 
   _sort() {
+    this._sortFilmsView.setSortClickHandler((evt) => {
+      const target = evt.target;
+      const filter = target.getAttribute('data-filter');
+      const sortButton = this._sortFilmsView.getElement().querySelectorAll('.sort__button');
 
+      const addActiveClassForSortButton = () => {
+        sortButton.forEach((btn) => btn.classList.remove('sort__button--active'));
+        target.classList.add('sort__button--active');
+      };
+
+      const removeAllFilms = () => {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
+
+      if(filter === SORT_FIELDS.DEFAULT) {
+        removeAllFilms();
+        addActiveClassForSortButton();
+        this._sortFilmsArray = this._filmsArray;
+        this._renderFilmsBoard(false);
+        // showMainFilmsList(sortFilmsArray);
+        // mainFilmsPagination();
+      }
+      if(filter === SORT_FIELDS.DATE) {
+        removeAllFilms();
+        addActiveClassForSortButton();
+        this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
+        this._renderFilmsBoard(false);
+        // showMainFilmsList(sortFilmsArray);
+        // mainFilmsPagination();
+      }
+      if(filter === SORT_FIELDS.RATING) {
+        removeAllFilms();
+        addActiveClassForSortButton();
+        this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.RATING);
+        this._renderFilmsBoard(false);
+        // showMainFilmsList(sortFilmsArray);
+        // mainFilmsPagination();
+      }
+    });
   }
 
   _renderFilm(film, place, position) {
@@ -96,7 +133,7 @@ export default class FilmsBoardPresenter {
     });
   }
 
-  _renderFilmsBoard() {
+  _renderFilmsBoard(showTopFilms = true) {
     if (this._filmsArray.length === 0) {
       this._renderNoFilms();
       return;
@@ -107,6 +144,6 @@ export default class FilmsBoardPresenter {
     }
 
     this._renderFilms(0, Math.min(this._sortFilmsArray.length, FILMS_COUNT_PER_STEP));
-    this._showTopFilms();
+    showTopFilms ? this._showTopFilms() : null;
   }
 }
