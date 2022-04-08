@@ -18,6 +18,7 @@ export default class FilmsBoardPresenter {
     this._commentsArray = [];
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
+    this._currentFilmFilter = null;
 
     this._sortFilmsView = new SortView();
     this._siteFilmsView = new FilmsView();
@@ -33,6 +34,7 @@ export default class FilmsBoardPresenter {
     this._commentsArray = [...commentsArray];
     this._sortFilmsArray = filmsArray;
     this._renderedTaskCount = FILMS_COUNT_PER_STEP;
+    this._currentFilmFilter = SORT_FIELDS.DEFAULT;
 
     render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
@@ -62,19 +64,22 @@ export default class FilmsBoardPresenter {
 
       const removeAllFilms = () => {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());};
 
-      if(filter === SORT_FIELDS.DEFAULT) {
+      if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
+        this._currentFilmFilter  = SORT_FIELDS.DEFAULT;
         removeAllFilms();
         addActiveClassForSortButton();
         this._sortFilmsArray = this._filmsArray;
         this._renderFilmsBoard();
       }
-      if(filter === SORT_FIELDS.DATE) {
+      if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
+        this._currentFilmFilter  = SORT_FIELDS.DATE;
         removeAllFilms();
         addActiveClassForSortButton();
         this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
         this._renderFilmsBoard();
       }
-      if(filter === SORT_FIELDS.RATING) {
+      if(filter === SORT_FIELDS.RATING && this._currentFilmFilter !== filter) {
+        this._currentFilmFilter  = SORT_FIELDS.RATING;
         removeAllFilms();
         addActiveClassForSortButton();
         this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.RATING);
