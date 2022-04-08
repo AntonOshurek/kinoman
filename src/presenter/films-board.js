@@ -24,6 +24,8 @@ export default class FilmsBoardPresenter {
     this._filmsListView = new FilmsListView(Boolean(this.filmsArray));
     this._filmsListTopView = new FilmsListTopView();
     this._filmsListCommentedView = new FilmsListCommentedView();
+    this._loadMoreButton = new LoadMoreButtonView();
+    this._PopupPresenter = new PopupPresenter();
   }
 
   init(filmsArray, commentsArray) {
@@ -42,16 +44,12 @@ export default class FilmsBoardPresenter {
     this._siteTopFilmContainer = this._filmsListTopView.getElement().querySelector('.films-list__container--top');
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
 
-    this._loadMoreButton = new LoadMoreButtonView();
-    this._PopupPresenter = new PopupPresenter();
-
     this._renderFilmsBoard();
-    this._popup();
-    // this._renderSort();
+    this._initPopup();
   }
 
-  _renderSort() {
-    // render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
+  _sort() {
+
   }
 
   _renderFilm(film, place, position) {
@@ -76,7 +74,7 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  _popup() {
+  _initPopup() {
     this._PopupPresenter.init(this._filmsArray, this._commentsArray, this._siteFilmsView);
   }
 
