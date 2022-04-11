@@ -2,12 +2,12 @@ import FilmView from '../view/film';
 import { render, remove } from '../utils/render';
 
 export default class FilmPresenter {
-  constructor(position, place, changeData) {
+  constructor(position, place, handleFilmChange) {
     this._filmView = null;
     this._filmData = null;
     this._renderPosition = position;
     this._renderPlace = place;
-    this._changeData = changeData;
+    this._handleFilmChange = handleFilmChange;
   }
 
   init(filmData) {
@@ -34,19 +34,19 @@ export default class FilmPresenter {
 
   _handleWatchlistClick() {
     this._filmData.user_details.watchlist = !this._filmData.user_details.watchlist;
-    this._changeData(this._filmData);
+    this._handleFilmChange(this._filmData);
+
   }
 
   _handleWatchedClick() {
     // eslint-disable-next-line camelcase
     this._filmData.user_details.already_watched = !this._filmData.user_details.already_watched;
-    this._changeData(this._filmData);
+    this._handleFilmChange(this._filmData);
 
   }
 
   _handleFavoriteClick() {
     this._filmData.user_details.favorite = !this._filmData.user_details.favorite;
-    this._changeData(this._filmData);
-
+    this._handleFilmChange(this._filmData);
   }
 }
