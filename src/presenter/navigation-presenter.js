@@ -51,10 +51,10 @@ export default class NavigationPresenter {
         this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.favorite === true );
         break;
       case 'watchlist':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.already_watched === true );
+        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.watchlist === true );
         break;
       case 'history':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.watchlist === true );
+        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.already_watched === true );
         break;
       case 'stats':
         break;
