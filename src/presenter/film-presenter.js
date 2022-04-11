@@ -2,23 +2,26 @@ import FilmView from '../view/film';
 import { render, remove } from '../utils/render';
 
 export default class FilmPresenter {
-  constructor() {
+  constructor(position, place, changeData) {
     this._filmView = null;
     this._filmData = null;
-    this._renderPosition = null;
-    this._renderPlace = null;
-
-    this._filmControlButtonHandler = this._filmControlButtonHandler.bind(this);
-  }
-
-  init(filmData, position, place) {
-    this._filmData = filmData;
-    this._filmView = new FilmView(this._filmData);
     this._renderPosition = position;
     this._renderPlace = place;
+    this._changeData = changeData;
+  }
 
+  init(filmData) {
+    this._filmData = filmData;
+    this._filmView = new FilmView(this._filmData);
     this._renderFilm();
-    this._filmView.setFilmControlButtonHandler(this._filmControlButtonHandler);
+
+    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+
+    this._filmView.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._filmView.setWatchedClickHandler(this._handleWatchedClick);
+    this._filmView.setFavoriteClickHandler(this._handleFavoriteClick);
   }
 
   _renderFilm() {
@@ -29,13 +32,21 @@ export default class FilmPresenter {
     remove(this._filmView);
   }
 
-  _filmControlButtonHandler(evt) {
-    if(evt.target.tagName === 'BUTTON') {
-      evt.target.classList.toggle('film-card__controls-item--active');
-      // const buttonName = evt.target.name;
-      // const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
-      // console.log(this._filmData.user_details[buttonName]);
-      // console.log(buttonName)
-    }
+  _handleWatchlistClick() {
+    this._filmData.user_details.watchlist = !this._filmData.user_details.watchlist;
+    this._changeData(this._filmData);
+  }
+
+  _handleWatchedClick() {
+    // eslint-disable-next-line camelcase
+    this._filmData.user_details.already_watched = !this._filmData.user_details.already_watched;
+    this._changeData(this._filmData);
+
+  }
+
+  _handleFavoriteClick() {
+    this._filmData.user_details.favorite = !this._filmData.user_details.favorite;
+    this._changeData(this._filmData);
+
   }
 }

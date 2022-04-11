@@ -1,5 +1,5 @@
 import { render, remove } from '../utils/render';
-import { sortFilmsByField } from '../utils/common';
+import { sortFilmsByField, updateItem } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT } from '../utils/constants';
 
 import SortView from '../view/sort';
@@ -20,7 +20,7 @@ export default class FilmsBoardPresenter {
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
     this._currentFilmFilter = null;
-    this._filmPresenter = new Map();
+    this._filmPresenters = new Map();
 
     this._sortFilmsView = new SortView();
     this._siteFilmsView = new FilmsView();
@@ -31,6 +31,7 @@ export default class FilmsBoardPresenter {
     this._PopupPresenter = new PopupPresenter();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleFilmChange = this._handleFilmChange.bind(this);
   }
 
   init(filmsArray, commentsArray) {
@@ -97,10 +98,16 @@ export default class FilmsBoardPresenter {
     this._sortFilmsView.setSortClickHandler(this._handleSortTypeChange);
   }
 
+  _handleFilmChange(updatedFilm) {
+    this._filmsArray = updateItem(this._filmsArray, updatedFilm);
+    this._filmPresenters.get(updatedFilm.id).init(updatedFilm);
+    // console.log(this._filmPresenters.get(updatedFilm.id));
+  }
+
   _renderFilm(film, place, position) {
-    const filmPresenter = new FilmPresenter();
-    filmPresenter.init(film, position, place);
-    this._filmPresenter.set(film.id, filmPresenter);
+    const filmPresenter = new FilmPresenter(position, place, this._handleFilmChange);
+    filmPresenter.init(film);
+    this._filmPresenters.set(film.id, filmPresenter);
   }
 
   _renderFilms(from, to) {
