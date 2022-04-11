@@ -36,7 +36,6 @@ const createFilmTemplate = (filmData) => {
   `;
 };
 
-//  .film-card__controls-item--active
 export default class Film extends AbstractView {
   constructor(filmData) {
     super();

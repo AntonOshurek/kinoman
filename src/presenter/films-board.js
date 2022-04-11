@@ -65,6 +65,8 @@ export default class FilmsBoardPresenter {
 
   _clearFilmsList() { // ????????????????????
     this._filmPresenter.forEach((film) => film.destroy());
+    this._filmPresenter.clear();
+    this._renderedTaskCount = FILMS_COUNT_PER_STEP;
   }
 
   _removeAllFilmsInBoard() {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());}
