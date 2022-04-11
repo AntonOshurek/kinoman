@@ -54,8 +54,8 @@ export default class FilmsBoardPresenter {
     this._initPopup();
   }
 
-  initNewWachList(text) {
-    console.log(text);
+  initNewWachList(sortData) {
+    console.log(sortData);
   }
 
   _clearFilmsList() { // ????????????????????

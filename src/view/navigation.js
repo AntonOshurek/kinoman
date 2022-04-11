@@ -10,7 +10,7 @@ const createNavigationTemplate = (userDetails) => {
       <a href="#history" data-nav-name='history' class="main-navigation__item">History <span class="main-navigation__item-count">${alreadyWatched}</span></a>
       <a href="#favorites" data-nav-name='favorites' class="main-navigation__item">Favorites <span class="main-navigation__item-count">${favorite}</span></a>
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
+    <a href="#stats" data-nav-name='stats' class="main-navigation__additional">Stats</a>
   </nav>
   `;
 };
