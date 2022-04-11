@@ -14,9 +14,9 @@ const defaultFilmsArray = Array.from({length: FILMS_COUNT}, generateFilm);
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 
 const navigationPresenter = new NavigationPresenter();
-navigationPresenter.init(defaultFilmsArray);
-
 const filmsBoardPresenter = new FilmsBoardPresenter();
+
+navigationPresenter.init(defaultFilmsArray, filmsBoardPresenter);
 filmsBoardPresenter.init(defaultFilmsArray, commentsArray);
 
 render(SITE_FOOTER_STATISTICS, new FooterView(+defaultFilmsArray.length), RenderPosition.BEFOREEND);

@@ -6,11 +6,15 @@ export default class NavigationPresenter {
   constructor() {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
+    this._filmsBoardPresenter = null;
 
     this._userDetails = {};
+
+    this._navClickHandler = this._navClickHandler.bind(this);
   }
 
-  init(defaultFilmsArray) {
+  init(defaultFilmsArray, filmsBoardPresenter) {
+    this._filmsBoardPresenter = filmsBoardPresenter;
     this._defaultFilmsArray = defaultFilmsArray;
     this._searchFilmsCounts();
     this._navigationTemplate = new NavigationView(this._userDetails);
@@ -38,7 +42,8 @@ export default class NavigationPresenter {
 
   _navClickHandler(evt) {
     if(evt.target.tagName === 'A') {
-      // console.log(evt.target);
+      const navName = evt.target.getAttribute('data-nav-name');
+      this._filmsBoardPresenter.initNewWachList(navName);
     }
   }
 }

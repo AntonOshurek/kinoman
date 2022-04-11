@@ -54,6 +54,10 @@ export default class FilmsBoardPresenter {
     this._initPopup();
   }
 
+  initNewWachList(text) {
+    console.log(text);
+  }
+
   _clearFilmsList() { // ????????????????????
     this._filmPresenter.forEach((film) => film.destroy());
   }
@@ -77,7 +81,6 @@ export default class FilmsBoardPresenter {
       return;
     }
     this._sortFilms(filter);
-    this._removeAllFilmsInBoard();
     this._currentFilmFilter = filter;
     this._renderFilmsBoard();
   }
@@ -143,6 +146,8 @@ export default class FilmsBoardPresenter {
       this._renderLoadMoreButton();
       this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     }
+
+    this._removeAllFilmsInBoard();
 
     this._renderFilms(0, Math.min(this._sortFilmsArray.length, FILMS_COUNT_PER_STEP));
   }
