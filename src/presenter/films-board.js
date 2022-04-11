@@ -1,5 +1,5 @@
 import { render, remove } from '../utils/render';
-import { sortFilmsByField } from '../utils/common';
+import { sortFilmsByField, updateItem } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT } from '../utils/constants';
 
 import SortView from '../view/sort';
@@ -16,10 +16,11 @@ export default class FilmsBoardPresenter {
   constructor() {
     this._filmsArray = [];
     this._commentsArray = [];
+    this._defaultFilmsArray = [];
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
     this._currentFilmFilter = null;
-    this._filmPresenter = new Map();
+    this._filmPresenters = new Map();
 
     this._sortFilmsView = new SortView();
     this._siteFilmsView = new FilmsView();
@@ -30,11 +31,13 @@ export default class FilmsBoardPresenter {
     this._PopupPresenter = new PopupPresenter();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleFilmChange = this._handleFilmChange.bind(this);
   }
 
   init(filmsArray, commentsArray) {
     this._filmsArray = [...filmsArray];
     this._commentsArray = [...commentsArray];
+    this._defaultFilmsArray = filmsArray;
     this._sortFilmsArray = filmsArray;
     this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     this._currentFilmFilter = SORT_FIELDS.DEFAULT;
@@ -54,15 +57,24 @@ export default class FilmsBoardPresenter {
     this._initPopup();
   }
 
+  initNewWachList(sortData) {
+    this._defaultFilmsArray = sortData;
+    this._sortFilmsView.resetSort();
+    this._sortFilmsArray = this._defaultFilmsArray;
+    this._renderFilmsBoard();
+  }
+
   _clearFilmsList() { // ????????????????????
     this._filmPresenter.forEach((film) => film.destroy());
+    this._filmPresenter.clear();
+    this._renderedTaskCount = FILMS_COUNT_PER_STEP;
   }
 
   _removeAllFilmsInBoard() {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());}
 
   _sortFilms(filter) {
     if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
-      this._sortFilmsArray = this._filmsArray;
+      this._sortFilmsArray = this._defaultFilmsArray;
     }
     if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
@@ -77,7 +89,6 @@ export default class FilmsBoardPresenter {
       return;
     }
     this._sortFilms(filter);
-    this._removeAllFilmsInBoard();
     this._currentFilmFilter = filter;
     this._renderFilmsBoard();
   }
@@ -87,10 +98,16 @@ export default class FilmsBoardPresenter {
     this._sortFilmsView.setSortClickHandler(this._handleSortTypeChange);
   }
 
+  _handleFilmChange(updatedFilm) {
+    this._filmsArray = updateItem(this._filmsArray, updatedFilm);
+    this._filmPresenters.get(updatedFilm.id).init(updatedFilm);
+    // console.log(this._filmPresenters.get(updatedFilm.id));
+  }
+
   _renderFilm(film, place, position) {
-    const filmPresenter = new FilmPresenter();
-    filmPresenter.init(film, position, place);
-    this._filmPresenter.set(film.id, filmPresenter);
+    const filmPresenter = new FilmPresenter(position, place, this._handleFilmChange);
+    filmPresenter.init(film);
+    this._filmPresenters.set(film.id, filmPresenter);
   }
 
   _renderFilms(from, to) {
@@ -134,7 +151,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilmsBoard() {
-    if (this._filmsArray.length === 0) {
+    if (this._sortFilmsArray.length === 0) {
       this._renderNoFilms();
       return;
     }
@@ -143,7 +160,7 @@ export default class FilmsBoardPresenter {
       this._renderLoadMoreButton();
       this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     }
-
+    this._removeAllFilmsInBoard();
     this._renderFilms(0, Math.min(this._sortFilmsArray.length, FILMS_COUNT_PER_STEP));
   }
 }
