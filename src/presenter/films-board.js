@@ -58,9 +58,9 @@ export default class FilmsBoardPresenter {
 
   initNewWachList(sortData) {
     this._defaultFilmsArray = sortData;
-    this._sortFilmsArray = sortData;
-    this._renderFilmsBoard();
+    this._sortFilmsView.resetSort();
     this._sortFilms(SORT_FIELDS.DEFAULT);
+    this._renderFilmsBoard();
   }
 
   _clearFilmsList() { // ????????????????????

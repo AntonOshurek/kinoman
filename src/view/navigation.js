@@ -28,14 +28,14 @@ export default class Naigation extends AbstractView {
     return createNavigationTemplate(this._userDetails);
   }
 
-  _addActiveClassForCurrentMenuItem(evt) {
+  _addActiveClassForCurrentMenuItem(currentButton) {
     this._navButtonsBlock.querySelectorAll('A').forEach((navElem) => navElem.classList.remove('main-navigation__item--active'));
-    evt.target.classList.add('main-navigation__item--active');
+    currentButton.classList.add('main-navigation__item--active');
   }
 
   _navClickHandler(evt) {
     evt.preventDefault();
-    this._addActiveClassForCurrentMenuItem(evt);
+    this._addActiveClassForCurrentMenuItem(evt.target);
     this._callback.navClick(evt);
   }
 
