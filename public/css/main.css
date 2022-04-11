@@ -471,7 +471,7 @@ button {
 }
 
 .film-card__controls-item--active.film-card__controls-item--add-to-watchlist {
-  background-image: url('../images/icons/icon-watchlist-active.svg')
+  background-image: url('../images/icons/icon-watchlist-active.svg');
 }
 
 .film-card__controls-item--active.film-card__controls-item--mark-as-watched {

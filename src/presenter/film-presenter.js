@@ -29,6 +29,7 @@ export default class FilmPresenter {
 
   _filmControlButtonHandler(evt) {
     if(evt.target.tagName === 'BUTTON') {
+      evt.target.classList.toggle('film-card__controls-item--active');
       // const buttonName = evt.target.name;
       // const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
     }
