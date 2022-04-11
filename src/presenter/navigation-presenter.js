@@ -63,8 +63,8 @@ export default class NavigationPresenter {
 
   _navClickHandler(evt) {
     if(evt.target.tagName === 'A') {
-      const navName = evt.target.getAttribute('data-nav-name');
-      this._sortFilms(navName);
+      this._sortFilms(evt.target.getAttribute('data-nav-name'));
+      evt.target.classList.add('main-navigation__item--active');
       this._filmsBoardPresenter.initNewWachList(this._sortByMenuFilmsArray);
     }
   }

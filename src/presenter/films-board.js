@@ -16,6 +16,7 @@ export default class FilmsBoardPresenter {
   constructor() {
     this._filmsArray = [];
     this._commentsArray = [];
+    this._defaultFilmsArray = [];
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
     this._currentFilmFilter = null;
@@ -35,6 +36,7 @@ export default class FilmsBoardPresenter {
   init(filmsArray, commentsArray) {
     this._filmsArray = [...filmsArray];
     this._commentsArray = [...commentsArray];
+    this._defaultFilmsArray = filmsArray;
     this._sortFilmsArray = filmsArray;
     this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     this._currentFilmFilter = SORT_FIELDS.DEFAULT;
@@ -55,8 +57,10 @@ export default class FilmsBoardPresenter {
   }
 
   initNewWachList(sortData) {
+    this._defaultFilmsArray = sortData;
     this._sortFilmsArray = sortData;
     this._renderFilmsBoard();
+    this._sortFilms(SORT_FIELDS.DEFAULT);
   }
 
   _clearFilmsList() { // ????????????????????
@@ -67,7 +71,7 @@ export default class FilmsBoardPresenter {
 
   _sortFilms(filter) {
     if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
-      this._sortFilmsArray = this._filmsArray;
+      this._sortFilmsArray = this._defaultFilmsArray;
     }
     if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
