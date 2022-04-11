@@ -59,7 +59,7 @@ export default class FilmsBoardPresenter {
   initNewWachList(sortData) {
     this._defaultFilmsArray = sortData;
     this._sortFilmsView.resetSort();
-    this._sortFilms(SORT_FIELDS.DEFAULT);
+    this._sortFilmsArray = this._defaultFilmsArray;
     this._renderFilmsBoard();
   }
 
@@ -142,7 +142,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilmsBoard() {
-    if (this._filmsArray.length === 0) {
+    if (this._sortFilmsArray.length === 0) {
       this._renderNoFilms();
       return;
     }
@@ -151,9 +151,7 @@ export default class FilmsBoardPresenter {
       this._renderLoadMoreButton();
       this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     }
-
     this._removeAllFilmsInBoard();
-
     this._renderFilms(0, Math.min(this._sortFilmsArray.length, FILMS_COUNT_PER_STEP));
   }
 }

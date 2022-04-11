@@ -7,6 +7,8 @@ export default class FilmPresenter {
     this._filmData = null;
     this._renderPosition = null;
     this._renderPlace = null;
+
+    this._filmControlButtonHandler = this._filmControlButtonHandler.bind(this);
   }
 
   init(filmData, position, place) {
@@ -32,6 +34,8 @@ export default class FilmPresenter {
       evt.target.classList.toggle('film-card__controls-item--active');
       // const buttonName = evt.target.name;
       // const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
+      // console.log(this._filmData.user_details[buttonName]);
+      // console.log(buttonName)
     }
   }
 }

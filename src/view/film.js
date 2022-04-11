@@ -2,7 +2,7 @@ import AbstractView from './abstract-view';
 import { dateFormater, transformRuntime } from '../utils/date';
 
 const createFilmTemplate = (filmData) => {
-  const {comments, id, film_info: filmInfo } = filmData;
+  const {comments, id, film_info: filmInfo, user_details: userDetails } = filmData;
   const formatDate = dateFormater(filmInfo.release.date);
 
   const checkFilmDesriptionLength = () => {
@@ -28,9 +28,9 @@ const createFilmTemplate = (filmData) => {
       <p class="film-card__description">${checkFilmDesriptionLength()}</p>
       <a class="film-card__comments">${comments.length}</a>
       <div class="film-card__controls">
-        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist" name="watchlist" type="button">Add to watchlist</button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched" name="watched" type="button">Mark as watched</button>
-        <button class="film-card__controls-item film-card__controls-item--favorite" name="favorite" type="button">Mark as favorite</button>
+        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${userDetails.watchlist ? 'film-card__controls-item--active' : ''}" name="watchlist" type="button">Add to watchlist</button>
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${userDetails.already_watched ? 'film-card__controls-item--active' : ''}" name="already_watched" type="button">Mark as watched</button>
+        <button class="film-card__controls-item film-card__controls-item--favorite ${userDetails.favorite ? 'film-card__controls-item--active' : ''}" name="favorite" type="button">Mark as favorite</button>
       </div>
     </article>
   `;
