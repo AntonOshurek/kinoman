@@ -166,10 +166,10 @@ export default class Popup extends AbstractView {
     this._filmData = filmData;
     this._commentsArray = commentsArray;
 
-    this._menuButtonsBlock = this.getElement().querySelector('.film-details__controls');
-
     this._closePopupButtonClickHandler = this._closePopupButtonClickHandler.bind(this);
-    this._popupMenuButtonsHandler = this._popupMenuButtonsHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -186,13 +186,33 @@ export default class Popup extends AbstractView {
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._closePopupButtonClickHandler);
   }
 
-  _popupMenuButtonsHandler(evt) {
+  _watchlistClickHandler(evt) {
     evt.preventDefault();
-    this._callback.popupMenuButtonsClick(evt);
+    this._callback.watchlistClickHandler(evt);
   }
 
-  setPopupMenuButtonsHandler(callback) {
-    this._callback.popupMenuButtonsClick = callback;
-    this._menuButtonsBlock.addEventListener('click', this._popupMenuButtonsHandler);
+  _watchedClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchedClickHandler(evt);
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClickHandler(evt);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlistClickHandler = callback;
+    this.getElement().querySelector('.film-details__control-button--watchlist').addEventListener('click', this._watchlistClickHandler);
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClickHandler = callback;
+    this.getElement().querySelector('.film-details__control-button--watched').addEventListener('click', this._watchedClickHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClickHandler = callback;
+    this.getElement().querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
   }
 }

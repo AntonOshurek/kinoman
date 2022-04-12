@@ -1,26 +1,36 @@
 import NavigationView from '../view/navigation';
-import { render } from '../utils/render';
+import { render, remove, replace } from '../utils/render';
 import { SITE_MAIN, RenderPosition } from '../utils/constants';
 
 export default class NavigationPresenter {
-  constructor() {
+  constructor(initNewWachList) {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
-    this._filmsBoardPresenter = null;
+    this._initNewWachList = initNewWachList;
 
     this._userDetails = {};
 
     this._navClickHandler = this._navClickHandler.bind(this);
   }
 
-  init(defaultFilmsArray, filmsBoardPresenter) {
-    this._filmsBoardPresenter = filmsBoardPresenter;
+  init(defaultFilmsArray) {
     this._defaultFilmsArray = defaultFilmsArray;
     this._sortByMenuFilmsArray = defaultFilmsArray;
+
+    const prevNavigationComponent = this._navigationTemplate;
+
+    this._userDetails = {};
     this._searchFilmsCounts();
     this._navigationTemplate = new NavigationView(this._userDetails);
-    this._renderNavigation();
+
+    if(prevNavigationComponent === null) {
+      this._renderNavigation();
+    } else {
+      replace(this._navigationTemplate, prevNavigationComponent);
+    }
+    remove(prevNavigationComponent);
+
     this._navigationTemplate.setNavClickHandler(this._navClickHandler);
   }
 
@@ -66,7 +76,7 @@ export default class NavigationPresenter {
       const sortArray = evt.target.getAttribute('data-nav-name');
       this._sortFilms(sortArray);
       evt.target.classList.add('main-navigation__item--active');
-      this._filmsBoardPresenter.initNewWachList(this._sortByMenuFilmsArray);
+      this._initNewWachList(this._sortByMenuFilmsArray);
     }
   }
 }

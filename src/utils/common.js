@@ -18,13 +18,6 @@ export const getZero = (num) => {
   }
 };
 
-export const onEscKeyDown = (evt, callback) => {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
-    evt.preventDefault();
-    callback();
-  }
-};
-
 export const updateItem = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);
 
