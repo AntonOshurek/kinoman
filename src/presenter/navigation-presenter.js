@@ -1,26 +1,36 @@
 import NavigationView from '../view/navigation';
-import { render } from '../utils/render';
+import { render, remove, replace } from '../utils/render';
 import { SITE_MAIN, RenderPosition } from '../utils/constants';
 
 export default class NavigationPresenter {
-  constructor() {
+  constructor(initNewWachList) {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
-    this._initNewWachList = null;
+    this._initNewWachList = initNewWachList;
 
     this._userDetails = {};
 
     this._navClickHandler = this._navClickHandler.bind(this);
   }
 
-  init(defaultFilmsArray, initNewWachList) {
-    this._initNewWachList = initNewWachList;
+  init(defaultFilmsArray) {
     this._defaultFilmsArray = defaultFilmsArray;
     this._sortByMenuFilmsArray = defaultFilmsArray;
+
+    const prevNavigationComponent = this._navigationTemplate;
+
+    this._userDetails = {};
     this._searchFilmsCounts();
     this._navigationTemplate = new NavigationView(this._userDetails);
-    this._renderNavigation();
+
+    if(prevNavigationComponent === null) {
+      this._renderNavigation();
+    } else {
+      replace(this._navigationTemplate, prevNavigationComponent);
+    }
+    remove(prevNavigationComponent);
+
     this._navigationTemplate.setNavClickHandler(this._navClickHandler);
   }
 
