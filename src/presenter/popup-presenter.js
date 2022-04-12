@@ -2,7 +2,7 @@ import PopupView from '../view/popup';
 
 import { SITE_BODY, SITE_MAIN, RenderPosition } from '../utils/constants';
 import { remove, render, replace } from '../utils/render';
-import { onEscKeyDown } from '../utils/common';
+// import { onEscKeyDown } from '../utils/common';
 
 export default class PopupPresenter {
   constructor(handleFilmChange, siteFilmsView) {
@@ -18,6 +18,7 @@ export default class PopupPresenter {
 
     this._openPopup = this._openPopup.bind(this);
     this._closePopup = this._closePopup.bind(this);
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -54,8 +55,15 @@ export default class PopupPresenter {
     SITE_BODY.classList.remove('hide-overflow');
     remove(this._popupComponent);
     this._popupComponent = null;
-    document.removeEventListener('keydown', onEscKeyDown);
+    document.removeEventListener('keydown', this._onEscKeyDown);
     this._siteFilmsView.setOpenPopupClikHandler(this._openPopup);
+  }
+
+  _onEscKeyDown(evt) {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this._closePopup();
+    }
   }
 
   _setAllClickHandlers() {
@@ -78,7 +86,7 @@ export default class PopupPresenter {
 
       SITE_BODY.classList.add('hide-overflow'); //hide scroll
       this._siteFilmsView.removeOpenPopupClikHandler();
-      document.addEventListener('keydown', () => onEscKeyDown(evt, this._closePopup()));
+      document.addEventListener('keydown', this._onEscKeyDown);
     }
   }
 
