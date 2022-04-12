@@ -21,7 +21,9 @@ export default class FilmsBoardPresenter {
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
     this._currentFilmFilter = null;
-    this._filmPresenters = new Map();
+    this._mainFilmPresenters = new Map();
+    this._topFilmPresenters = new Map();
+    this._commentedFilmPresenters = new Map();
 
     this._sortFilmsView = new SortView();
     this._siteFilmsView = new FilmsView();
@@ -106,16 +108,27 @@ export default class FilmsBoardPresenter {
   _handleFilmChange(updatedFilm) {
     this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
     this._sortFilmsArray = this._defaultFilmsArray;
-    this._filmPresenters.get(updatedFilm.id).init(updatedFilm);
+    this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm);
+    this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm);
+    this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm);
 
     this._navigationPresenter.init(this._sortFilmsArray);
     this._PopupPresenter.init(this._sortFilmsArray, this._commentsArray);
   }
 
-  _renderFilm(film, place, position) {
+  _renderFilm(film, place, position, filmType = 'main') {
     const filmPresenter = new FilmPresenter(position, place, this._handleFilmChange);
     filmPresenter.init(film);
-    this._filmPresenters.set(film.id, filmPresenter);
+
+    if(filmType === 'main') {
+      this._mainFilmPresenters.set(film.id, filmPresenter);
+    }
+    if(filmType === 'top') {
+      this._topFilmPresenters.set(film.id, filmPresenter);
+    }
+    if(filmType === 'commented') {
+      this._commentedFilmPresenters.set(film.id, filmPresenter);
+    }
   }
 
   _renderFilms(from, to) {
@@ -127,12 +140,12 @@ export default class FilmsBoardPresenter {
   _showTopFilms() {
     const topFilmsArray = sortFilmsByField(this._filmsArray, SORT_FIELDS.RATING, TOP_FILMS_COUNT);
     for (let i = 0; i < TOP_FILMS_COUNT; i++) {
-      this._renderFilm(topFilmsArray[i], this._siteTopFilmContainer, RenderPosition.BEFOREEND);
+      this._renderFilm(topFilmsArray[i], this._siteTopFilmContainer, RenderPosition.BEFOREEND, 'top');
     }
 
     const commentedFilmsArray = sortFilmsByField(this._filmsArray, SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
     for (let i = 0; i < COMMENTED_FILMS_COUNT; i++) {
-      this._renderFilm(commentedFilmsArray[i], this._siteCommentedFilmContainer, RenderPosition.BEFOREEND);
+      this._renderFilm(commentedFilmsArray[i], this._siteCommentedFilmContainer, RenderPosition.BEFOREEND, 'commented');
     }
   }
 
