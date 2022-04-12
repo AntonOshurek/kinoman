@@ -28,7 +28,7 @@ export default class FilmsBoardPresenter {
     this._filmsListTopView = new FilmsListTopView();
     this._filmsListCommentedView = new FilmsListCommentedView();
     this._loadMoreButton = new LoadMoreButtonView();
-    this._PopupPresenter = new PopupPresenter();
+    this._PopupPresenter = null;
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleFilmChange = this._handleFilmChange.bind(this);
@@ -128,6 +128,7 @@ export default class FilmsBoardPresenter {
   }
 
   _initPopup() {
+    this._PopupPresenter = new PopupPresenter(this._handleFilmChange);
     this._PopupPresenter.init(this._filmsArray, this._commentsArray, this._siteFilmsView);
   }
 
