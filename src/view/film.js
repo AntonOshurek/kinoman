@@ -8,7 +8,7 @@ const createFilmTemplate = (filmData) => {
   const checkFilmDesriptionLength = () => {
     if(filmInfo.description.length >= 140) {
       const sliceString = filmInfo.description.slice(0, 139);
-      const result = `${sliceString  }...`;
+      const result = `${sliceString}...`;
       return result;
     } else {
       return filmInfo.description;
@@ -39,7 +39,7 @@ const createFilmTemplate = (filmData) => {
 export default class Film extends AbstractView {
   constructor(filmData) {
     super();
-    this.filmData = filmData;
+    this._filmData = filmData;
 
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
@@ -47,7 +47,7 @@ export default class Film extends AbstractView {
   }
 
   getTemplate() {
-    return createFilmTemplate(this.filmData);
+    return createFilmTemplate(this._filmData);
   }
 
   _watchlistClickHandler(evt) {

@@ -65,8 +65,8 @@ export default class FilmsBoardPresenter {
   }
 
   _clearFilmsList() { // ????????????????????
-    this._filmPresenter.forEach((film) => film.destroy());
-    this._filmPresenter.clear();
+    this._filmPresenters.forEach((film) => film.destroy());
+    this._filmPresenters.clear();
     this._renderedTaskCount = FILMS_COUNT_PER_STEP;
   }
 
@@ -101,7 +101,6 @@ export default class FilmsBoardPresenter {
   _handleFilmChange(updatedFilm) {
     this._filmsArray = updateItem(this._filmsArray, updatedFilm);
     this._filmPresenters.get(updatedFilm.id).init(updatedFilm);
-    // console.log(this._filmPresenters.get(updatedFilm.id));
   }
 
   _renderFilm(film, place, position) {
