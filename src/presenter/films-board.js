@@ -11,6 +11,7 @@ import LoadMoreButtonView from '../view/loadMoreButton';
 
 import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
+import NavigationPresenter from './navigation-presenter';
 
 export default class FilmsBoardPresenter {
   constructor() {
@@ -29,9 +30,11 @@ export default class FilmsBoardPresenter {
     this._filmsListCommentedView = new FilmsListCommentedView();
     this._loadMoreButton = new LoadMoreButtonView();
     this._PopupPresenter = null;
+    this._navigationPresenter = new NavigationPresenter();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleFilmChange = this._handleFilmChange.bind(this);
+    this._initNewWachList = this._initNewWachList.bind(this);
   }
 
   init(filmsArray, commentsArray) {
@@ -43,6 +46,7 @@ export default class FilmsBoardPresenter {
     this._currentFilmFilter = SORT_FIELDS.DEFAULT;
 
     this._renderSort();
+    this._navigationPresenter.init(this._defaultFilmsArray, this._initNewWachList);
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
@@ -57,7 +61,7 @@ export default class FilmsBoardPresenter {
     this._initPopup();
   }
 
-  initNewWachList(sortData) {
+  _initNewWachList(sortData) {
     this._defaultFilmsArray = sortData;
     this._sortFilmsView.resetSort();
     this._sortFilmsArray = this._defaultFilmsArray;

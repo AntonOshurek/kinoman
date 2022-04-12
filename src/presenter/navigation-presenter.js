@@ -7,15 +7,15 @@ export default class NavigationPresenter {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
-    this._filmsBoardPresenter = null;
+    this._initNewWachList = null;
 
     this._userDetails = {};
 
     this._navClickHandler = this._navClickHandler.bind(this);
   }
 
-  init(defaultFilmsArray, filmsBoardPresenter) {
-    this._filmsBoardPresenter = filmsBoardPresenter;
+  init(defaultFilmsArray, initNewWachList) {
+    this._initNewWachList = initNewWachList;
     this._defaultFilmsArray = defaultFilmsArray;
     this._sortByMenuFilmsArray = defaultFilmsArray;
     this._searchFilmsCounts();
@@ -66,7 +66,7 @@ export default class NavigationPresenter {
       const sortArray = evt.target.getAttribute('data-nav-name');
       this._sortFilms(sortArray);
       evt.target.classList.add('main-navigation__item--active');
-      this._filmsBoardPresenter.initNewWachList(this._sortByMenuFilmsArray);
+      this._initNewWachList(this._sortByMenuFilmsArray);
     }
   }
 }
