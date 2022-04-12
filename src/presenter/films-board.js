@@ -101,6 +101,8 @@ export default class FilmsBoardPresenter {
   _handleFilmChange(updatedFilm) {
     this._filmsArray = updateItem(this._filmsArray, updatedFilm);
     this._filmPresenters.get(updatedFilm.id).init(updatedFilm);
+
+    this._PopupPresenter.init(this._filmsArray, this._commentsArray);
   }
 
   _renderFilm(film, place, position) {
@@ -128,8 +130,8 @@ export default class FilmsBoardPresenter {
   }
 
   _initPopup() {
-    this._PopupPresenter = new PopupPresenter(this._handleFilmChange);
-    this._PopupPresenter.init(this._filmsArray, this._commentsArray, this._siteFilmsView);
+    this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._siteFilmsView);
+    this._PopupPresenter.init(this._filmsArray, this._commentsArray);
   }
 
   _renderNoFilms() {

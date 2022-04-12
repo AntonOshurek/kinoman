@@ -166,11 +166,7 @@ export default class Popup extends AbstractView {
     this._filmData = filmData;
     this._commentsArray = commentsArray;
 
-    // this._menuButtonsBlock = this.getElement().querySelector('.film-details__controls');
-
     this._closePopupButtonClickHandler = this._closePopupButtonClickHandler.bind(this);
-    // this._popupMenuButtonsHandler = this._popupMenuButtonsHandler.bind(this);
-
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
@@ -179,10 +175,6 @@ export default class Popup extends AbstractView {
   getTemplate() {
     return createpopupTemplate(this._filmData, this._commentsArray);
   }
-
-  //  film-details__control-button--watchlist
-  //  film-details__control-button--watched
-  //  film-details__control-button--favorite
 
   _closePopupButtonClickHandler(evt) {
     evt.preventDefault();
@@ -223,14 +215,4 @@ export default class Popup extends AbstractView {
     this._callback.favoriteClickHandler = callback;
     this.getElement().querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
   }
-
-  // _popupMenuButtonsHandler(evt) {
-  //   evt.preventDefault();
-  //   this._callback.popupMenuButtonsClick(evt);
-  // }
-
-  // setPopupMenuButtonsHandler(callback) {
-  //   this._callback.popupMenuButtonsClick = callback;
-  //   this._menuButtonsBlock.addEventListener('click', this._popupMenuButtonsHandler);
-  // }
 }
