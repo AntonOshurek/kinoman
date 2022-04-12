@@ -1,4 +1,4 @@
-export const FILMS_COUNT = 28;
+export const FILMS_COUNT = 5;
 
 export const COMMENTED_FILMS_COUNT = 2;
 
