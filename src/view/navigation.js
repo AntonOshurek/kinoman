@@ -28,9 +28,11 @@ export default class Naigation extends AbstractView {
     return createNavigationTemplate(this._userDetails);
   }
 
-  _addActiveClassForCurrentMenuItem(currentButton) {
-    this._navButtonsBlock.querySelectorAll('A').forEach((navElem) => navElem.classList.remove('main-navigation__item--active'));
-    currentButton.classList.add('main-navigation__item--active');
+  _addActiveClassForCurrentMenuItem(target) {
+    if(target.tagName === 'A') {
+      this._navButtonsBlock.querySelectorAll('A').forEach((navElem) => navElem.classList.remove('main-navigation__item--active'));
+      target.classList.add('main-navigation__item--active');
+    }
   }
 
   _navClickHandler(evt) {

@@ -13,9 +13,7 @@ export default class FilmPresenter {
 
   init(filmData) {
     this._filmData = filmData;
-
     const prevFilmComponent = this._filmView;
-
     this._filmView = new FilmView(this._filmData);
 
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
@@ -38,7 +36,7 @@ export default class FilmPresenter {
     render(this._renderPlace, this._filmView, this._renderPosition);
   }
 
-  destroy() { //  ?????
+  destroy() {
     remove(this._filmView);
   }
 
