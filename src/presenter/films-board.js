@@ -21,7 +21,10 @@ export default class FilmsBoardPresenter {
     this._defaultFilmsArray = [];
     this._sortFilmsArray = [];
     this._renderedTaskCount = null;
-    this._currentFilmFilter = null;
+    this._currentFilter = null;
+    this._currentMenu = null;
+    this._currentMenuData = null;
+
     this._mainFilmPresenters = new Map();
     this._topFilmPresenters = new Map();
     this._commentedFilmPresenters = new Map();
@@ -33,14 +36,13 @@ export default class FilmsBoardPresenter {
     this._filmsListCommentedView = new FilmsListCommentedView();
     this._loadMoreButton = new LoadMoreButtonView();
     this._FilmsListTitleView = null;
-    this._PopupPresenter = null;
-    this._sortViewName = null;
 
-    this._initNewWachList = this._initNewWachList.bind(this);
-    this._navigationPresenter = new NavigationPresenter(this._initNewWachList);
-
+    this._showFilmsListByCurrentMenu = this._showFilmsListByCurrentMenu.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleFilmChange = this._handleFilmChange.bind(this);
+
+    this._PopupPresenter = null;
+    this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
   }
 
   init(filmsArray, commentsArray) {
@@ -48,8 +50,8 @@ export default class FilmsBoardPresenter {
     this._commentsArray = [...commentsArray];
     this._defaultFilmsArray = filmsArray;
     this._sortFilmsArray = filmsArray;
-    this._renderedTaskCount = FILMS_COUNT_PER_STEP;
-    this._currentFilmFilter = SORT_FIELDS.DEFAULT;
+    // this._renderedTaskCount = FILMS_COUNT_PER_STEP;
+    this._currentFilter = SORT_FIELDS.DEFAULT;
 
     this._renderSort();
     this._navigationPresenter.init(this._sortFilmsArray);
@@ -63,15 +65,16 @@ export default class FilmsBoardPresenter {
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
 
     this._renderFilmsBoard();
-    this._filmsArray ? this._showTopFilms() : null;
+    this._filmsArray.length > 0 ? this._showTopFilms() : null;
     this._initPopup();
   }
 
-  _initNewWachList(sortData, navSortName) {
-    this._sortViewName = navSortName;
+  _showFilmsListByCurrentMenu(sortData, currentMenu) {
+    this._currentMenu = currentMenu;
+    this._currentMenuData = sortData;
     this._sortFilmsArray = sortData;
     this._sortFilmsView.resetSort();
-    this._currentFilmFilter = SORT_FIELDS.DEFAULT;
+    this._currentFilter = SORT_FIELDS.DEFAULT;
     this._renderFilmsBoard();
   }
 
@@ -84,23 +87,27 @@ export default class FilmsBoardPresenter {
   _removeAllFilmsInBoard() {this._siteFilmsListContainer.querySelectorAll('.film-card').forEach((item) => item.remove());}
 
   _sortFilms(filter) {
-    if(filter === SORT_FIELDS.DEFAULT && this._currentFilmFilter !== filter) {
-      this._sortFilmsArray = this._defaultFilmsArray;
+    if(filter === SORT_FIELDS.DEFAULT && this._currentFilter !== filter) {
+      if(this._currentMenu !== 'all') {
+        this._sortFilmsArray = this._currentMenuData;
+      } else {
+        this._sortFilmsArray = this._defaultFilmsArray;
+      }
     }
-    if(filter === SORT_FIELDS.DATE && this._currentFilmFilter !== filter) {
+    if(filter === SORT_FIELDS.DATE && this._currentFilter !== filter) {
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.DATE);
     }
-    if(filter === SORT_FIELDS.RATING && this._currentFilmFilter !== filter) {
+    if(filter === SORT_FIELDS.RATING && this._currentFilter !== filter) {
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, SORT_FIELDS.RATING);
     }
   }
 
   _handleSortTypeChange(filter) {
-    if(filter === this._currentFilmFilter) {
+    if(filter === this._currentFilter) {
       return;
     }
     this._sortFilms(filter);
-    this._currentFilmFilter = filter;
+    this._currentFilter = filter;
     this._renderFilmsBoard();
   }
 
@@ -163,7 +170,7 @@ export default class FilmsBoardPresenter {
       remove(this._FilmsListTitleView);
     }
     this._removeAllFilmsInBoard();
-    this._FilmsListTitleView = new FilmsListTitleView(this._sortViewName);
+    this._FilmsListTitleView = new FilmsListTitleView(this._currentMenu);
     render(this._siteFilmsListContainer, this._FilmsListTitleView, RenderPosition.BEFOREBEGIN);
   }
 

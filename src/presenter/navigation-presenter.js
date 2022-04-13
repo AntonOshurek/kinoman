@@ -3,11 +3,11 @@ import { render, remove, replace } from '../utils/render';
 import { SITE_MAIN, RenderPosition } from '../utils/constants';
 
 export default class NavigationPresenter {
-  constructor(initNewWachList) {
+  constructor(showFilmsListByCurrentMenu) {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
-    this._initNewWachList = initNewWachList;
+    this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu;
 
     this._userDetails = {};
 
@@ -76,7 +76,7 @@ export default class NavigationPresenter {
       const navSortName = evt.target.getAttribute('data-nav-name');
       this._sortFilms(navSortName);
       evt.target.classList.add('main-navigation__item--active');
-      this._initNewWachList(this._sortByMenuFilmsArray, navSortName);
+      this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navSortName);
     }
   }
 }
