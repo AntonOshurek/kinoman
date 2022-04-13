@@ -32,11 +32,10 @@ export default class Sort extends AbstractView {
 
   _sortClickHandler(evt) {
     evt.preventDefault();
-    if(evt.target.tagName !== 'A') {
-      return;
+    if(evt.target.tagName === 'A') {
+      this._addActiveClassForSortButton(evt.target);
+      this._callback.sortClick(evt.target.getAttribute('data-filter'));
     }
-    this._addActiveClassForSortButton(evt.target);
-    this._callback.sortClick(evt.target.getAttribute('data-filter'));
   }
 
   setSortClickHandler(callback) {

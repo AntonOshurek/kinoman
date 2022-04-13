@@ -3,11 +3,11 @@ import { render, remove, replace } from '../utils/render';
 import { SITE_MAIN, RenderPosition } from '../utils/constants';
 
 export default class NavigationPresenter {
-  constructor(initNewWachList) {
+  constructor(showFilmsListByCurrentMenu) {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
-    this._initNewWachList = initNewWachList;
+    this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu;
 
     this._userDetails = {};
 
@@ -52,31 +52,27 @@ export default class NavigationPresenter {
     });
   }
 
-  _sortFilms(navName) {
-    switch(navName) {
+  _sortFilms(navSortName) {
+    switch(navSortName) {
       case 'all':
         this._sortByMenuFilmsArray = this._defaultFilmsArray;
         break;
       case 'favorites':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.favorite === true );
+        this._sortByMenuFilmsArray = this._defaultFilmsArray.slice().filter((item) => item.user_details.favorite === true );
         break;
       case 'watchlist':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.watchlist === true );
+        this._sortByMenuFilmsArray = this._defaultFilmsArray.slice().filter((item) => item.user_details.watchlist === true );
         break;
       case 'history':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.filter((item) => item.user_details.already_watched === true );
+        this._sortByMenuFilmsArray = this._defaultFilmsArray.slice().filter((item) => item.user_details.already_watched === true );
         break;
       case 'stats':
         break;
     }
   }
 
-  _navClickHandler(evt) {
-    if(evt.target.tagName === 'A') {
-      const sortArray = evt.target.getAttribute('data-nav-name');
-      this._sortFilms(sortArray);
-      evt.target.classList.add('main-navigation__item--active');
-      this._initNewWachList(this._sortByMenuFilmsArray);
-    }
+  _navClickHandler(navigationName) {
+    this._sortFilms(navigationName);
+    this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navigationName);
   }
 }

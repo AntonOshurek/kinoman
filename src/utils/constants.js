@@ -1,4 +1,4 @@
-export const FILMS_COUNT = 5;
+export const FILMS_COUNT = 6;
 
 export const COMMENTED_FILMS_COUNT = 2;
 
@@ -18,6 +18,10 @@ export const SORT_FIELDS = {
   DATE: 'date',
   RATING: 'total_rating',
   COMMENTS: 'comments',
+};
+
+export const MENU_FIELDS = {
+// ???
 };
 
 //site blocks
