@@ -65,13 +65,12 @@ export default class FilmsBoardPresenter {
   }
 
   _initNewWachList(sortData) {
-    if(!sortData) {
-      return;
-    }
-    this._defaultFilmsArray = sortData;
+    // if(!sortData) {
+    //   return;
+    // }
+    this._sortFilmsArray = sortData;
     this._sortFilmsView.resetSort();
     this._currentFilmFilter = SORT_FIELDS.DEFAULT;
-    this._sortFilmsArray = this._defaultFilmsArray;
     this._renderFilmsBoard();
   }
 
@@ -117,6 +116,7 @@ export default class FilmsBoardPresenter {
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
     this._navigationPresenter.init(this._sortFilmsArray);
+    console.log(this._sortFilmsArray)
     this._PopupPresenter.init(this._sortFilmsArray, this._commentsArray);
   }
 
