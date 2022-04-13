@@ -52,8 +52,8 @@ export default class NavigationPresenter {
     });
   }
 
-  _sortFilms(navName) {
-    switch(navName) {
+  _sortFilms(navSortName) {
+    switch(navSortName) {
       case 'all':
         this._sortByMenuFilmsArray = this._defaultFilmsArray;
         break;
@@ -73,10 +73,10 @@ export default class NavigationPresenter {
 
   _navClickHandler(evt) {
     if(evt.target.tagName === 'A') {
-      const sortArray = evt.target.getAttribute('data-nav-name');
-      this._sortFilms(sortArray);
+      const navSortName = evt.target.getAttribute('data-nav-name');
+      this._sortFilms(navSortName);
       evt.target.classList.add('main-navigation__item--active');
-      this._initNewWachList(this._sortByMenuFilmsArray);
+      this._initNewWachList(this._sortByMenuFilmsArray, navSortName);
     }
   }
 }

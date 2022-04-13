@@ -8,6 +8,7 @@ import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
 import FilmsListCommentedView from '../view/films-list-commented';
 import LoadMoreButtonView from '../view/loadMoreButton';
+import FilmsListTitleView from '../view/filmsListTitle';
 
 import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
@@ -31,7 +32,9 @@ export default class FilmsBoardPresenter {
     this._filmsListTopView = new FilmsListTopView();
     this._filmsListCommentedView = new FilmsListCommentedView();
     this._loadMoreButton = new LoadMoreButtonView();
+    this._FilmsListTitleView = null;
     this._PopupPresenter = null;
+    this._sortViewName = null;
 
     this._initNewWachList = this._initNewWachList.bind(this);
     this._navigationPresenter = new NavigationPresenter(this._initNewWachList);
@@ -60,11 +63,12 @@ export default class FilmsBoardPresenter {
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
 
     this._renderFilmsBoard();
-    this._showTopFilms();
+    this._filmsArray ? this._showTopFilms() : null;
     this._initPopup();
   }
 
-  _initNewWachList(sortData) {
+  _initNewWachList(sortData, navSortName) {
+    this._sortViewName = navSortName;
     this._sortFilmsArray = sortData;
     this._sortFilmsView.resetSort();
     this._currentFilmFilter = SORT_FIELDS.DEFAULT;
@@ -155,7 +159,12 @@ export default class FilmsBoardPresenter {
   }
 
   _renderNoFilms() {
-
+    if(this._FilmsListTitleView !== null) {
+      remove(this._FilmsListTitleView);
+    }
+    this._removeAllFilmsInBoard();
+    this._FilmsListTitleView = new FilmsListTitleView(this._sortViewName);
+    render(this._siteFilmsListContainer, this._FilmsListTitleView, RenderPosition.BEFOREBEGIN);
   }
 
   _renderLoadMoreButton() {
@@ -177,11 +186,13 @@ export default class FilmsBoardPresenter {
       this._renderNoFilms();
       return;
     }
+    remove(this._FilmsListTitleView);
 
     if(this._sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
       this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     }
+
     this._removeAllFilmsInBoard();
     this._renderFilms(0, Math.min(this._sortFilmsArray.length, FILMS_COUNT_PER_STEP));
   }
