@@ -71,12 +71,8 @@ export default class NavigationPresenter {
     }
   }
 
-  _navClickHandler(evt) {
-    if(evt.target.tagName === 'A') {
-      const navSortName = evt.target.getAttribute('data-nav-name');
-      this._sortFilms(navSortName);
-      evt.target.classList.add('main-navigation__item--active');
-      this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navSortName);
-    }
+  _navClickHandler(navigationName) {
+    this._sortFilms(navigationName);
+    this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navigationName);
   }
 }

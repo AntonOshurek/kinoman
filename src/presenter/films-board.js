@@ -75,9 +75,13 @@ export default class FilmsBoardPresenter {
     this._currentMenu = currentMenu;
     this._currentMenuData = sortData;
     this._sortFilmsArray = sortData;
+    this._resetSort();
+    this._renderFilmsBoard();
+  }
+
+  _resetSort() {
     this._sortFilmsView.resetSort();
     this._currentFilter = SORT_FIELDS.DEFAULT;
-    this._renderFilmsBoard();
   }
 
   _clearMainFilmsList() {
@@ -183,6 +187,8 @@ export default class FilmsBoardPresenter {
     if(this._sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
       this._renderedTaskCount = FILMS_COUNT_PER_STEP;
+    } else {
+      remove(this._loadMoreButtonView);
     }
 
     this._mainFilmPresenters.size === 0 ? null : this._clearMainFilmsList();
