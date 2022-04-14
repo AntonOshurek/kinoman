@@ -24,6 +24,12 @@ export const MENU_FIELDS = {
 // ???
 };
 
+export const FILM_TYPE = {
+  MAIN: 'main',
+  TOP: 'top',
+  COMMENTED: 'commented',
+};
+
 //site blocks
 export const SITE_BODY = document.querySelector('.body');
 export const SITE_HEADER = document.querySelector('.header');
