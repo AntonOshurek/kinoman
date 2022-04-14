@@ -8,7 +8,7 @@ export default class NavigationPresenter {
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
     this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu;
-    this._activeNavigationButton = null;
+    this._currentMenu = null;
 
     this._userDetails = {};
 
@@ -29,7 +29,11 @@ export default class NavigationPresenter {
       this._renderNavigation();
     } else {
       replace(this._navigationTemplate, prevNavigationComponent);
-      this._activeNavigationButton ? this._addActiveClassForCurrentMenuItem() : null;
+      if(this._currentMenu || this._currentMenu !== 'all') {
+        this._addActiveClassForCurrentMenuItem();
+        this._sortFilms(this._currentMenu);
+        this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, this._currentMenu);
+      }
     }
     remove(prevNavigationComponent);
 
@@ -54,8 +58,8 @@ export default class NavigationPresenter {
     });
   }
 
-  _sortFilms(navSortName) {
-    switch(navSortName) {
+  _sortFilms() {
+    switch(this._currentMenu) {
       case 'all':
         this._sortByMenuFilmsArray = this._defaultFilmsArray;
         break;
@@ -75,7 +79,7 @@ export default class NavigationPresenter {
 
   _addActiveClassForCurrentMenuItem() {
     this._navigationTemplate.getElement().querySelectorAll('A').forEach((navElem) => {
-      if(navElem.getAttribute('data-nav-name') === this._activeNavigationButton) {
+      if(navElem.getAttribute('data-nav-name') === this._currentMenu) {
         navElem.classList.add('main-navigation__item--active');
       } else {
         navElem.classList.remove('main-navigation__item--active');
@@ -84,9 +88,9 @@ export default class NavigationPresenter {
   }
 
   _navClickHandler(navigationName) {
-    this._activeNavigationButton = navigationName;
+    this._currentMenu = navigationName;
     this._addActiveClassForCurrentMenuItem();
-    this._sortFilms(navigationName);
+    this._sortFilms();
     this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navigationName);
   }
 }

@@ -117,13 +117,13 @@ export default class FilmsBoardPresenter {
 
   _handleFilmChange(updatedFilm) {
     this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
-    this._sortFilmsArray = this._defaultFilmsArray;
+    this._sortFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
     this._mainFilmPresenters.get(updatedFilm.id) ? this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
     this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
-    this._navigationPresenter.init(this._sortFilmsArray);
-    this._PopupPresenter.init(this._sortFilmsArray, this._sourceCommentsArray);
+    this._navigationPresenter.init(this._defaultFilmsArray);
+    this._PopupPresenter.init(this._defaultFilmsArray, this._sourceCommentsArray);
   }
 
   _showTopFilms() {
