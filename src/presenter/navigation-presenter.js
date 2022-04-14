@@ -8,6 +8,7 @@ export default class NavigationPresenter {
     this._defaultFilmsArray = null;
     this._sortByMenuFilmsArray = null;
     this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu;
+    this._activeNavigationButton = null;
 
     this._userDetails = {};
 
@@ -28,6 +29,7 @@ export default class NavigationPresenter {
       this._renderNavigation();
     } else {
       replace(this._navigationTemplate, prevNavigationComponent);
+      this._activeNavigationButton ? this._addActiveClassForCurrentMenuItem() : null;
     }
     remove(prevNavigationComponent);
 
@@ -71,7 +73,19 @@ export default class NavigationPresenter {
     }
   }
 
+  _addActiveClassForCurrentMenuItem() {
+    this._navigationTemplate.getElement().querySelectorAll('A').forEach((navElem) => {
+      if(navElem.getAttribute('data-nav-name') === this._activeNavigationButton) {
+        navElem.classList.add('main-navigation__item--active');
+      } else {
+        navElem.classList.remove('main-navigation__item--active');
+      }
+    });
+  }
+
   _navClickHandler(navigationName) {
+    this._activeNavigationButton = navigationName;
+    this._addActiveClassForCurrentMenuItem();
     this._sortFilms(navigationName);
     this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navigationName);
   }
