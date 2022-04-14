@@ -1,33 +1,36 @@
 import NavigationView from '../view/navigation';
 import { render, remove, replace } from '../utils/render';
-import { SITE_MAIN, RenderPosition } from '../utils/constants';
+import { SITE_MAIN, RenderPosition, MENU_FIELDS } from '../utils/constants';
 
 export default class NavigationPresenter {
   constructor(showFilmsListByCurrentMenu) {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
-    this._sortByMenuFilmsArray = null;
-    this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu;
-
-    this._userDetails = {};
+    this._currentMenuData = null;
+    this._currentMenuField = MENU_FIELDS.ALL;
+    this._filmsCount = {};// object for films counts | first init
+    this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu; //callback function for click handler from board presenter
 
     this._navClickHandler = this._navClickHandler.bind(this);
   }
 
   init(defaultFilmsArray) {
     this._defaultFilmsArray = defaultFilmsArray;
-    this._sortByMenuFilmsArray = defaultFilmsArray;
-
     const prevNavigationComponent = this._navigationTemplate;
 
-    this._userDetails = {};
+    this._filmsCount = {}; // reset films count
     this._searchFilmsCounts();
-    this._navigationTemplate = new NavigationView(this._userDetails);
+    this._navigationTemplate = new NavigationView(this._filmsCount);
 
     if(prevNavigationComponent === null) {
       this._renderNavigation();
     } else {
       replace(this._navigationTemplate, prevNavigationComponent);
+      if(this._currentMenuField && this._currentMenuField !== MENU_FIELDS.ALL) {
+        this._addActiveClassForCurrentMenuItem();
+        this._filterFilms(this._currentMenuField);
+        this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentMenuField);
+      }
     }
     remove(prevNavigationComponent);
 
@@ -41,38 +44,50 @@ export default class NavigationPresenter {
   _searchFilmsCounts() {
     this._defaultFilmsArray.forEach((film) => {
       if(film.user_details.watchlist) {
-        !this._userDetails.watchlist ? this._userDetails.watchlist = 1 : this._userDetails.watchlist += 1;
+        !this._filmsCount.watchlist ? this._filmsCount.watchlist = 1 : this._filmsCount.watchlist += 1;
       }
       if(film.user_details.already_watched) {
-        !this._userDetails.alreadyWatched ? this._userDetails.alreadyWatched = 1 : this._userDetails.alreadyWatched += 1;
+        !this._filmsCount.alreadyWatched ? this._filmsCount.alreadyWatched = 1 : this._filmsCount.alreadyWatched += 1;
       }
       if(film.user_details.favorite) {
-        !this._userDetails.favorite ? this._userDetails.favorite = 1 : this._userDetails.favorite += 1;
+        !this._filmsCount.favorite ? this._filmsCount.favorite = 1 : this._filmsCount.favorite += 1;
       }
     });
   }
 
-  _sortFilms(navSortName) {
-    switch(navSortName) {
-      case 'all':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray;
+  _filterFilms() {
+    switch(this._currentMenuField) {
+      case MENU_FIELDS.ALL:
+        this._currentMenuData = this._defaultFilmsArray;
         break;
-      case 'favorites':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.slice().filter((item) => item.user_details.favorite === true );
+      case MENU_FIELDS.FAVORITES:
+        this._currentMenuData = this._defaultFilmsArray.slice().filter((item) => item.user_details.favorite === true );
         break;
-      case 'watchlist':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.slice().filter((item) => item.user_details.watchlist === true );
+      case MENU_FIELDS.WATCHLIST:
+        this._currentMenuData = this._defaultFilmsArray.slice().filter((item) => item.user_details.watchlist === true );
         break;
-      case 'history':
-        this._sortByMenuFilmsArray = this._defaultFilmsArray.slice().filter((item) => item.user_details.already_watched === true );
+      case MENU_FIELDS.HISTORY:
+        this._currentMenuData = this._defaultFilmsArray.slice().filter((item) => item.user_details.already_watched === true );
         break;
-      case 'stats':
+      case MENU_FIELDS.STATS:
         break;
     }
   }
 
-  _navClickHandler(navigationName) {
-    this._sortFilms(navigationName);
-    this._showFilmsListByCurrentMenu(this._sortByMenuFilmsArray, navigationName);
+  _addActiveClassForCurrentMenuItem() {
+    this._navigationTemplate.getElement().querySelectorAll('A').forEach((navElem) => {
+      if(navElem.getAttribute('data-nav-name') === this._currentMenuField) {
+        navElem.classList.add('main-navigation__item--active');
+      } else {
+        navElem.classList.remove('main-navigation__item--active');
+      }
+    });
+  }
+
+  _navClickHandler(currentMenuField) {
+    this._currentMenuField = currentMenuField;
+    this._addActiveClassForCurrentMenuItem();
+    this._filterFilms();
+    this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentMenuField);
   }
 }

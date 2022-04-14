@@ -1,4 +1,4 @@
-export const FILMS_COUNT = 6;
+export const FILMS_COUNT = 8;
 
 export const COMMENTED_FILMS_COUNT = 2;
 
@@ -21,7 +21,17 @@ export const SORT_FIELDS = {
 };
 
 export const MENU_FIELDS = {
-// ???
+  WATCHLIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorites',
+  STATS: 'stats',
+  ALL: 'all',
+};
+
+export const FILM_TYPE = {
+  MAIN: 'main',
+  TOP: 'top',
+  COMMENTED: 'commented',
 };
 
 //site blocks
