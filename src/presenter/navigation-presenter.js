@@ -7,9 +7,9 @@ export default class NavigationPresenter {
     this._navigationTemplate = null;
     this._defaultFilmsArray = null;
     this._currentMenuData = null;
-    this._currentSortField = null;
+    this._currentMenuField = MENU_FIELDS.ALL;
     this._filmsCount = {};// object for films counts | first init
-    this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu; //callback function for click handler
+    this._showFilmsListByCurrentMenu = showFilmsListByCurrentMenu; //callback function for click handler from board presenter
 
     this._navClickHandler = this._navClickHandler.bind(this);
   }
@@ -26,10 +26,10 @@ export default class NavigationPresenter {
       this._renderNavigation();
     } else {
       replace(this._navigationTemplate, prevNavigationComponent);
-      if(this._currentSortField || this._currentSortField !== 'all') {
+      if(this._currentMenuField && this._currentMenuField !== MENU_FIELDS.ALL) {
         this._addActiveClassForCurrentMenuItem();
-        this._filterFilms(this._currentSortField);
-        this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentSortField);
+        this._filterFilms(this._currentMenuField);
+        this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentMenuField);
       }
     }
     remove(prevNavigationComponent);
@@ -56,7 +56,7 @@ export default class NavigationPresenter {
   }
 
   _filterFilms() {
-    switch(this._currentSortField) {
+    switch(this._currentMenuField) {
       case MENU_FIELDS.ALL:
         this._currentMenuData = this._defaultFilmsArray;
         break;
@@ -76,7 +76,7 @@ export default class NavigationPresenter {
 
   _addActiveClassForCurrentMenuItem() {
     this._navigationTemplate.getElement().querySelectorAll('A').forEach((navElem) => {
-      if(navElem.getAttribute('data-nav-name') === this._currentSortField) {
+      if(navElem.getAttribute('data-nav-name') === this._currentMenuField) {
         navElem.classList.add('main-navigation__item--active');
       } else {
         navElem.classList.remove('main-navigation__item--active');
@@ -84,10 +84,10 @@ export default class NavigationPresenter {
     });
   }
 
-  _navClickHandler(currentSortField) {
-    this._currentSortField = currentSortField;
+  _navClickHandler(currentMenuField) {
+    this._currentMenuField = currentMenuField;
     this._addActiveClassForCurrentMenuItem();
     this._filterFilms();
-    this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentSortField);
+    this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentMenuField);
   }
 }
