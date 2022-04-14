@@ -21,7 +21,11 @@ export const SORT_FIELDS = {
 };
 
 export const MENU_FIELDS = {
-// ???
+  WATCHLIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorites',
+  STATS: 'stats',
+  ALL: 'all',
 };
 
 export const FILM_TYPE = {

@@ -1,6 +1,6 @@
 import { render, remove } from '../utils/render';
 import { sortFilmsByField, updateItem } from '../utils/common';
-import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE } from '../utils/constants';
+import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, MENU_FIELDS } from '../utils/constants';
 
 import SortView from '../view/sort';
 import FilmsView from '../view/films';
@@ -52,9 +52,9 @@ export default class FilmsBoardPresenter {
     this._sourceCommentsArray = [...commentsData];
     this._defaultFilmsArray = filmsData;
     this._sortFilmsArray = filmsData;
-    this._currentMenuField = 'all';
-    this._currentMenuData = filmsData;
     this._currentSortField = SORT_FIELDS.DEFAULT;
+    this._currentMenuData = filmsData;
+    this._currentMenuField = MENU_FIELDS.ALL;
 
     this._renderSort();
     this._navigationPresenter.init(this._sortFilmsArray);
@@ -99,7 +99,7 @@ export default class FilmsBoardPresenter {
 
   _sortFilms(sortField) {
     if(sortField === SORT_FIELDS.DEFAULT) {
-      this._currentMenuField === 'all' ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
+      this._currentMenuField === MENU_FIELDS.ALL ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
     } else {
       this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, sortField);
     }
