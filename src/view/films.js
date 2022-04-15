@@ -21,7 +21,10 @@ export default class Films extends AbstractView {
 
   _openPopupClikHandler(evt) {
     evt.preventDefault();
-    this._callback.popupClick(evt);
+    if(evt.target.closest('.film-card__poster')) {
+      const filmUNID = evt.target.closest('.film-card').getAttribute('data-unid');
+      this._callback.popupClick(filmUNID);
+    }
   }
 
   setOpenPopupClikHandler(callback) {

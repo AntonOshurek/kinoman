@@ -42,8 +42,9 @@ export default class FilmsBoardPresenter {
     this._showFilmsListByCurrentMenu = this._showFilmsListByCurrentMenu.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleFilmChange = this._handleFilmChange.bind(this);
+    this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
     //presenters
-    this._PopupPresenter = null;
+    this._PopupPresenter = new PopupPresenter(this._handleFilmChange);
     this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
   }
 
@@ -56,8 +57,8 @@ export default class FilmsBoardPresenter {
     this._currentMenuData = filmsData;
     this._currentMenuField = MENU_FIELDS.ALL;
 
-    this._renderSort();
     this._navigationPresenter.init(this._sortFilmsArray);
+    render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
@@ -67,9 +68,17 @@ export default class FilmsBoardPresenter {
     this._siteTopFilmContainer = this._filmsListTopView.getElement().querySelector('.films-list__container--top');
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
 
+    this._sortFilmsView.setSortClickHandler(this._handleSortTypeChange);
+    this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
+
     this._renderFilmsBoard();
     this._sourceDataArray.length > 0 ? this._renderTopFilms() : null;
-    this._initPopup();
+  }
+
+  _openPopupClickHandler(filmUNID) {
+    const currentFilmData = this._mainFilmPresenters.get(filmUNID)._filmData;
+    const currentFilmComments = currentFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
+    this._PopupPresenter.init(currentFilmData, currentFilmComments);
   }
 
   _showFilmsListByCurrentMenu(sortData, currentMenu) {
@@ -94,21 +103,21 @@ export default class FilmsBoardPresenter {
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
     this._navigationPresenter.init(this._defaultFilmsArray);
-    this._PopupPresenter.init(this._defaultFilmsArray, this._sourceCommentsArray);
+    // this._PopupPresenter.init(this._defaultFilmsArray, this._sourceCommentsArray);
   }
 
-  _sortFilms(sortField) {
-    if(sortField === SORT_FIELDS.DEFAULT) {
+  _sortFilms() {
+    if(this._currentSortField === SORT_FIELDS.DEFAULT) {
       this._currentMenuField === MENU_FIELDS.ALL ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
     } else {
-      this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, sortField);
+      this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, this._currentSortField);
     }
   }
 
   _handleSortTypeChange(sortField) {
     if(sortField !== this._currentSortField) {
-      this._sortFilms(sortField);
       this._currentSortField = sortField;
+      this._sortFilms();
       this._renderFilmsBoard();
     }
   }
@@ -118,22 +127,12 @@ export default class FilmsBoardPresenter {
     this._currentSortField = SORT_FIELDS.DEFAULT;
   }
 
-  _renderSort() {
-    render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
-    this._sortFilmsView.setSortClickHandler(this._handleSortTypeChange);
-  }
-
   _renderTopFilms() {
     const topFilmsArray = sortFilmsByField(this._sourceDataArray, SORT_FIELDS.RATING, TOP_FILMS_COUNT);
     topFilmsArray.map((film) => this._renderFilm(film, this._siteTopFilmContainer, RenderPosition.BEFOREEND, FILM_TYPE.TOP));
 
     const commentedFilmsArray = sortFilmsByField(this._sourceDataArray, SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
     commentedFilmsArray.map((film) => this._renderFilm(film, this._siteCommentedFilmContainer, RenderPosition.BEFOREEND, FILM_TYPE.COMMENTED));
-  }
-
-  _initPopup() {
-    this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._siteFilmsView);
-    this._PopupPresenter.init(this._sourceDataArray, this._sourceCommentsArray);
   }
 
   _renderNoFilms() {
