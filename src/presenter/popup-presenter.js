@@ -16,6 +16,8 @@ export default class PopupPresenter {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleInputComment = this._handleInputComment.bind(this);
+    this._handleEmojiChoise = this._handleEmojiChoise.bind(this);
   }
 
   init(film, comments) {
@@ -58,6 +60,8 @@ export default class PopupPresenter {
     this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._popupComponent.setClosePopupButtonClickHandler(this._closePopup);
+    this._popupComponent.setCommentInputHandler(this._handleInputComment);
+    this._popupComponent.setEmojiChoiseHandler(this._handleEmojiChoise);
   }
 
   _openPopup() {
@@ -68,6 +72,14 @@ export default class PopupPresenter {
 
     SITE_BODY.classList.add('hide-overflow');
     document.addEventListener('keydown', this._onEscKeyDown);
+  }
+
+  _handleInputComment(evt) {
+    console.log(evt.target.value);
+  }
+
+  _handleEmojiChoise(evt) {
+    console.log(evt.target.value);
   }
 
   _handleWatchlistClick() {

@@ -2,7 +2,24 @@ import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 
 const createpopupTemplate = (data, commentsArray) => {
-  const {poster, age, title, alternativeTitle, rating, director, writers, actors, releaseData, runtime, releaseCountry, genresCount, genres, description, watchlist, alredyWatched, favorite} = data;
+  const {
+    poster,
+    age,
+    title,
+    alternativeTitle,
+    rating,
+    director,
+    writers,
+    actors,
+    releaseData,
+    runtime,
+    releaseCountry,
+    genresCount,
+    genres,
+    description,
+    watchlist,
+    alredyWatched,
+    favorite} = data;
 
   const generateFilmComments = () => {
     let commentsMarkup = '';
@@ -173,6 +190,8 @@ export default class Popup extends AbstractView {
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._commentInputHandler = this._commentInputHandler.bind(this);
+    this._EmojiChoiseHandler = this._EmojiChoiseHandler.bind(this);
   }
 
   _transformDataForView() {
@@ -241,5 +260,26 @@ export default class Popup extends AbstractView {
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClickHandler = callback;
     this.getElement().querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
+  }
+
+  _commentInputHandler(evt) {
+    evt.preventDefault();
+    this._callback.commentInputHandler(evt);
+  }
+
+  setCommentInputHandler(callback) {
+    this._callback.commentInputHandler = callback;
+    this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
+  }
+
+  _EmojiChoiseHandler(evt) {
+    evt.preventDefault();
+    this._callback.emojiChoiseHandler(evt);
+  }
+
+  // film-details__emoji-list
+  setEmojiChoiseHandler(callback) {
+    this._callback.emojiChoiseHandler = callback;
+    this.getElement().querySelector('.film-details__emoji-list').addEventListener('input', this._EmojiChoiseHandler);
   }
 }
