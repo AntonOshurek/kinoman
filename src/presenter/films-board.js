@@ -43,8 +43,9 @@ export default class FilmsBoardPresenter {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
+    this._setpopupStatus = this._setpopupStatus.bind(this);
     //presenters
-    this._PopupPresenter = new PopupPresenter(this._handleFilmChange);
+    this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._setpopupStatus);
     this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
   }
 
@@ -52,10 +53,17 @@ export default class FilmsBoardPresenter {
     this._sourceDataArray = [...filmsData];
     this._sourceCommentsArray = [...commentsData];
     this._defaultFilmsArray = filmsData;
+    //sort data
     this._sortFilmsArray = filmsData;
     this._currentSortField = SORT_FIELDS.DEFAULT;
+    //menu data
     this._currentMenuData = filmsData;
     this._currentMenuField = MENU_FIELDS.ALL;
+    //popup data
+    this._popupFilmUNID = null;
+    this._popupFilmData = null;
+    this._popupFilmComments = null;
+    this._popupStatus = false;
 
     this._navigationPresenter.init(this._sortFilmsArray);
     render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
@@ -75,10 +83,21 @@ export default class FilmsBoardPresenter {
     this._sourceDataArray.length > 0 ? this._renderTopFilms() : null;
   }
 
+  _searchFilmDataForPopup() {
+    if(this._popupFilmUNID) {
+      this._popupFilmData = this._mainFilmPresenters.get(this._popupFilmUNID)._filmData;
+      this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
+    }
+  }
+
+  _setpopupStatus(status) {
+    this._popupStatus = status;
+  }
+
   _openPopupClickHandler(filmUNID) {
-    const currentFilmData = this._mainFilmPresenters.get(filmUNID)._filmData;
-    const currentFilmComments = currentFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
-    this._PopupPresenter.init(currentFilmData, currentFilmComments);
+    this._popupFilmUNID = filmUNID;
+    this._searchFilmDataForPopup();
+    this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
   }
 
   _showFilmsListByCurrentMenu(sortData, currentMenu) {
@@ -103,7 +122,10 @@ export default class FilmsBoardPresenter {
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
     this._navigationPresenter.init(this._defaultFilmsArray);
-    // this._PopupPresenter.init(this._defaultFilmsArray, this._sourceCommentsArray);
+    if(this._popupStatus) {
+      this._searchFilmDataForPopup();
+      this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
+    }
   }
 
   _sortFilms() {

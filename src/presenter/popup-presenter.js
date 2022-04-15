@@ -4,11 +4,12 @@ import { SITE_BODY, SITE_MAIN, RenderPosition } from '../utils/constants';
 import { remove, render, replace } from '../utils/render';
 
 export default class PopupPresenter {
-  constructor(handleFilmChange) {
+  constructor(handleFilmChange, setpopupStatus) {
     this._popupComponent = null;
     this._filmData = null;
     this._commentsArray = null;
     this._handleFilmChange = handleFilmChange;
+    this._setpopupStatus = setpopupStatus;
 
     this._closePopup = this._closePopup.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
@@ -38,6 +39,7 @@ export default class PopupPresenter {
   }
 
   _closePopup() {
+    this._setpopupStatus(false);
     SITE_BODY.classList.remove('hide-overflow');
     remove(this._popupComponent);
     this._popupComponent = null;
@@ -59,6 +61,7 @@ export default class PopupPresenter {
   }
 
   _openPopup() {
+    this._setpopupStatus(true);
     this._generatePopupComponent();
     render(SITE_MAIN, this._popupComponent, RenderPosition.BEFOREEND);
     this._setAllClickHandlers();
