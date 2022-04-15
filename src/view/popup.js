@@ -1,9 +1,8 @@
 import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 
-const createpopupTemplate = (filmData, commentsArray) => {
-  const {film_info: filmInfo, user_details: userDetails } = filmData;
-  const {watchlist, already_watched: alredyWatched, favorite} = userDetails;
+const createpopupTemplate = (data, commentsArray) => {
+  const {poster, age, title, alternativeTitle, rating, director, writers, actors, releaseData, runtime, releaseCountry, genresCount, genres, description, watchlist, alredyWatched, favorite} = data;
 
   const generateFilmComments = () => {
     let commentsMarkup = '';
@@ -28,12 +27,14 @@ const createpopupTemplate = (filmData, commentsArray) => {
     return commentsMarkup;
   };
 
+  const commentsTemplate = generateFilmComments();
+
   const generateGeneresTemplates = () => {
     let generesItem = '';
-    const GenresTitle = filmInfo.genre.length > 1 ? 'Genres' : 'Genre';
-    filmInfo.genre.forEach((gen, i) => {
+    const GenresTitle = genresCount > 1 ? 'Genres' : 'Genre';
+    genres.forEach((genre, i) => {
       generesItem += `
-        <span class="film-details__genre">${gen} ${i === filmInfo.genre.length - 1 ? '.' : ', '}</span>
+        <span class="film-details__genre">${genre} ${i === genresCount - 1 ? '' : ', '}</span>
       `;
     });
 
@@ -46,6 +47,8 @@ const createpopupTemplate = (filmData, commentsArray) => {
     return generesTemplate;
   };
 
+  const genresTemplate = generateGeneresTemplates();
+
   return `
   <section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -55,55 +58,55 @@ const createpopupTemplate = (filmData, commentsArray) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/${filmInfo.poster}" alt="">
+          <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
 
-          <p class="film-details__age">${filmInfo.age_rating}+</p>
+          <p class="film-details__age">${age}+</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${filmInfo.title}</h3>
-              <p class="film-details__title-original">Original: ${filmInfo.altertive_title}</p>
+              <h3 class="film-details__title">${title}</h3>
+              <p class="film-details__title-original">Original: ${alternativeTitle}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${filmInfo.total_rating}</p>
+              <p class="film-details__total-rating">${rating}</p>
             </div>
           </div>
 
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
-              <td class="film-details__cell">${filmInfo.director}</td>
+              <td class="film-details__cell">${director}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${filmInfo.writers.join(', ')}</td>
+              <td class="film-details__cell">${writers}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${filmInfo.actors.join(', ')}</td>
+              <td class="film-details__cell">${actors}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${dateFormater(filmInfo.release.date)}</td>
+              <td class="film-details__cell">${releaseData}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${filmInfo.runtime}</td>
+              <td class="film-details__cell">${runtime}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${filmInfo.release.release_country}</td>
+              <td class="film-details__cell">${releaseCountry}</td>
             </tr>
             <tr class="film-details__row">
-              ${generateGeneresTemplates()}
+              ${genresTemplate}
             </tr>
           </table>
 
           <p class="film-details__film-description">
-            ${filmInfo.description}
+            ${description}
           </p>
         </div>
       </div>
@@ -120,7 +123,7 @@ const createpopupTemplate = (filmData, commentsArray) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsArray.length}</span></h3>
 
         <ul class="film-details__comments-list">
-          ${generateFilmComments()}
+          ${commentsTemplate}
         </ul>
 
         <div class="film-details__new-comment">
@@ -172,8 +175,32 @@ export default class Popup extends AbstractView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
+  _transformDataForView() {
+    const info = this._filmData.film_info;
+    const details = this._filmData.user_details;
+    return {
+      poster: info.poster,
+      age: info.age_rating,
+      title: info.title,
+      alternativeTitle: info.altertive_title,
+      rating: info.total_rating,
+      director: info.director,
+      writers: info.writers.join(', '),
+      actors: info.actors.join(', '),
+      releaseData: dateFormater(info.release.date),
+      runtime: info.runtime,
+      releaseCountry: info.release.release_country,
+      genresCount: info.genre.length,
+      genres: info.genre,
+      description: info.description,
+      watchlist: details.watchlist,
+      alredyWatched: details.already_watched,
+      favorite: details.favorite,
+    };
+  }
+
   getTemplate() {
-    return createpopupTemplate(this._filmData, this._commentsArray);
+    return createpopupTemplate(this._transformDataForView(), this._commentsArray);
   }
 
   _closePopupButtonClickHandler(evt) {

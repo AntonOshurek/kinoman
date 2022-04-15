@@ -121,7 +121,7 @@ export default class FilmsBoardPresenter {
     this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
-    this._navigationPresenter.init(this._defaultFilmsArray);
+    this._navigationPresenter.init(this._sortFilmsArray);
     if(this._popupStatus) {
       this._searchFilmDataForPopup();
       this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
