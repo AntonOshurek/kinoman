@@ -2,7 +2,7 @@ import AbstractView from './abstract-view';
 import { dateFormater, transformRuntime } from '../utils/date';
 
 const createFilmTemplate = (filmData) => {
-  const {id, title, totalRating, releaseDate, runtime, genre, poster, description, commentsLength, watchList, alredyWatched, favorite} = filmData;
+  const {id, title, totalRating, releaseDate, runtime, genre, poster, posterALT, description, commentsLength, watchList, alredyWatched, favorite} = filmData;
 
   return `
     <article class="film-card" data-unid=${id}>
@@ -13,7 +13,7 @@ const createFilmTemplate = (filmData) => {
         <span class="film-card__duration">${runtime}</span>
         <span class="film-card__genre">${genre}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="" class="film-card__poster">
+      <img src="./images/posters/${poster}" alt="${posterALT} poster" class="film-card__poster">
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${commentsLength}</a>
       <div class="film-card__controls">
@@ -55,6 +55,7 @@ export default class Film extends AbstractView {
       runtime: transformRuntime(this._filmData.film_info.runtime),
       genre: this._filmData.film_info.genre.join(', '),
       poster: this._filmData.film_info.poster,
+      posterALT: this._filmData.film_info.poster.slice(0, this._filmData.film_info.poster.length - 4),
       description: this._checkFilmDesriptionLength(),
       commentsLength: this._filmData.comments.length,
       watchList: this._filmData.user_details.watchlist,
