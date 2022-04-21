@@ -1,6 +1,6 @@
 import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
-import { replace } from '../utils/render';
+import { replace, createElement } from '../utils/render';
 
 const createpopupTemplate = (data, commentsArray) => {
   const {
@@ -180,6 +180,10 @@ const createpopupTemplate = (data, commentsArray) => {
   `;
 };
 
+{/* <div class="film-details__add-emoji-label">
+<img src="images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
+</div> */}
+
 export default class Popup extends AbstractView {
   constructor(filmData, commentsArray) {
     super();
@@ -194,18 +198,6 @@ export default class Popup extends AbstractView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._EmojiChoiseHandler = this._EmojiChoiseHandler.bind(this);
-  }
-
-  updateData(update) {
-    if(!update) {
-      return;
-    }
-
-    this._state = Object.assign(
-      {},
-      this._state,
-      update,
-    );
   }
 
   static parseDataToState(data) {
@@ -230,6 +222,17 @@ export default class Popup extends AbstractView {
       alredyWatched: details.already_watched,
       favorite: details.favorite,
     };
+  }
+
+  replaceCommentImage(imageName) {
+    const prevImageBlock = this.getElement().querySelector('.film-details__add-emoji-label');
+    const newImageTemplate = `
+      <div class="film-details__add-emoji-label">
+        <img src="images/emoji/${imageName}.png" width="55" height="55" alt="emoji-smile">
+      </div>
+    `;
+    const newImageBlock = createElement(newImageTemplate);
+    replace(newImageBlock, prevImageBlock);
   }
 
   getTemplate() {

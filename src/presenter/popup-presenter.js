@@ -75,11 +75,12 @@ export default class PopupPresenter {
   }
 
   _handleInputComment(evt) {
-    console.log(evt.target.value);
+    const comment = evt.target.value;
   }
 
   _handleEmojiChoise(evt) {
-    console.log(evt.target.value);
+    const commentImageName = evt.target.value;
+    this._popupComponent.replaceCommentImage(commentImageName);
   }
 
   _handleWatchlistClick() {
