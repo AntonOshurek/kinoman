@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
+import { replace, createElement } from '../utils/render';
 
 const createpopupTemplate = (data, commentsArray) => {
   const {
@@ -184,6 +185,7 @@ export default class Popup extends AbstractView {
     super();
 
     this._filmData = filmData;
+    this._state = Popup.parseDataToState(filmData);
     this._commentsArray = commentsArray;
 
     this._closePopupButtonClickHandler = this._closePopupButtonClickHandler.bind(this);
@@ -194,9 +196,9 @@ export default class Popup extends AbstractView {
     this._EmojiChoiseHandler = this._EmojiChoiseHandler.bind(this);
   }
 
-  _transformDataForView() {
-    const info = this._filmData.film_info;
-    const details = this._filmData.user_details;
+  static parseDataToState(data) {
+    const info = data.film_info;
+    const details = data.user_details;
     return {
       poster: info.poster,
       age: info.age_rating,
@@ -218,8 +220,19 @@ export default class Popup extends AbstractView {
     };
   }
 
+  replaceCommentImage(imageName) {
+    const prevImageBlock = this.getElement().querySelector('.film-details__add-emoji-label');
+    const newImageTemplate = `
+      <div class="film-details__add-emoji-label">
+        <img src="images/emoji/${imageName}.png" width="55" height="55" alt="emoji-smile">
+      </div>
+    `;
+    const newImageBlock = createElement(newImageTemplate);
+    replace(newImageBlock, prevImageBlock);
+  }
+
   getTemplate() {
-    return createpopupTemplate(this._transformDataForView(), this._commentsArray);
+    return createpopupTemplate(this._state, this._commentsArray);
   }
 
   _closePopupButtonClickHandler(evt) {
@@ -277,7 +290,6 @@ export default class Popup extends AbstractView {
     this._callback.emojiChoiseHandler(evt);
   }
 
-  // film-details__emoji-list
   setEmojiChoiseHandler(callback) {
     this._callback.emojiChoiseHandler = callback;
     this.getElement().querySelector('.film-details__emoji-list').addEventListener('input', this._EmojiChoiseHandler);
