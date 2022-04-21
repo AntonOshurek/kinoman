@@ -180,10 +180,6 @@ const createpopupTemplate = (data, commentsArray) => {
   `;
 };
 
-{/* <div class="film-details__add-emoji-label">
-<img src="images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
-</div> */}
-
 export default class Popup extends AbstractView {
   constructor(filmData, commentsArray) {
     super();
@@ -294,7 +290,6 @@ export default class Popup extends AbstractView {
     this._callback.emojiChoiseHandler(evt);
   }
 
-  // film-details__emoji-list
   setEmojiChoiseHandler(callback) {
     this._callback.emojiChoiseHandler = callback;
     this.getElement().querySelector('.film-details__emoji-list').addEventListener('input', this._EmojiChoiseHandler);
