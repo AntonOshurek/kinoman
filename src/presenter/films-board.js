@@ -84,10 +84,8 @@ export default class FilmsBoardPresenter {
   }
 
   _searchFilmDataForPopup() {
-    // if(this._popupFilmUNID) {
-    this._popupFilmData = this._sortFilmsArray.find((film) => film.id === this._popupFilmUNID);
+    this._popupFilmData = this._defaultFilmsArray.find((film) => film.id === this._popupFilmUNID);
     this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
-    // }
   }
 
   _setpopupStatus(status) {
@@ -117,6 +115,7 @@ export default class FilmsBoardPresenter {
   _handleFilmChange(updatedFilm) {
     this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
     this._sortFilmsArray = this._defaultFilmsArray;
+
     this._mainFilmPresenters.get(updatedFilm.id) ? this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
     this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
