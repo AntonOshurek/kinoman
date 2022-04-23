@@ -85,7 +85,8 @@ export default class FilmsBoardPresenter {
 
   _searchFilmDataForPopup() {
     if(this._popupFilmUNID) {
-      this._popupFilmData = this._mainFilmPresenters.get(this._popupFilmUNID)._filmData;
+      const foo = this._sortFilmsArray.find((film) => film.id === this._popupFilmUNID);
+      this._popupFilmData = foo;
       this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
     }
   }
