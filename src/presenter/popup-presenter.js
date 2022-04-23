@@ -16,7 +16,7 @@ export default class PopupPresenter {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    this._handleInputComment = this._handleInputComment.bind(this);
+    // this._handleInputComment = this._handleInputComment.bind(this);
     this._handleEmojiChoise = this._handleEmojiChoise.bind(this);
   }
 
@@ -74,9 +74,9 @@ export default class PopupPresenter {
     document.addEventListener('keydown', this._onEscKeyDown);
   }
 
-  _handleInputComment(evt) {
-    const comment = evt.target.value;
-  }
+  // _handleInputComment(evt) {
+  //   const comment = evt.target.value;
+  // }
 
   _handleEmojiChoise(evt) {
     const commentImageName = evt.target.value;
