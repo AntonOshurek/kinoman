@@ -26,7 +26,7 @@ export default class NavigationPresenter {
       this._renderNavigation();
     } else {
       replace(this._navigationTemplate, prevNavigationComponent);
-      if(this._currentMenuField && this._currentMenuField !== MENU_FIELDS.ALL) {
+      if(this._currentMenuField !== MENU_FIELDS.ALL) {
         this._addActiveClassForCurrentMenuItem();
         this._filterFilms(this._currentMenuField);
         this._showFilmsListByCurrentMenu(this._currentMenuData, this._currentMenuField);

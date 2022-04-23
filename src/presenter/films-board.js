@@ -52,12 +52,12 @@ export default class FilmsBoardPresenter {
   init(filmsData, commentsData) {
     this._sourceDataArray = [...filmsData];
     this._sourceCommentsArray = [...commentsData];
-    this._defaultFilmsArray = filmsData;
+    this._defaultFilmsArray = this._sourceDataArray;
     //sort data
-    this._sortFilmsArray = filmsData;
+    this._sortFilmsArray = this._sourceDataArray;
     this._currentSortField = SORT_FIELDS.DEFAULT;
     //menu data
-    this._currentMenuData = filmsData;
+    this._currentMenuData = this._sourceDataArray;
     this._currentMenuField = MENU_FIELDS.ALL;
     //popup data
     this._popupFilmUNID = null;
@@ -84,11 +84,10 @@ export default class FilmsBoardPresenter {
   }
 
   _searchFilmDataForPopup() {
-    if(this._popupFilmUNID) {
-      const foo = this._sortFilmsArray.find((film) => film.id === this._popupFilmUNID);
-      this._popupFilmData = foo;
-      this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
-    }
+    // if(this._popupFilmUNID) {
+    this._popupFilmData = this._sortFilmsArray.find((film) => film.id === this._popupFilmUNID);
+    this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
+    // }
   }
 
   _setpopupStatus(status) {
