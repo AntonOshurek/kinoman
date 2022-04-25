@@ -9,9 +9,9 @@ const filmsData = Array.from({length: FILMS_COUNT}, generateFilm);
 //presenters
 import FilmsBoardPresenter from './presenter/films-board';
 // models
-import Films from './model/films-model';
+import FilmsModel from './model/films-model';
 
-const filmsModel = new Films();
+const filmsModel = new FilmsModel();
 filmsModel.setFilms(filmsData);
 filmsModel.setComments(commentsArray);
 

@@ -34,13 +34,11 @@ export const FILM_TYPE = {
   COMMENTED: 'commented',
 };
 
-export const userAction = {
-  ADD_TO_FAVORITE: 'ADD_TO_FAVORITE',
-  ADD_TO_WACHLIST: 'ADD_TO_WACHLIST',
-  ADD_TO_WATCHED: 'ADD_TO_WATCHED',
+export const USER_ACTION = {
+  ADD_TO_USER_LIST: 'ADD_TO_USER_LIST',
 };
 
-export const updateType = {
+export const UPDATE_TYPE = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
