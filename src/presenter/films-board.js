@@ -41,13 +41,13 @@ export default class FilmsBoardPresenter {
     this._loadMoreButtonView = new LoadMoreButtonView();
     this._FilmsListTitleView = null;
     //binding
-    this._showFilmsListByCurrentMenu = this._showFilmsListByCurrentMenu.bind(this);
-    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-    this._handleFilmChange = this._handleFilmChange.bind(this);
-    this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
-    this._setpopupStatus = this._setpopupStatus.bind(this);
+    // this._showFilmsListByCurrentMenu = this._showFilmsListByCurrentMenu.bind(this);
+    // this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    // this._handleFilmChange = this._handleFilmChange.bind(this);
+    // this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
+    // this._setpopupStatus = this._setpopupStatus.bind(this);
     //presenters
-    this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._setpopupStatus);
+    // this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._setpopupStatus);
     // this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
   }
 
@@ -96,69 +96,69 @@ export default class FilmsBoardPresenter {
     return this._filmsModel._getComments();
   }
 
-  _searchFilmDataForPopup() {
-    this._popupFilmData = this._defaultFilmsArray.find((film) => film.id === this._popupFilmUNID);
-    this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
-  }
+  // _searchFilmDataForPopup() {
+  //   this._popupFilmData = this._defaultFilmsArray.find((film) => film.id === this._popupFilmUNID);
+  //   this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
+  // }
 
-  _setpopupStatus(status) {
-    this._popupStatus = status;
-  }
+  // _setpopupStatus(status) {
+  //   this._popupStatus = status;
+  // }
 
-  _openPopupClickHandler(filmUNID) {
-    this._popupFilmUNID = filmUNID;
-    this._searchFilmDataForPopup();
-    this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
-  }
+  // _openPopupClickHandler(filmUNID) {
+  //   this._popupFilmUNID = filmUNID;
+  //   this._searchFilmDataForPopup();
+  //   this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
+  // }
 
-  _showFilmsListByCurrentMenu(sortData, currentMenu) {
-    this._currentMenuField = currentMenu;
-    this._currentMenuData = sortData;
-    this._sortFilmsArray = sortData;
-    this._resetSort();
-    this._renderFilmsBoard();
-  }
+  // _showFilmsListByCurrentMenu(sortData, currentMenu) {
+  //   this._currentMenuField = currentMenu;
+  //   this._currentMenuData = sortData;
+  //   this._sortFilmsArray = sortData;
+  //   this._resetSort();
+  //   this._renderFilmsBoard();
+  // }
+
+  // _handleFilmChange(updatedFilm) {
+  //   this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
+  //   this._sortFilmsArray = this._defaultFilmsArray;
+
+  //   this._mainFilmPresenters.get(updatedFilm.id) ? this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
+  //   this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
+  //   this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
+
+  //   // this._navigationPresenter.init(this._sortFilmsArray);
+  //   if(this._popupStatus) {
+  //     this._searchFilmDataForPopup();
+  //     this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
+  //   }
+  // }
+
+  // _sortFilms() {
+  //   if(this._currentSortField === SORT_FIELDS.DEFAULT) {
+  //     this._currentMenuField === MENU_FIELDS.ALL ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
+  //   } else {
+  //     this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, this._currentSortField);
+  //   }
+  // }
+
+  // _handleSortTypeChange(sortField) {
+  //   if(sortField !== this._currentSortField) {
+  //     this._currentSortField = sortField;
+  //     this._sortFilms();
+  //     this._renderFilmsBoard();
+  //   }
+  // }
+
+  // _resetSort() {
+  //   this._sortFilmsView.resetSort();
+  //   this._currentSortField = SORT_FIELDS.DEFAULT;
+  // }
 
   _clearMainFilmsList() {
     this._mainFilmPresenters.forEach((film) => film.destroy());
     this._mainFilmPresenters.clear();
     this._renderedTaskCount = FILMS_COUNT_PER_STEP;
-  }
-
-  _handleFilmChange(updatedFilm) {
-    this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
-    this._sortFilmsArray = this._defaultFilmsArray;
-
-    this._mainFilmPresenters.get(updatedFilm.id) ? this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
-    this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
-    this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
-
-    // this._navigationPresenter.init(this._sortFilmsArray);
-    if(this._popupStatus) {
-      this._searchFilmDataForPopup();
-      this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
-    }
-  }
-
-  _sortFilms() {
-    if(this._currentSortField === SORT_FIELDS.DEFAULT) {
-      this._currentMenuField === MENU_FIELDS.ALL ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
-    } else {
-      this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, this._currentSortField);
-    }
-  }
-
-  _handleSortTypeChange(sortField) {
-    if(sortField !== this._currentSortField) {
-      this._currentSortField = sortField;
-      this._sortFilms();
-      this._renderFilmsBoard();
-    }
-  }
-
-  _resetSort() {
-    this._sortFilmsView.resetSort();
-    this._currentSortField = SORT_FIELDS.DEFAULT;
   }
 
   _renderTopFilms() {
