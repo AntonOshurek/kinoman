@@ -20,7 +20,7 @@ export const SORT_FIELDS = {
   COMMENTS: 'comments',
 };
 
-export const FILTER_FIELDS = {
+export const NAVIGATION_FIELDS = {
   WATCHLIST: 'watchlist',
   HISTORY: 'history',
   FAVORITES: 'favorites',

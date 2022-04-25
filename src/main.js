@@ -10,20 +10,20 @@ const filmsData = Array.from({length: FILMS_COUNT}, generateFilm);
 import FilmsBoardPresenter from './presenter/films-board';
 import NavigationPresenter from './presenter/navigation-presenter';
 // models
+import NavigationModel from './model/navigation-model';
 import FilmsModel from './model/films-model';
 
+const navigationModel = new NavigationModel();
 const filmsModel = new FilmsModel();
 filmsModel.setFilms(filmsData);
 filmsModel.setComments(commentsArray);
 
-const dataLength = filmsModel.getFilms().length;
-
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 
-const navigationPresenter = new NavigationPresenter(filmsModel);
+const navigationPresenter = new NavigationPresenter(filmsModel, navigationModel);
 const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel);
 
 navigationPresenter.init();
 filmsBoardPresenter.init();
 
-render(SITE_FOOTER_STATISTICS, new FooterView(dataLength), RenderPosition.BEFOREEND);
+render(SITE_FOOTER_STATISTICS, new FooterView(filmsModel.getFilms().length), RenderPosition.BEFOREEND);

@@ -1,6 +1,6 @@
 import { render, remove } from '../utils/render';
 import { sortFilmsByField, updateItem } from '../utils/common';
-import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, FILTER_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
+import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
 
 import SortView from '../view/sort';
 import FilmsView from '../view/films';
@@ -67,7 +67,7 @@ export default class FilmsBoardPresenter {
     //sort data
     // this._sortFilmsArray = this._sourceDataArray;
     this._currentSortField = SORT_FIELDS.DEFAULT;
-    this._currentFilterField = FILTER_FIELDS.ALL;
+    this._currentFilterField = NAVIGATION_FIELDS.ALL;
     //menu data
     // this._currentMenuData = this._sourceDataArray;
     // this._currentMenuField = MENU_FIELDS.ALL;
