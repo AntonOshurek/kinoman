@@ -34,6 +34,18 @@ export const FILM_TYPE = {
   COMMENTED: 'commented',
 };
 
+export const userAction = {
+  ADD_TO_FAVORITE: 'ADD_TO_FAVORITE',
+  ADD_TO_WACHLIST: 'ADD_TO_WACHLIST',
+  ADD_TO_WATCHED: 'ADD_TO_WATCHED',
+};
+
+export const updateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
 //site blocks
 export const SITE_BODY = document.querySelector('.body');
 export const SITE_HEADER = document.querySelector('.header');
