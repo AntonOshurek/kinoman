@@ -20,7 +20,7 @@ export const SORT_FIELDS = {
   COMMENTS: 'comments',
 };
 
-export const MENU_FIELDS = {
+export const NAVIGATION_FIELDS = {
   WATCHLIST: 'watchlist',
   HISTORY: 'history',
   FAVORITES: 'favorites',
@@ -32,6 +32,16 @@ export const FILM_TYPE = {
   MAIN: 'main',
   TOP: 'top',
   COMMENTED: 'commented',
+};
+
+export const USER_ACTION = {
+  ADD_TO_USER_LIST: 'ADD_TO_USER_LIST',
+};
+
+export const UPDATE_TYPE = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
 };
 
 //site blocks

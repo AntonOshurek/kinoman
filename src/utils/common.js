@@ -1,4 +1,4 @@
-import { SORT_FIELDS } from './constants';
+import { SORT_FIELDS, NAVIGATION_FIELDS } from './constants';
 
 export const getRandomInt = (minValue, maxValue) => Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
 
@@ -18,18 +18,12 @@ export const getZero = (num) => {
   }
 };
 
-export const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
+export const filter = {
+  [NAVIGATION_FIELDS.ALL]: (films) => films.filter((film) => film),
+  [NAVIGATION_FIELDS.FAVORITES]: (films) => films.filter((film) => film.user_details.favorite === true ),
+  [NAVIGATION_FIELDS.WATCHLIST]: (films) => films.filter((film) => film.user_details.watchlist === true ),
+  [NAVIGATION_FIELDS.HISTORY]: (films) => films.filter((film) => film.user_details.already_watched === true),
+  [NAVIGATION_FIELDS.STATS]: (films) => films.filter((film) => film),
 };
 
 export function sortFilmsByField (dataArray, field, count = 0) {
