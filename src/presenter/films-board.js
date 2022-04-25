@@ -226,7 +226,9 @@ export default class FilmsBoardPresenter {
     this._loadMoreButtonView.getElement() ? render(this._filmsListView, this._loadMoreButtonView, RenderPosition.BEFOREEND) : null;
 
     this._loadMoreButtonView.setPaginationClickHandler(() => {
-      this._renderFilms(this._renderedFilmsCount, this._renderedFilmsCount + FILMS_COUNT_PER_STEP);
+      const films = this._getFilms().slice(this._renderedFilmsCount, Math.min(this._dataLength, this._renderedFilmsCount + FILMS_COUNT_PER_STEP));
+      this._renderFilms(films);
+
       this._renderedFilmsCount += FILMS_COUNT_PER_STEP;
       this._renderedFilmsCount >= this._dataLength ? remove(this._loadMoreButtonView) : null;
     });
