@@ -8,6 +8,7 @@ import { generateFilm, commentsArray } from './mock/mock';
 const filmsData = Array.from({length: FILMS_COUNT}, generateFilm);
 //presenters
 import FilmsBoardPresenter from './presenter/films-board';
+import NavigationPresenter from './presenter/navigation-presenter';
 // models
 import FilmsModel from './model/films-model';
 
@@ -19,7 +20,10 @@ const dataLength = filmsModel.getFilms().length;
 
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 
+const navigationPresenter = new NavigationPresenter(filmsModel);
 const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel);
+
+navigationPresenter.init();
 filmsBoardPresenter.init();
 
 render(SITE_FOOTER_STATISTICS, new FooterView(dataLength), RenderPosition.BEFOREEND);
