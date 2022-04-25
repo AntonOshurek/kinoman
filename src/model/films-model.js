@@ -8,7 +8,7 @@ export default class Films extends AbstractObserver {
   }
 
   setFilms(films) {
-    this._films = films.slice();
+    this._films = films;
   }
 
   setComments(comments) {

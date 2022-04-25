@@ -12,16 +12,18 @@ import FilmsListTitleView from '../view/filmsListTitle';
 
 import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
-import NavigationPresenter from './navigation-presenter';
+// import NavigationPresenter from './navigation-presenter';
 
 export default class FilmsBoardPresenter {
-  constructor() {
-    this._sourceDataArray = [];
-    this._sourceCommentsArray = [];
+  constructor(filmsModel) {
+    this._filmsModel = filmsModel;
+    // this._sourceDataArray = [];
+    // this._sourceCommentsArray = [];
     //data variables for using
-    this._defaultFilmsArray = [];
-    this._sortFilmsArray = [];
+    // this._defaultFilmsArray = [];
+    // this._sortFilmsArray = [];
     //basic variables
+    this._dataLength = null;
     this._renderedTaskCount = null;
     this._currentFilter = null;
     this._currentMenu = null;
@@ -46,26 +48,29 @@ export default class FilmsBoardPresenter {
     this._setpopupStatus = this._setpopupStatus.bind(this);
     //presenters
     this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._setpopupStatus);
-    this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
+    // this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
   }
 
-  init(filmsData, commentsData) {
-    this._sourceDataArray = [...filmsData];
-    this._sourceCommentsArray = [...commentsData];
-    this._defaultFilmsArray = this._sourceDataArray;
+  init() {
+
+    this._dataLength = this._filmsModel.getFilms().length;
+
+    // this._sourceDataArray = [...filmsData];
+    // this._sourceCommentsArray = [...commentsData];
+    // this._defaultFilmsArray = this._sourceDataArray;
     //sort data
-    this._sortFilmsArray = this._sourceDataArray;
+    // this._sortFilmsArray = this._sourceDataArray;
     this._currentSortField = SORT_FIELDS.DEFAULT;
     //menu data
-    this._currentMenuData = this._sourceDataArray;
-    this._currentMenuField = MENU_FIELDS.ALL;
+    // this._currentMenuData = this._sourceDataArray;
+    // this._currentMenuField = MENU_FIELDS.ALL;
     //popup data
     this._popupFilmUNID = null;
     this._popupFilmData = null;
     this._popupFilmComments = null;
     this._popupStatus = false;
 
-    this._navigationPresenter.init(this._sortFilmsArray);
+    // this._navigationPresenter.init(this._sortFilmsArray);
     render(SITE_MAIN, this._sortFilmsView, RenderPosition.BEFOREEND);
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
@@ -80,7 +85,15 @@ export default class FilmsBoardPresenter {
     this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
 
     this._renderFilmsBoard();
-    this._sourceDataArray.length > 0 ? this._renderTopFilms() : null;
+    this._dataLength > 0 ? this._renderTopFilms() : null;
+  }
+
+  _getFilms() {
+    return this._filmsModel.getFilms();
+  }
+
+  _getComments() {
+    return this._filmsModel._getComments();
   }
 
   _searchFilmDataForPopup() {
@@ -120,7 +133,7 @@ export default class FilmsBoardPresenter {
     this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
     this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
-    this._navigationPresenter.init(this._sortFilmsArray);
+    // this._navigationPresenter.init(this._sortFilmsArray);
     if(this._popupStatus) {
       this._searchFilmDataForPopup();
       this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
@@ -149,10 +162,10 @@ export default class FilmsBoardPresenter {
   }
 
   _renderTopFilms() {
-    const topFilmsArray = sortFilmsByField(this._sourceDataArray, SORT_FIELDS.RATING, TOP_FILMS_COUNT);
+    const topFilmsArray = sortFilmsByField(this._filmsModel.getFilms(), SORT_FIELDS.RATING, TOP_FILMS_COUNT);
     topFilmsArray.map((film) => this._renderFilm(film, this._siteTopFilmContainer, RenderPosition.BEFOREEND, FILM_TYPE.TOP));
 
-    const commentedFilmsArray = sortFilmsByField(this._sourceDataArray, SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
+    const commentedFilmsArray = sortFilmsByField(this._filmsModel.getFilms(), SORT_FIELDS.COMMENTS, COMMENTED_FILMS_COUNT);
     commentedFilmsArray.map((film) => this._renderFilm(film, this._siteCommentedFilmContainer, RenderPosition.BEFOREEND, FILM_TYPE.COMMENTED));
   }
 
@@ -173,7 +186,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilms(from, to) {
-    this._sortFilmsArray
+    this._getFilms()
       .slice(from, to)
       .forEach((film) => this._renderFilm(film, this._siteFilmsListContainer, RenderPosition.BEFOREEND));
   }
@@ -184,18 +197,18 @@ export default class FilmsBoardPresenter {
     this._loadMoreButtonView.setPaginationClickHandler(() => {
       this._renderFilms(this._renderedTaskCount, this._renderedTaskCount + FILMS_COUNT_PER_STEP);
       this._renderedTaskCount += FILMS_COUNT_PER_STEP;
-      this._renderedTaskCount >= this._sortFilmsArray.length ? remove(this._loadMoreButtonView) : null;
+      this._renderedTaskCount >= this._dataLength ? remove(this._loadMoreButtonView) : null;
     });
   }
 
   _renderFilmsBoard() {
-    if (this._sortFilmsArray.length === 0) {
+    if (this._dataLength === 0) {
       this._renderNoFilms();
       return;
     }
     this._FilmsListTitleView === null ? null : remove(this._FilmsListTitleView);
 
-    if(this._sortFilmsArray.length > FILMS_COUNT_PER_STEP) {
+    if(this._dataLength > FILMS_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
       this._renderedTaskCount = FILMS_COUNT_PER_STEP;
     } else {
@@ -203,6 +216,6 @@ export default class FilmsBoardPresenter {
     }
 
     this._mainFilmPresenters.size === 0 ? null : this._clearMainFilmsList();
-    this._renderFilms(0, Math.min(this._sortFilmsArray.length, FILMS_COUNT_PER_STEP));
+    this._renderFilms(0, Math.min(this._dataLength, FILMS_COUNT_PER_STEP));
   }
 }
