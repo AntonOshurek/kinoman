@@ -1,39 +1,27 @@
 import AbstractView from './abstract-view';
 
-const createSortTemplate = () => (
-  `
-  <ul class="sort">
-    <li><a href="#" class="sort__button sort__button--default sort__button--active" data-filter='default'>Sort by default</a></li>
-    <li><a href="#" class="sort__button sort__button--date" data-filter='date'>Sort by date</a></li>
-    <li><a href="#" class="sort__button sort__button--rating" data-filter='total_rating'>Sort by rating</a></li>
-  </ul>
-  `
-);
+import { SORT_FIELDS } from '../utils/constants';
+
+const createSortTemplate = (currentSortField) => ` <ul class="sort">
+    <li><a href="#" class="sort__button sort__button--default ${currentSortField === SORT_FIELDS.DEFAULT ? 'sort__button--active' : ''}" data-filter='${SORT_FIELDS.DEFAULT}'>Sort by default</a></li>
+    <li><a href="#" class="sort__button sort__button--date ${currentSortField === SORT_FIELDS.DATE ? 'sort__button--active' : ''}" data-filter='${SORT_FIELDS.DATE}'>Sort by date</a></li>
+    <li><a href="#" class="sort__button sort__button--rating ${currentSortField === SORT_FIELDS.RATING ? 'sort__button--active' : ''}" data-filter='${SORT_FIELDS.RATING}'>Sort by rating</a></li>
+  </ul>`;
 
 export default class Sort extends AbstractView {
-  constructor() {
+  constructor(currentSortField) {
     super();
-
+    this._currentSortField = currentSortField;
     this._sortClickHandler = this._sortClickHandler.bind(this);
   }
 
-  resetSort() {
-    this._addActiveClassForSortButton(this.getElement().querySelector('.sort__button--default'));
-  }
-
-  _addActiveClassForSortButton(currentButton) {
-    this.getElement().querySelectorAll('.sort__button').forEach((btn) => btn.classList.remove('sort__button--active'));
-    currentButton.classList.add('sort__button--active');
-  }
-
   getTemplate() {
-    return createSortTemplate();
+    return createSortTemplate(this._currentSortField);
   }
 
   _sortClickHandler(evt) {
     evt.preventDefault();
     if(evt.target.tagName === 'A') {
-      this._addActiveClassForSortButton(evt.target);
       this._callback.sortClick(evt.target.getAttribute('data-filter'));
     }
   }
