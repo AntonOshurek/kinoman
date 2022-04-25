@@ -24,7 +24,7 @@ export default class FilmsBoardPresenter {
     // this._sortFilmsArray = [];
     //basic variables
     this._dataLength = null;
-    this._renderedTaskCount = null;
+    this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
     this._currentFilter = null;
     this._currentMenu = null;
     this._currentMenuData = null;
@@ -116,11 +116,12 @@ export default class FilmsBoardPresenter {
         this._mainFilmPresenters.get(data.id) ? this._mainFilmPresenters.get(data.id).init(data) : null;
         this._topFilmPresenters.get(data.id) ? this._topFilmPresenters.get(data.id).init(data) : null;
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
+        //add update popup when it have open status
         break;
-      // case UpdateType.MINOR:
-      //   // this.#clearBoard();
-      //   // this.#renderBoard();
-      //   break;
+      case UPDATE_TYPE.MINOR:
+        // this.#clearBoard();
+        // this.#renderBoard();
+        break;
       // case UpdateType.MAJOR:
       //   // this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
       //   // this.#renderBoard();
@@ -159,7 +160,7 @@ export default class FilmsBoardPresenter {
   //   this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
   //   this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
-  //   // this._navigationPresenter.init(this._sortFilmsArray);
+  //   this._navigationPresenter.init(this._sortFilmsArray);
   //   if(this._popupStatus) {
   //     this._searchFilmDataForPopup();
   //     this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
@@ -187,12 +188,6 @@ export default class FilmsBoardPresenter {
   //   this._currentSortField = SORT_FIELDS.DEFAULT;
   // }
 
-  _clearMainFilmsList() {
-    this._mainFilmPresenters.forEach((film) => film.destroy());
-    this._mainFilmPresenters.clear();
-    this._renderedTaskCount = FILMS_COUNT_PER_STEP;
-  }
-
   _renderTopFilms() {
     const topFilmsArray = sortFilmsByField(this._filmsModel.getFilms(), SORT_FIELDS.RATING, TOP_FILMS_COUNT);
     topFilmsArray.map((film) => this._renderFilm(film, this._siteTopFilmContainer, RenderPosition.BEFOREEND, FILM_TYPE.TOP));
@@ -203,7 +198,7 @@ export default class FilmsBoardPresenter {
 
   _renderNoFilms() {
     this._FilmsListTitleView ? remove(this._FilmsListTitleView) : null;
-    this._clearMainFilmsList();
+    this._clearFilmsBoard();
     this._FilmsListTitleView = new FilmsListTitleView(this._currentMenu);
     render(this._siteFilmsListContainer, this._FilmsListTitleView, RenderPosition.BEFOREBEGIN);
   }
@@ -217,20 +212,33 @@ export default class FilmsBoardPresenter {
     filmType === FILM_TYPE.COMMENTED ? this._commentedFilmPresenters.set(film.id, oneFilmPresenter) : null;
   }
 
-  _renderFilms(from, to) {
-    this._getFilms()
-      .slice(from, to)
-      .forEach((film) => this._renderFilm(film, this._siteFilmsListContainer, RenderPosition.BEFOREEND));
+  // _renderFilms(from, to) {
+  //   this._getFilms()
+  //     .slice(from, to)
+  //     .forEach((film) => this._renderFilm(film, this._siteFilmsListContainer, RenderPosition.BEFOREEND));
+  // }
+
+  _renderFilms(films) {
+    films.forEach((film) => this._renderFilm(film, this._siteFilmsListContainer, RenderPosition.BEFOREEND));
   }
 
   _renderLoadMoreButton() {
     this._loadMoreButtonView.getElement() ? render(this._filmsListView, this._loadMoreButtonView, RenderPosition.BEFOREEND) : null;
 
     this._loadMoreButtonView.setPaginationClickHandler(() => {
-      this._renderFilms(this._renderedTaskCount, this._renderedTaskCount + FILMS_COUNT_PER_STEP);
-      this._renderedTaskCount += FILMS_COUNT_PER_STEP;
-      this._renderedTaskCount >= this._dataLength ? remove(this._loadMoreButtonView) : null;
+      this._renderFilms(this._renderedFilmsCount, this._renderedFilmsCount + FILMS_COUNT_PER_STEP);
+      this._renderedFilmsCount += FILMS_COUNT_PER_STEP;
+      this._renderedFilmsCount >= this._dataLength ? remove(this._loadMoreButtonView) : null;
     });
+  }
+
+  _clearFilmsBoard() {
+    this._dataLength = this._filmsModel.getFilms().length;
+    this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
+    this._currentSortField = SORT_FIELDS.DEFAULT;
+
+    this._mainFilmPresenters.forEach((film) => film.destroy());
+    this._mainFilmPresenters.clear();
   }
 
   _renderFilmsBoard() {
@@ -238,16 +246,18 @@ export default class FilmsBoardPresenter {
       this._renderNoFilms();
       return;
     }
-    this._FilmsListTitleView === null ? null : remove(this._FilmsListTitleView);
+    // this._FilmsListTitleView === null ? null : remove(this._FilmsListTitleView);
 
-    if(this._dataLength > FILMS_COUNT_PER_STEP) {
-      this._renderLoadMoreButton();
-      this._renderedTaskCount = FILMS_COUNT_PER_STEP;
-    } else {
-      remove(this._loadMoreButtonView);
-    }
+    // if(this._dataLength > FILMS_COUNT_PER_STEP) {
+    //   this._renderLoadMoreButton();
+    //   this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
+    // } else {
+    //   remove(this._loadMoreButtonView);
+    // }
 
-    this._mainFilmPresenters.size === 0 ? null : this._clearMainFilmsList();
-    this._renderFilms(0, Math.min(this._dataLength, FILMS_COUNT_PER_STEP));
+    // this._mainFilmPresenters.size === 0 ? null : this._clearFilmsBoard();
+    // this._renderFilms(0, Math.min(this._dataLength, FILMS_COUNT_PER_STEP));
+    this._renderFilms(this._getFilms().slice(0, Math.min(this._dataLength, this._renderedFilmsCount)));
+    this._dataLength > this._renderedFilmsCount ? this._renderLoadMoreButton() : null;
   }
 }
