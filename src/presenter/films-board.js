@@ -61,6 +61,7 @@ export default class FilmsBoardPresenter {
 
     this._dataLength = this._filmsModel.getFilms().length;
     this._filmsModel.addObserver(this._handleModelEvent);
+    this._navigationModel.addObserver(this._handleModelEvent);
 
     // this._sourceDataArray = [...filmsData];
     // this._sourceCommentsArray = [...commentsData];
@@ -130,10 +131,10 @@ export default class FilmsBoardPresenter {
         // this.#clearBoard();
         // this.#renderBoard();
         break;
-      // case UpdateType.MAJOR:
-      //   // this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-      //   // this.#renderBoard();
-      //   break;
+      case UPDATE_TYPE.MAJOR:
+        this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
+        this._renderFilmsBoard();
+        break;
     }
   }
 
