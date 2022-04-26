@@ -126,9 +126,8 @@ export default class FilmsBoardPresenter {
       case UPDATE_TYPE.MINOR:
         break;
       case UPDATE_TYPE.MAJOR:
-        // this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
-        // this._renderFilmsBoard();
-        console.log('major');
+        this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
+        this._renderFilmsBoard();
         break;
     }
   }

@@ -23,10 +23,10 @@ export default class NavigationPresenter {
     const prevNavigationComponent = this._navigationComponent;
 
     this._navigationComponent = new NavigationView(this.getFilters(), this._navigationModel.getNavigationField());
-    this._navClickHandler = this._navClickHandler.bind(this);
-    this._navigationComponent.setNavClickHandler(this._navClickHandler);
 
+    this._navClickHandler = this._navClickHandler.bind(this);
     this._handleModelNavigationEvent = this._handleModelNavigationEvent.bind(this);
+
     this._navigationModel.addObserver(this._handleModelNavigationEvent);
     this._filmsModel.addObserver(this._handleModelNavigationEvent);
     console.log(this._navigationModel.showObservers());
@@ -37,6 +37,7 @@ export default class NavigationPresenter {
       replace(this._navigationComponent, prevNavigationComponent);
       remove(prevNavigationComponent);
     }
+    this._navigationComponent.setNavClickHandler(this._navClickHandler);
   }
 
   _handleModelNavigationEvent() {
