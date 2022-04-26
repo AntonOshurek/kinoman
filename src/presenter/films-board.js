@@ -53,13 +53,13 @@ export default class FilmsBoardPresenter {
     this._handleFilmAction = this._handleFilmAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
+    this._filmsModel.addObserver(this._handleModelEvent);
+    this._navigationModel.addObserver(this._handleModelEvent);
   }
 
   init() {
 
     this._dataLength = this._filmsModel.getFilms().length;
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._navigationModel.addObserver(this._handleModelEvent);
 
     // this._sourceDataArray = [...filmsData];
     // this._sourceCommentsArray = [...commentsData];
@@ -105,7 +105,7 @@ export default class FilmsBoardPresenter {
   }
 
   _getComments() {
-    return this._filmsModel._getComments();
+    return this._filmsModel.getComments();
   }
 
   _handleFilmAction(userAction, updateType, update) {
@@ -122,6 +122,11 @@ export default class FilmsBoardPresenter {
         this._mainFilmPresenters.get(data.id) ? this._mainFilmPresenters.get(data.id).init(data) : null;
         this._topFilmPresenters.get(data.id) ? this._topFilmPresenters.get(data.id).init(data) : null;
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
+
+        if(this._navigationModel.getNavigationField() !== NAVIGATION_FIELDS.ALL) {
+          this._clearFilmsBoard();
+          this._renderFilmsBoard();
+        }
         break;
       case UPDATE_TYPE.MINOR:
         break;
