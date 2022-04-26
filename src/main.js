@@ -21,7 +21,7 @@ filmsModel.setComments(commentsArray);
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 
 const navigationPresenter = new NavigationPresenter(filmsModel, navigationModel);
-const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel);
+const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel, navigationModel);
 
 navigationPresenter.init();
 filmsBoardPresenter.init();

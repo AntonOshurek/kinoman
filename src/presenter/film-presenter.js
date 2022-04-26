@@ -43,7 +43,7 @@ export default class FilmPresenter {
 
   _handleWatchlistClick() {
     this._filmData.user_details.watchlist = !this._filmData.user_details.watchlist;
-    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH,this._filmData);
+    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH, this._filmData);
   }
 
   _handleWatchedClick() {
@@ -54,6 +54,6 @@ export default class FilmPresenter {
 
   _handleFavoriteClick() {
     this._filmData.user_details.favorite = !this._filmData.user_details.favorite;
-    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH,this._filmData);
+    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH, this._filmData);
   }
 }
