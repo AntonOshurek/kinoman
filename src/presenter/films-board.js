@@ -122,6 +122,11 @@ export default class FilmsBoardPresenter {
         this._mainFilmPresenters.get(data.id) ? this._mainFilmPresenters.get(data.id).init(data) : null;
         this._topFilmPresenters.get(data.id) ? this._topFilmPresenters.get(data.id).init(data) : null;
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
+
+        if(this._navigationModel.getNavigationField() !== NAVIGATION_FIELDS.ALL) {
+          this._clearFilmsBoard();
+          this._renderFilmsBoard();
+        }
         break;
       case UPDATE_TYPE.MINOR:
         break;
