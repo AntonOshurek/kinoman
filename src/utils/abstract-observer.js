@@ -7,6 +7,10 @@ export default class AbstractObserver {
     this._observers.add(observer);
   }
 
+  showObservers() {
+    return this._observers;
+  }
+
   removeObserver(observer) {
     this._observers.delete(observer);
   }

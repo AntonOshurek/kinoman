@@ -1,5 +1,5 @@
 import { render, remove } from '../utils/render';
-import { sortFilmsByField, updateItem, filter } from '../utils/common';
+import { sortFilmsByField, filter } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
 
 import SortView from '../view/sort';
@@ -12,7 +12,6 @@ import FilmsListTitleView from '../view/filmsListTitle';
 
 // import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
-// import NavigationPresenter from './navigation-presenter';
 
 export default class FilmsBoardPresenter {
   constructor(filmsModel, navigationModel) {
@@ -49,7 +48,6 @@ export default class FilmsBoardPresenter {
     // this._setpopupStatus = this._setpopupStatus.bind(this);
     //presenters
     // this._PopupPresenter = new PopupPresenter(this._handleFilmChange, this._setpopupStatus);
-    // this._navigationPresenter = new NavigationPresenter(this._showFilmsListByCurrentMenu);
 
 
     this._handleFilmAction = this._handleFilmAction.bind(this);
@@ -79,7 +77,6 @@ export default class FilmsBoardPresenter {
     // this._popupFilmComments = null;
     // this._popupStatus = false;
 
-    // this._navigationPresenter.init(this._sortFilmsArray);
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
@@ -125,15 +122,13 @@ export default class FilmsBoardPresenter {
         this._mainFilmPresenters.get(data.id) ? this._mainFilmPresenters.get(data.id).init(data) : null;
         this._topFilmPresenters.get(data.id) ? this._topFilmPresenters.get(data.id).init(data) : null;
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
-        //add update popup when it have open status
         break;
       case UPDATE_TYPE.MINOR:
-        // this.#clearBoard();
-        // this.#renderBoard();
         break;
       case UPDATE_TYPE.MAJOR:
-        this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
-        this._renderFilmsBoard();
+        // this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
+        // this._renderFilmsBoard();
+        console.log('major');
         break;
     }
   }
@@ -260,7 +255,6 @@ export default class FilmsBoardPresenter {
 //   this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 //   this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
 
-//   this._navigationPresenter.init(this._sortFilmsArray);
 //   if(this._popupStatus) {
 //     this._searchFilmDataForPopup();
 //     this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);

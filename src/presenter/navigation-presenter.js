@@ -24,45 +24,30 @@ export default class NavigationPresenter {
 
     this._navigationComponent = new NavigationView(this.getFilters(), this._navigationModel.getNavigationField());
     this._navClickHandler = this._navClickHandler.bind(this);
+    this._navigationComponent.setNavClickHandler(this._navClickHandler);
+
+    this._handleModelNavigationEvent = this._handleModelNavigationEvent.bind(this);
+    this._navigationModel.addObserver(this._handleModelNavigationEvent);
+    this._filmsModel.addObserver(this._handleModelNavigationEvent);
+    console.log(this._navigationModel.showObservers());
 
     if(prevNavigationComponent === null) {
-      this._renderNavigation();
-      this._navigationComponent.setNavClickHandler(this._navClickHandler);
-      return;
+      render(SITE_MAIN, this._navigationComponent, RenderPosition.BEFOREBEGIN);
+    } else {
+      replace(this._navigationComponent, prevNavigationComponent);
+      remove(prevNavigationComponent);
     }
-
-    replace(this._navigationTemplate, prevNavigationComponent);
-    remove(prevNavigationComponent);
-    this._navigationComponent.setNavClickHandler(this._navClickHandler);
   }
 
-  _renderNavigation() {
-    render(SITE_MAIN, this._navigationComponent, RenderPosition.BEFOREBEGIN);
+  _handleModelNavigationEvent() {
+    // this.init();
+    // console.log(this._navigationModel.getNavigationField());
+    console.log('nav');
   }
 
   _navClickHandler(currentMenuField) {
-    if(this._navigationModel.getNavigationField() === currentMenuField) {
-      return;
+    if(this._navigationModel.getNavigationField() !== currentMenuField) {
+      this._navigationModel.setNavigationField(UPDATE_TYPE.MAJOR, currentMenuField);
     }
-    this._navigationModel.setNavigationField(UPDATE_TYPE.MAJOR, currentMenuField);
   }
 }
-
-// _filterFilms() {
-//   switch(this._currentMenuField) {
-//     case MENU_FIELDS.ALL:
-//       this._currentMenuData = this._defaultFilmsArray;
-//       break;
-//     case MENU_FIELDS.FAVORITES:
-//       this._currentMenuData = this._defaultFilmsArray.slice().filter((item) => item.user_details.favorite === true );
-//       break;
-//     case MENU_FIELDS.WATCHLIST:
-//       this._currentMenuData = this._defaultFilmsArray.slice().filter((item) => item.user_details.watchlist === true );
-//       break;
-//     case MENU_FIELDS.HISTORY:
-//       this._currentMenuData = this._defaultFilmsArray.slice().filter((item) => item.user_details.already_watched === true );
-//       break;
-//     case MENU_FIELDS.STATS:
-//       break;
-//   }
-// }
