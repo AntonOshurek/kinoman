@@ -1,5 +1,5 @@
 import { render, remove } from '../utils/render';
-import { sortFilmsByField, updateItem } from '../utils/common';
+import { sortFilmsByField, updateItem, filter } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
 
 import SortView from '../view/sort';
@@ -15,8 +15,9 @@ import FilmPresenter from './film-presenter';
 // import NavigationPresenter from './navigation-presenter';
 
 export default class FilmsBoardPresenter {
-  constructor(filmsModel) {
+  constructor(filmsModel, navigationModel) {
     this._filmsModel = filmsModel;
+    this._navigationModel = navigationModel;
     // this._sourceDataArray = [];
     // this._sourceCommentsArray = [];
     //data variables for using
@@ -67,7 +68,7 @@ export default class FilmsBoardPresenter {
     //sort data
     // this._sortFilmsArray = this._sourceDataArray;
     this._currentSortField = SORT_FIELDS.DEFAULT;
-    this._currentFilterField = NAVIGATION_FIELDS.ALL;
+    this._currentNavigationField = NAVIGATION_FIELDS.ALL;
     //menu data
     // this._currentMenuData = this._sourceDataArray;
     // this._currentMenuField = MENU_FIELDS.ALL;
@@ -94,12 +95,14 @@ export default class FilmsBoardPresenter {
   }
 
   _getFilms() {
+    this._currentNavigationField = this._navigationModel.getNavigationField();
     const films = this._filmsModel.getFilms();
+    const filtredFilms = filter[this._currentNavigationField](films);
 
     if(this._currentSortField === SORT_FIELDS.DEFAULT) {
-      return films;
+      return filtredFilms;
     } else {
-      return sortFilmsByField(films, this._currentSortField);
+      return sortFilmsByField(filtredFilms, this._currentSortField);
     }
   }
 
@@ -133,52 +136,6 @@ export default class FilmsBoardPresenter {
       //   break;
     }
   }
-
-  // _searchFilmDataForPopup() {
-  //   this._popupFilmData = this._defaultFilmsArray.find((film) => film.id === this._popupFilmUNID);
-  //   this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
-  // }
-
-  // _setpopupStatus(status) {
-  //   this._popupStatus = status;
-  // }
-
-  // _openPopupClickHandler(filmUNID) {
-  //   this._popupFilmUNID = filmUNID;
-  //   this._searchFilmDataForPopup();
-  //   this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
-  // }
-
-  // _showFilmsListByCurrentMenu(sortData, currentMenu) {
-  //   this._currentMenuField = currentMenu;
-  //   this._currentMenuData = sortData;
-  //   this._sortFilmsArray = sortData;
-  //   this._resetSort();
-  //   this._renderFilmsBoard();
-  // }
-
-  // _handleFilmChange(updatedFilm) {
-  //   this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
-  //   this._sortFilmsArray = this._defaultFilmsArray;
-
-  //   this._mainFilmPresenters.get(updatedFilm.id) ? this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
-  //   this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
-  //   this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
-
-  //   this._navigationPresenter.init(this._sortFilmsArray);
-  //   if(this._popupStatus) {
-  //     this._searchFilmDataForPopup();
-  //     this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
-  //   }
-  // }
-
-  // _sortFilms() {
-  //   if(this._currentSortField === SORT_FIELDS.DEFAULT) {
-  //     this._currentMenuField === MENU_FIELDS.ALL ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
-  //   } else {
-  //     this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, this._currentSortField);
-  //   }
-  // }
 
   _handleSortTypeChange(sortField) {
     if(sortField !== this._currentSortField) {
@@ -269,3 +226,50 @@ export default class FilmsBoardPresenter {
     this._dataLength > this._renderedFilmsCount ? this._renderLoadMoreButton() : null;
   }
 }
+
+
+// _searchFilmDataForPopup() {
+//   this._popupFilmData = this._defaultFilmsArray.find((film) => film.id === this._popupFilmUNID);
+//   this._popupFilmComments = this._popupFilmData.comments.map((commentID) => this._sourceCommentsArray.find((com) => (com.id === commentID)));
+// }
+
+// _setpopupStatus(status) {
+//   this._popupStatus = status;
+// }
+
+// _openPopupClickHandler(filmUNID) {
+//   this._popupFilmUNID = filmUNID;
+//   this._searchFilmDataForPopup();
+//   this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
+// }
+
+// _showFilmsListByCurrentMenu(sortData, currentMenu) {
+//   this._currentMenuField = currentMenu;
+//   this._currentMenuData = sortData;
+//   this._sortFilmsArray = sortData;
+//   this._resetSort();
+//   this._renderFilmsBoard();
+// }
+
+// _handleFilmChange(updatedFilm) {
+//   this._defaultFilmsArray = updateItem(this._defaultFilmsArray, updatedFilm);
+//   this._sortFilmsArray = this._defaultFilmsArray;
+
+//   this._mainFilmPresenters.get(updatedFilm.id) ? this._mainFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
+//   this._topFilmPresenters.get(updatedFilm.id) ? this._topFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
+//   this._commentedFilmPresenters.get(updatedFilm.id) ? this._commentedFilmPresenters.get(updatedFilm.id).init(updatedFilm) : null;
+
+//   this._navigationPresenter.init(this._sortFilmsArray);
+//   if(this._popupStatus) {
+//     this._searchFilmDataForPopup();
+//     this._PopupPresenter.init(this._popupFilmData, this._popupFilmComments);
+//   }
+// }
+
+// _sortFilms() {
+//   if(this._currentSortField === SORT_FIELDS.DEFAULT) {
+//     this._currentMenuField === MENU_FIELDS.ALL ? this._sortFilmsArray = this._defaultFilmsArray : this._sortFilmsArray = this._currentMenuData;
+//   } else {
+//     this._sortFilmsArray = sortFilmsByField(this._sortFilmsArray, this._currentSortField);
+//   }
+// }
