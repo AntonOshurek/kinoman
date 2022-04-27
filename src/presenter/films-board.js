@@ -34,7 +34,6 @@ export default class FilmsBoardPresenter {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
     // popup
-    // this._setpopupStatus = this._setpopupStatus.bind(this);
     this._PopupPresenter = new PopupPresenter();
 
     this._handleFilmAction = this._handleFilmAction.bind(this);
@@ -47,11 +46,6 @@ export default class FilmsBoardPresenter {
   init() {
     this._currentSortField = SORT_FIELDS.DEFAULT;
     this._currentNavigationField = NAVIGATION_FIELDS.ALL;
-    //popup data
-    // this._popupFilmUNID = null;
-    // this._popupFilmData = null;
-    // this._popupFilmComments = null;
-    // this._popupStatus = false;
 
     render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
@@ -129,10 +123,6 @@ export default class FilmsBoardPresenter {
       comments,
     };
   }
-
-  // _setpopupStatus(status) {
-  //   this._popupStatus = status;
-  // }
 
   _openPopupClickHandler(filmUNID) {
     const popupFilmData = this._searchFilmDataForPopup(filmUNID);
