@@ -1,5 +1,9 @@
 import PopupView from '../view/popup';
 
+import { fishText } from '../../node_modules/fish-text/fish-text.js';
+import { getUNID } from '../utils/common';
+import { getNowDate } from '../utils/date';
+
 import { SITE_BODY, SITE_MAIN, RenderPosition, UPDATE_TYPE } from '../utils/constants';
 import { remove, render, replace } from '../utils/render';
 
@@ -20,12 +24,17 @@ export default class PopupPresenter {
     this._handleInputComment = this._handleInputComment.bind(this);
     this._handleEmojiChoise = this._handleEmojiChoise.bind(this);
     this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
+    this._handleModelPopupEvent = this._handleModelPopupEvent.bind(this);
 
     this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
   }
 
   init() {
     const prevPopupComponent = this._popupComponent;
+    this._commentEmotion = null;
+    this._commentText = null;
+
+    this._filmsModel.addObserver(this._handleModelPopupEvent);
 
     if(prevPopupComponent === null) {
       this._openPopup();
@@ -36,6 +45,10 @@ export default class PopupPresenter {
       this._setAllClickHandlers();
     }
     remove(prevPopupComponent);
+  }
+
+  _handleModelPopupEvent() {
+    this.init();
   }
 
   _searchFilmDataForPopup() {
@@ -62,6 +75,7 @@ export default class PopupPresenter {
     remove(this._popupComponent);
     this._popupComponent = null;
     document.removeEventListener('keydown', this._onEscKeyDown);
+    this._filmsModel.removeObserver(this._handleModelPopupEvent);
   }
 
   _onEscKeyDown(evt) {
@@ -89,30 +103,44 @@ export default class PopupPresenter {
     document.addEventListener('keydown', this._onEscKeyDown);
   }
 
+  _generateComment() {
+    return {
+      'id': getUNID(),
+      'author': fishText.getNames({count: 1, type: 'full'}),
+      'comment': this._commentText,
+      'date': getNowDate(),
+      'emotion': this._commentEmotion,
+    };
+  }
+
   _handleInputComment(evt) {
-    const comment = evt.target.value;
+    this._commentText = evt.target.value;
   }
 
   _handleEmojiChoise(evt) {
-    const commentImageName = evt.target.value;
-    this._popupComponent.replaceCommentImage(commentImageName);
+    this._commentEmotion = evt.target.value;
+    this._popupComponent.replaceCommentImage(this._commentEmotion);
   }
 
   _handleWatchlistClick() {
     const newFilm = Object.assign({}, this._popupCurrentFilm.film);
     newFilm.user_details.watchlist = !newFilm.user_details.watchlist;
     this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
-    this.init();
+    // this.init();
   }
 
   _handleWatchedClick() {
+    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
     // eslint-disable-next-line camelcase
-    // this._film.user_details.already_watched = !this._film.user_details.already_watched;
-    // this._handleFilmChange(this._filmData);
+    newFilm.user_details.already_watched = !newFilm.user_details.already_watched;
+    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
+    // this.init();
   }
 
   _handleFavoriteClick() {
-    // this._film.user_details.favorite = !this._film.user_details.favorite;
-    // this._handleFilmChange(this._filmData);
+    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
+    newFilm.user_details.favorite = !newFilm.user_details.favorite;
+    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
+    // this.init();
   }
 }
