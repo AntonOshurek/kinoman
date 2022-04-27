@@ -3,18 +3,18 @@ import { sortFilmsByField, filter } from '../utils/common';
 import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
 
 import SortView from '../view/sort';
-import FilmsView from '../view/films';
+// import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
 import FilmsListCommentedView from '../view/films-list-commented';
 import LoadMoreButtonView from '../view/loadMoreButton';
 import FilmsListTitleView from '../view/filmsListTitle';
 
-import PopupPresenter from './popup-presenter';
+// import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
 
 export default class FilmsBoardPresenter {
-  constructor(filmsModel, navigationModel) {
+  constructor(filmsModel, navigationModel, siteFilmsView) {
     this._filmsModel = filmsModel;
     this._navigationModel = navigationModel;
     this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
@@ -23,8 +23,7 @@ export default class FilmsBoardPresenter {
     this._topFilmPresenters = new Map();
     this._commentedFilmPresenters = new Map();
     //views
-    this._sortFilmsView = null;
-    this._siteFilmsView = new FilmsView();
+    this._siteFilmsView = siteFilmsView;
     this._filmsListView = new FilmsListView();
     this._filmsListTopView = new FilmsListTopView();
     this._filmsListCommentedView = new FilmsListCommentedView();
@@ -32,13 +31,9 @@ export default class FilmsBoardPresenter {
     this._FilmsListTitleView = null;
     //binding
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-    this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
-    // popup
-    this._PopupPresenter = new PopupPresenter();
-
     this._handleFilmAction = this._handleFilmAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-
+    //observers
     this._filmsModel.addObserver(this._handleModelEvent);
     this._navigationModel.addObserver(this._handleModelEvent);
   }
@@ -47,7 +42,6 @@ export default class FilmsBoardPresenter {
     this._currentSortField = SORT_FIELDS.DEFAULT;
     this._currentNavigationField = NAVIGATION_FIELDS.ALL;
 
-    render(SITE_MAIN, this._siteFilmsView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListCommentedView, RenderPosition.BEFOREEND);
@@ -55,8 +49,6 @@ export default class FilmsBoardPresenter {
     this._siteFilmsListContainer = this._filmsListView.getElement().querySelector('.films-list__container--main');
     this._siteTopFilmContainer = this._filmsListTopView.getElement().querySelector('.films-list__container--top');
     this._siteCommentedFilmContainer = this._filmsListCommentedView.getElement().querySelector('.films-list__container--commented');
-
-    this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
 
     this._renderFilmsBoard();
     this._filmsModel.getFilms().length >= 2 ? this._renderTopFilms() : null;
@@ -113,20 +105,6 @@ export default class FilmsBoardPresenter {
       this._clearFilmsBoard({resetRenderedFilmsCount: true});
       this._renderFilmsBoard();
     }
-  }
-
-  _searchFilmDataForPopup(filmUNID) {
-    const film = this._getFilms().find((fl) => fl.id === filmUNID);
-    const comments = film.comments.map((commentID) => this._getComments().find((com) => (com.id === commentID)));
-    return {
-      film,
-      comments,
-    };
-  }
-
-  _openPopupClickHandler(filmUNID) {
-    const popupFilmData = this._searchFilmDataForPopup(filmUNID);
-    this._PopupPresenter.init(popupFilmData);
   }
 
   _renderSort() {

@@ -4,7 +4,10 @@ import { SITE_BODY, SITE_MAIN, RenderPosition } from '../utils/constants';
 import { remove, render, replace } from '../utils/render';
 
 export default class PopupPresenter {
-  constructor() {
+  constructor(filmsModel, siteFilmsView) {
+    this._filmsModel = filmsModel;
+    this._siteFilmsView = siteFilmsView;
+
     this._popupComponent = null;
     this._film = null;
     this._comments = null;
@@ -16,6 +19,9 @@ export default class PopupPresenter {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleInputComment = this._handleInputComment.bind(this);
     this._handleEmojiChoise = this._handleEmojiChoise.bind(this);
+    this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
+
+    this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
   }
 
   init(popupFilmData) {
@@ -33,6 +39,20 @@ export default class PopupPresenter {
       this._setAllClickHandlers();
     }
     remove(prevPopupComponent);
+  }
+
+  _searchFilmDataForPopup(filmUNID) {
+    const film = this._filmsModel.getFilms().find((fl) => fl.id === filmUNID);
+    const comments = film.comments.map((commentID) => this._filmsModel.getComments().find((com) => (com.id === commentID)));
+    return {
+      film,
+      comments,
+    };
+  }
+
+  _openPopupClickHandler(filmUNID) {
+    const popupFilmData = this._searchFilmDataForPopup(filmUNID);
+    this.init(popupFilmData);
   }
 
   _generatePopupComponent() {
