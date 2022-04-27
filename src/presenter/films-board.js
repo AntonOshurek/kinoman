@@ -66,10 +66,6 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  _getComments() {
-    return this._filmsModel.getComments();
-  }
-
   _handleFilmAction(userAction, updateType, update) {
     switch (userAction) {
       case USER_ACTION.ADD_TO_USER_LIST:

@@ -35,5 +35,4 @@ export default class Films extends AbstractView {
   removeOpenPopupClikHandler() {
     this.getElement().removeEventListener('click', this._openPopupClikHandler);
   }
-
 }
