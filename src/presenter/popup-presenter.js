@@ -6,23 +6,24 @@ import { remove, render, replace } from '../utils/render';
 export default class PopupPresenter {
   constructor(handleFilmChange, setpopupStatus) {
     this._popupComponent = null;
-    this._filmData = null;
-    this._commentsArray = null;
-    this._handleFilmChange = handleFilmChange;
-    this._setpopupStatus = setpopupStatus;
+    this._film = null;
+    this._comments = null;
+    // this._handleFilmChange = handleFilmChange;
+    // this._setpopupStatus = setpopupStatus;
 
     this._closePopup = this._closePopup.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    // this._handleInputComment = this._handleInputComment.bind(this);
+    this._handleInputComment = this._handleInputComment.bind(this);
     this._handleEmojiChoise = this._handleEmojiChoise.bind(this);
   }
 
-  init(film, comments) {
-    this._filmData = film;
-    this._commentsArray = comments;
+  init(popupFilmData) {
+    const {film, comments} = popupFilmData;
+    this._film = film;
+    this._comments = comments;
 
     const prevPopupComponent = this._popupComponent;
 
@@ -31,17 +32,17 @@ export default class PopupPresenter {
     } else {
       this._generatePopupComponent();
       replace(this._popupComponent, prevPopupComponent);
-      this._setAllClickHandlers();
+      // this._setAllClickHandlers();
     }
     remove(prevPopupComponent);
   }
 
   _generatePopupComponent() {
-    this._popupComponent = new PopupView(this._filmData, this._commentsArray);
+    this._popupComponent = new PopupView(this._film, this._comments);
   }
 
   _closePopup() {
-    this._setpopupStatus(false);
+    // this._setpopupStatus(false);
     SITE_BODY.classList.remove('hide-overflow');
     remove(this._popupComponent);
     this._popupComponent = null;
@@ -65,7 +66,7 @@ export default class PopupPresenter {
   }
 
   _openPopup() {
-    this._setpopupStatus(true);
+    // this._setpopupStatus(true);
     this._generatePopupComponent();
     render(SITE_MAIN, this._popupComponent, RenderPosition.BEFOREEND);
     this._setAllClickHandlers();
@@ -74,9 +75,9 @@ export default class PopupPresenter {
     document.addEventListener('keydown', this._onEscKeyDown);
   }
 
-  // _handleInputComment(evt) {
-  //   const comment = evt.target.value;
-  // }
+  _handleInputComment(evt) {
+    const comment = evt.target.value;
+  }
 
   _handleEmojiChoise(evt) {
     const commentImageName = evt.target.value;
@@ -84,18 +85,18 @@ export default class PopupPresenter {
   }
 
   _handleWatchlistClick() {
-    this._filmData.user_details.watchlist = !this._filmData.user_details.watchlist;
-    this._handleFilmChange(this._filmData);
+    this._film.user_details.watchlist = !this._film.user_details.watchlist;
+    // this._handleFilmChange(this._film);
   }
 
   _handleWatchedClick() {
     // eslint-disable-next-line camelcase
-    this._filmData.user_details.already_watched = !this._filmData.user_details.already_watched;
-    this._handleFilmChange(this._filmData);
+    this._film.user_details.already_watched = !this._film.user_details.already_watched;
+    // this._handleFilmChange(this._filmData);
   }
 
   _handleFavoriteClick() {
-    this._filmData.user_details.favorite = !this._filmData.user_details.favorite;
-    this._handleFilmChange(this._filmData);
+    this._film.user_details.favorite = !this._film.user_details.favorite;
+    // this._handleFilmChange(this._filmData);
   }
 }
