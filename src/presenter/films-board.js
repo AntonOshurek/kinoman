@@ -23,7 +23,6 @@ export default class FilmsBoardPresenter {
     // this._defaultFilmsArray = [];
     // this._sortFilmsArray = [];
     //basic variables
-    this._dataLength = null;
     this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
     // this._currentFilter = null;
     // this._currentMenu = null;
@@ -58,9 +57,6 @@ export default class FilmsBoardPresenter {
   }
 
   init() {
-
-    this._dataLength = this._filmsModel.getFilms().length;
-
     // this._sourceDataArray = [...filmsData];
     // this._sourceCommentsArray = [...commentsData];
     // this._defaultFilmsArray = this._sourceDataArray;
@@ -89,7 +85,7 @@ export default class FilmsBoardPresenter {
     // this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
 
     this._renderFilmsBoard();
-    this._dataLength > 0 ? this._renderTopFilms() : null;
+    this._filmsModel.getFilms().length >= 2 ? this._renderTopFilms() : null;
   }
 
   _getFilms() {
@@ -184,11 +180,12 @@ export default class FilmsBoardPresenter {
     this._loadMoreButtonView.getElement() ? render(this._filmsListView, this._loadMoreButtonView, RenderPosition.BEFOREEND) : null;
 
     this._loadMoreButtonView.setPaginationClickHandler(() => {
-      const films = this._getFilms().slice(this._renderedFilmsCount, Math.min(this._dataLength, this._renderedFilmsCount + FILMS_COUNT_PER_STEP));
+      const filmsArray = this._getFilms();
+      const films = filmsArray.slice(this._renderedFilmsCount, Math.min(filmsArray.length, this._renderedFilmsCount + FILMS_COUNT_PER_STEP));
       this._renderFilms(films);
 
       this._renderedFilmsCount += FILMS_COUNT_PER_STEP;
-      this._renderedFilmsCount >= this._dataLength ? remove(this._loadMoreButtonView) : null;
+      this._renderedFilmsCount >= filmsArray.length ? remove(this._loadMoreButtonView) : null;
     });
   }
 
@@ -206,7 +203,7 @@ export default class FilmsBoardPresenter {
     if (resetRenderedFilmsCount) {
       this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
     } else {
-      this._renderedFilmsCount = Math.min(this._dataLength, this._renderedFilmsCount);
+      this._renderedFilmsCount = Math.min(this._getFilms().length, this._renderedFilmsCount);
     }
 
     if (resetSortType) {
@@ -215,15 +212,16 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilmsBoard() {
-    if (this._dataLength === 0) {
+    const films = this._getFilms();
+
+    if (films.length === 0) {
       this._renderNoFilms();
       return;
     }
 
     this._renderSort();
-
-    this._renderFilms(this._getFilms().slice(0, Math.min(this._dataLength, this._renderedFilmsCount)));
-    this._dataLength > this._renderedFilmsCount ? this._renderLoadMoreButton() : null;
+    this._renderFilms(films.slice(0, Math.min(films.length, this._renderedFilmsCount)));
+    films.length > this._renderedFilmsCount ? this._renderLoadMoreButton() : null;
   }
 }
 
