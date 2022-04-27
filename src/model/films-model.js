@@ -31,6 +31,11 @@ export default class FilmsModel extends AbstractObserver {
     this._notify(updateType, update);
   }
 
+  updateComments(updateType, update) {
+    this._comments.push(update);
+    this._notify(updateType, update);
+  }
+
   getFilms() {
     return this._films;
   }

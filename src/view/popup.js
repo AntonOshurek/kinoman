@@ -193,7 +193,8 @@ export default class Popup extends AbstractView {
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
-    this._EmojiChoiseHandler = this._EmojiChoiseHandler.bind(this);
+    this._emojiChoiseHandler = this._emojiChoiseHandler.bind(this);
+    this._commentAddHandler = this._commentAddHandler.bind(this);
   }
 
   static parseDataToState(data) {
@@ -285,13 +286,22 @@ export default class Popup extends AbstractView {
     this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
   }
 
-  _EmojiChoiseHandler(evt) {
+  _emojiChoiseHandler(evt) {
     evt.preventDefault();
     this._callback.emojiChoiseHandler(evt);
   }
 
   setEmojiChoiseHandler(callback) {
     this._callback.emojiChoiseHandler = callback;
-    this.getElement().querySelector('.film-details__emoji-list').addEventListener('input', this._EmojiChoiseHandler);
+    this.getElement().querySelector('.film-details__emoji-list').addEventListener('input', this._emojiChoiseHandler);
+  }
+
+  _commentAddHandler(evt) {
+    this._callback.commentAddHandler(evt);
+  }
+
+  setCommentAddHandler(callback) {
+    this._callback.commentAddHandler = callback;
+    this.getElement().querySelector('.film-details__new-comment').addEventListener('keydown', this._commentAddHandler);
   }
 }

@@ -3,6 +3,8 @@ import { getRandomInt, getZero } from './common';
 
 export const dateFormater = (date) => dayjs(date).format('DD MMMM YYYY');
 
+export const getNowDate = () => dayjs();
+
 export const generateRandomDate = (range) => {
   const bar = getRandomInt(0, range);
   return dayjs().add(bar, 'day').toDate();
