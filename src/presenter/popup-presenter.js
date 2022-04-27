@@ -48,7 +48,10 @@ export default class PopupPresenter {
     remove(prevPopupComponent);
   }
 
-  _handleModelPopupEvent() {
+  _handleModelPopupEvent(updateType, update) {
+    if(updateType === 'comment') {
+      return;
+    }
     this.init();
   }
 
@@ -115,6 +118,14 @@ export default class PopupPresenter {
     };
   }
 
+  _addNewCommentForFilm() {
+    const film = this._popupCurrentFilm.film;
+    const newComment = this._generateComment();
+    film.comments.push(newComment.id);
+    this._filmsModel.updateComments('comment', newComment);
+    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, film);
+  }
+
   _handleInputComment(evt) {
     this._commentText = evt.target.value;
   }
@@ -149,7 +160,8 @@ export default class PopupPresenter {
   _addCommentHandler(evt) {
     if (evt.key === 'Enter') {
       evt.preventDefault();
-      console.log(this._generateComment());
+      // console.log(this._generateComment());
+      this._addNewCommentForFilm();
     }
   }
 }
