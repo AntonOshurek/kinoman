@@ -25,6 +25,7 @@ export default class PopupPresenter {
     this._handleEmojiChoise = this._handleEmojiChoise.bind(this);
     this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
     this._handleModelPopupEvent = this._handleModelPopupEvent.bind(this);
+    this._addCommentHandler = this._addCommentHandler.bind(this);
 
     this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
   }
@@ -92,6 +93,7 @@ export default class PopupPresenter {
     this._popupComponent.setClosePopupButtonClickHandler(this._closePopup);
     this._popupComponent.setCommentInputHandler(this._handleInputComment);
     this._popupComponent.setEmojiChoiseHandler(this._handleEmojiChoise);
+    this._popupComponent.setCommentAddHandler(this._addCommentHandler);
   }
 
   _openPopup() {
@@ -142,5 +144,12 @@ export default class PopupPresenter {
     newFilm.user_details.favorite = !newFilm.user_details.favorite;
     this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
     // this.init();
+  }
+
+  _addCommentHandler(evt) {
+    if (evt.key === 'Enter') {
+      evt.preventDefault();
+      console.log(this._generateComment());
+    }
   }
 }
