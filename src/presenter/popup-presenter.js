@@ -49,9 +49,9 @@ export default class PopupPresenter {
   }
 
   _handleModelPopupEvent(updateType, update) {
-    if(updateType === 'comment') {
-      return;
-    }
+    // if(updateType === 'comment') {
+    //   return;
+    // }
     this.init();
   }
 

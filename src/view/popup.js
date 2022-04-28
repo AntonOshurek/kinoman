@@ -1,6 +1,7 @@
 import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 import { replace, createElement } from '../utils/render';
+import { USER_ACTION } from '../utils/constants';
 
 const createpopupTemplate = (data, commentsArray) => {
   const {
