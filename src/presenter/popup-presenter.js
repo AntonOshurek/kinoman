@@ -8,8 +8,9 @@ import { SITE_BODY, SITE_MAIN, RenderPosition, UPDATE_TYPE } from '../utils/cons
 import { remove, render, replace } from '../utils/render';
 
 export default class PopupPresenter {
-  constructor(filmsModel, siteFilmsView) {
+  constructor(filmsModel, commentsModel, siteFilmsView) {
     this._filmsModel = filmsModel;
+    this._commentsModel = commentsModel;
     this._siteFilmsView = siteFilmsView;
 
     this._popupComponent = null;
@@ -40,24 +41,21 @@ export default class PopupPresenter {
     if(prevPopupComponent === null) {
       this._openPopup();
     } else {
-      this._generatePopupComponent();
       this._searchFilmDataForPopup();
+      this._generatePopupComponent();
       replace(this._popupComponent, prevPopupComponent);
       this._setAllClickHandlers();
     }
     remove(prevPopupComponent);
   }
 
-  _handleModelPopupEvent(updateType, update) {
-    // if(updateType === 'comment') {
-    //   return;
-    // }
+  _handleModelPopupEvent() {
     this.init();
   }
 
   _searchFilmDataForPopup() {
     const film = this._filmsModel.getFilms().find((fl) => fl.id === this._filmUNID);
-    const comments = film.comments.map((commentID) => this._filmsModel.getComments().find((com) => (com.id === commentID)));
+    const comments = film.comments.map((commentID) => this._commentsModel.getComments().find((com) => (com.id === commentID)));
     this._popupCurrentFilm = {
       film,
       comments,
@@ -122,7 +120,7 @@ export default class PopupPresenter {
     const film = this._popupCurrentFilm.film;
     const newComment = this._generateComment();
     film.comments.push(newComment.id);
-    this._filmsModel.updateComments('comment', newComment);
+    this._commentsModel.addComment('comment', newComment);
     this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, film);
   }
 

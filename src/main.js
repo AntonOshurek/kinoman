@@ -14,11 +14,13 @@ import PopupPresenter from './presenter/popup-presenter';
 // models
 import NavigationModel from './model/navigation-model';
 import FilmsModel from './model/films-model';
+import CommentsModel from './model/comments-model';
 
 const navigationModel = new NavigationModel();
 const filmsModel = new FilmsModel();
+const commentsModel = new CommentsModel();
 filmsModel.setFilms(filmsData);
-filmsModel.setComments(commentsArray);
+commentsModel.setComments(commentsArray);
 
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 const siteFilmsView = new FilmsView();
@@ -26,7 +28,7 @@ render(SITE_MAIN, siteFilmsView, RenderPosition.BEFOREEND);
 
 const navigationPresenter = new NavigationPresenter(filmsModel, navigationModel);
 const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel, navigationModel, siteFilmsView);
-new PopupPresenter(filmsModel, siteFilmsView);
+new PopupPresenter(filmsModel, commentsModel, siteFilmsView);
 
 navigationPresenter.init();
 filmsBoardPresenter.init();

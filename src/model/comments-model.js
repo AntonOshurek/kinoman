@@ -1,6 +1,6 @@
 import AbstractObserver from '../utils/abstract-observer';
 
-export default class FilmsModel extends AbstractObserver {
+export default class CommentsModel extends AbstractObserver {
   constructor() {
     super();
     this._comments = [];
@@ -14,7 +14,7 @@ export default class FilmsModel extends AbstractObserver {
     return this._comments;
   }
 
-  updateComments(updateType, update) {
+  addComment(updateType, update) {
     this._comments.push(update);
     this._notify(updateType, update);
   }
