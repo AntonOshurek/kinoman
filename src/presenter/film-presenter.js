@@ -1,6 +1,5 @@
 import FilmView from '../view/film';
 import { render, remove, replace } from '../utils/render';
-import { USER_ACTION, UPDATE_TYPE } from '../utils/constants';
 
 export default class FilmPresenter {
   constructor(position, place, handleFilmChange) {
@@ -43,17 +42,17 @@ export default class FilmPresenter {
 
   _handleWatchlistClick() {
     this._filmData.user_details.watchlist = !this._filmData.user_details.watchlist;
-    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH, this._filmData);
+    this._handleFilmChange(this._filmData);
   }
 
   _handleWatchedClick() {
     // eslint-disable-next-line camelcase
     this._filmData.user_details.already_watched = !this._filmData.user_details.already_watched;
-    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH, this._filmData);
+    this._handleFilmChange(this._filmData);
   }
 
   _handleFavoriteClick() {
     this._filmData.user_details.favorite = !this._filmData.user_details.favorite;
-    this._handleFilmChange(USER_ACTION.ADD_TO_USER_LIST, UPDATE_TYPE.PATCH, this._filmData);
+    this._handleFilmChange(this._filmData);
   }
 }

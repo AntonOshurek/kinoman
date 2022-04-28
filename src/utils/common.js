@@ -1,4 +1,6 @@
 import { SORT_FIELDS, NAVIGATION_FIELDS } from './constants';
+import { fishText } from '../../node_modules/fish-text/fish-text.js';
+import { getNowDate } from './date';
 
 export const getRandomInt = (minValue, maxValue) => Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
 
@@ -17,6 +19,14 @@ export const getZero = (num) => {
     return num;
   }
 };
+
+export const generateComment = (commentText, commentEmoji) => ({
+  'id': getUNID(),
+  'author': fishText.getNames({count: 1, type: 'full'}),
+  'comment': commentText,
+  'date': getNowDate(),
+  'emotion': commentEmoji,
+});
 
 export const filter = {
   [NAVIGATION_FIELDS.ALL]: (films) => films.filter((film) => film),

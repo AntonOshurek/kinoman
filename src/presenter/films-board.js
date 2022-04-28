@@ -1,22 +1,20 @@
 import { render, remove } from '../utils/render';
 import { sortFilmsByField, filter } from '../utils/common';
-import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
+import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, UPDATE_TYPE } from '../utils/constants';
 
 import SortView from '../view/sort';
-// import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
 import FilmsListCommentedView from '../view/films-list-commented';
 import LoadMoreButtonView from '../view/loadMoreButton';
 import FilmsListTitleView from '../view/filmsListTitle';
-
-// import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
 
 export default class FilmsBoardPresenter {
-  constructor(filmsModel, navigationModel, siteFilmsView) {
+  constructor(filmsModel, navigationModel, commentsModel, siteFilmsView) {
     this._filmsModel = filmsModel;
     this._navigationModel = navigationModel;
+    this._commentsModel = commentsModel;
     this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
     // films presenters arrays
     this._mainFilmPresenters = new Map();
@@ -36,11 +34,11 @@ export default class FilmsBoardPresenter {
     //observers
     this._filmsModel.addObserver(this._handleModelEvent);
     this._navigationModel.addObserver(this._handleModelEvent);
+    this._commentsModel.addObserver(this._handleModelEvent);
   }
 
   init() {
     this._currentSortField = SORT_FIELDS.DEFAULT;
-    this._currentNavigationField = NAVIGATION_FIELDS.ALL;
 
     render(this._siteFilmsView, this._filmsListView, RenderPosition.BEFOREEND);
     render(this._siteFilmsView, this._filmsListTopView, RenderPosition.BEFOREEND);
@@ -55,9 +53,8 @@ export default class FilmsBoardPresenter {
   }
 
   _getFilms() {
-    this._currentNavigationField = this._navigationModel.getNavigationField();
     const films = this._filmsModel.getFilms();
-    const filtredFilms = filter[this._currentNavigationField](films);
+    const filtredFilms = filter[this._navigationModel.getNavigationField()](films);
 
     if(this._currentSortField === SORT_FIELDS.DEFAULT) {
       return filtredFilms;
@@ -66,17 +63,13 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  _handleFilmAction(userAction, updateType, update) {
-    switch (userAction) {
-      case USER_ACTION.ADD_TO_USER_LIST:
-        this._filmsModel.updateFilm(updateType, update);
-        break;
-    }
+  _handleFilmAction(update) {
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, update);
   }
 
   _handleModelEvent(updateType, data) {
     switch (updateType) {
-      case UPDATE_TYPE.PATCH:
+      case UPDATE_TYPE.CHANGE_FILM_DATA:
         this._mainFilmPresenters.get(data.id) ? this._mainFilmPresenters.get(data.id).init(data) : null;
         this._topFilmPresenters.get(data.id) ? this._topFilmPresenters.get(data.id).init(data) : null;
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
@@ -86,9 +79,11 @@ export default class FilmsBoardPresenter {
           this._renderFilmsBoard();
         }
         break;
-      case UPDATE_TYPE.MINOR:
+      case UPDATE_TYPE.ADD_COMMENT:
+        this._clearTopFilms();
+        this._renderTopFilms();
         break;
-      case UPDATE_TYPE.MAJOR:
+      case UPDATE_TYPE.NAVIGATION:
         this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
         this._renderFilmsBoard();
         break;
@@ -149,6 +144,11 @@ export default class FilmsBoardPresenter {
       this._renderedFilmsCount += FILMS_COUNT_PER_STEP;
       this._renderedFilmsCount >= filmsArray.length ? remove(this._loadMoreButtonView) : null;
     });
+  }
+
+  _clearTopFilms() {
+    this._topFilmPresenters.forEach((film) => film.destroy());
+    this._commentedFilmPresenters.forEach((film) => film.destroy());
   }
 
   _clearFilmsBoard({resetRenderedFilmsCount = false, resetSortType = false} = {}) {

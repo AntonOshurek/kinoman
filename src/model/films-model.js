@@ -4,15 +4,10 @@ export default class FilmsModel extends AbstractObserver {
   constructor() {
     super();
     this._films = [];
-    this._comments = [];
   }
 
   setFilms(films) {
     this._films = films;
-  }
-
-  setComments(comments) {
-    this._comments = comments;
   }
 
   updateFilm(updateType, update) {
@@ -31,16 +26,7 @@ export default class FilmsModel extends AbstractObserver {
     this._notify(updateType, update);
   }
 
-  updateComments(updateType, update) {
-    this._comments.push(update);
-    this._notify(updateType, update);
-  }
-
   getFilms() {
     return this._films;
-  }
-
-  getComments() {
-    return this._comments;
   }
 }

@@ -1,15 +1,13 @@
 import PopupView from '../view/popup';
 
-import { fishText } from '../../node_modules/fish-text/fish-text.js';
-import { getUNID } from '../utils/common';
-import { getNowDate } from '../utils/date';
-
 import { SITE_BODY, SITE_MAIN, RenderPosition, UPDATE_TYPE } from '../utils/constants';
+import { generateComment } from '../utils/common';
 import { remove, render, replace } from '../utils/render';
 
 export default class PopupPresenter {
-  constructor(filmsModel, siteFilmsView) {
+  constructor(filmsModel, commentsModel, siteFilmsView) {
     this._filmsModel = filmsModel;
+    this._commentsModel = commentsModel;
     this._siteFilmsView = siteFilmsView;
 
     this._popupComponent = null;
@@ -40,24 +38,21 @@ export default class PopupPresenter {
     if(prevPopupComponent === null) {
       this._openPopup();
     } else {
-      this._generatePopupComponent();
       this._searchFilmDataForPopup();
+      this._generatePopupComponent();
       replace(this._popupComponent, prevPopupComponent);
       this._setAllClickHandlers();
     }
     remove(prevPopupComponent);
   }
 
-  _handleModelPopupEvent(updateType, update) {
-    if(updateType === 'comment') {
-      return;
-    }
+  _handleModelPopupEvent() {
     this.init();
   }
 
   _searchFilmDataForPopup() {
     const film = this._filmsModel.getFilms().find((fl) => fl.id === this._filmUNID);
-    const comments = film.comments.map((commentID) => this._filmsModel.getComments().find((com) => (com.id === commentID)));
+    const comments = film.comments.map((commentID) => this._commentsModel.getComments().find((com) => (com.id === commentID)));
     this._popupCurrentFilm = {
       film,
       comments,
@@ -108,24 +103,6 @@ export default class PopupPresenter {
     document.addEventListener('keydown', this._onEscKeyDown);
   }
 
-  _generateComment() {
-    return {
-      'id': getUNID(),
-      'author': fishText.getNames({count: 1, type: 'full'}),
-      'comment': this._commentText,
-      'date': getNowDate(),
-      'emotion': this._commentEmotion,
-    };
-  }
-
-  _addNewCommentForFilm() {
-    const film = this._popupCurrentFilm.film;
-    const newComment = this._generateComment();
-    film.comments.push(newComment.id);
-    this._filmsModel.updateComments('comment', newComment);
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, film);
-  }
-
   _handleInputComment(evt) {
     this._commentText = evt.target.value;
   }
@@ -136,32 +113,26 @@ export default class PopupPresenter {
   }
 
   _handleWatchlistClick() {
-    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
-    newFilm.user_details.watchlist = !newFilm.user_details.watchlist;
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
-    // this.init();
+    this._popupCurrentFilm.film.user_details.watchlist = !this._popupCurrentFilm.film.user_details.watchlist;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
   }
 
   _handleWatchedClick() {
-    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
     // eslint-disable-next-line camelcase
-    newFilm.user_details.already_watched = !newFilm.user_details.already_watched;
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
-    // this.init();
+    this._popupCurrentFilm.film.user_details.already_watched = !this._popupCurrentFilm.film.user_details.already_watched;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
   }
 
   _handleFavoriteClick() {
-    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
-    newFilm.user_details.favorite = !newFilm.user_details.favorite;
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
-    // this.init();
+    this._popupCurrentFilm.film.user_details.favorite = !this._popupCurrentFilm.film.user_details.favorite;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
   }
 
-  _addCommentHandler(evt) {
-    if (evt.key === 'Enter') {
-      evt.preventDefault();
-      // console.log(this._generateComment());
-      this._addNewCommentForFilm();
-    }
+  _addCommentHandler() {
+    const film = this._popupCurrentFilm.film;
+    const newComment = generateComment(this._commentText, this._commentEmotion);
+    film.comments.push(newComment.id);
+    this._commentsModel.addComment(UPDATE_TYPE.ADD_COMMENT, newComment);
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
   }
 }
