@@ -29,7 +29,7 @@ const createpopupTemplate = (data, commentsArray) => {
       commentsMarkup += `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
+          ${comment.emotion ? `<img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">` : ''}
         </span>
         <div>
           <p class="film-details__comment-text">I${comment.comment}</p>
