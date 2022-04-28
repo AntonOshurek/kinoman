@@ -27,7 +27,7 @@ const siteFilmsView = new FilmsView();
 render(SITE_MAIN, siteFilmsView, RenderPosition.BEFOREEND);
 
 const navigationPresenter = new NavigationPresenter(filmsModel, navigationModel);
-const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel, navigationModel, siteFilmsView);
+const filmsBoardPresenter = new FilmsBoardPresenter(filmsModel, navigationModel, commentsModel, siteFilmsView);
 new PopupPresenter(filmsModel, commentsModel, siteFilmsView);
 
 navigationPresenter.init();
