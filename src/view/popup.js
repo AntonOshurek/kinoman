@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 import { replace, createElement } from '../utils/render';
-// import { USER_ACTION } from '../utils/constants';
+import he from 'he';
 
 const createpopupTemplate = (data, commentsArray) => {
   const {
@@ -33,7 +33,7 @@ const createpopupTemplate = (data, commentsArray) => {
           ${comment.emotion ? `<img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">` : ''}
         </span>
         <div>
-          <p class="film-details__comment-text">I${comment.comment}</p>
+          <p class="film-details__comment-text">I${he.encode(comment.comment)}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${dateFormater(comment.date)}</span>
