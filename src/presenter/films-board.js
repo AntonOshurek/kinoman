@@ -1,16 +1,13 @@
 import { render, remove } from '../utils/render';
 import { sortFilmsByField, filter } from '../utils/common';
-import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, USER_ACTION, UPDATE_TYPE } from '../utils/constants';
+import { RenderPosition, SITE_MAIN, FILMS_COUNT_PER_STEP, SORT_FIELDS, COMMENTED_FILMS_COUNT, TOP_FILMS_COUNT, FILM_TYPE, NAVIGATION_FIELDS, UPDATE_TYPE } from '../utils/constants';
 
 import SortView from '../view/sort';
-// import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
 import FilmsListTopView from '../view/films-list-top';
 import FilmsListCommentedView from '../view/films-list-commented';
 import LoadMoreButtonView from '../view/loadMoreButton';
 import FilmsListTitleView from '../view/filmsListTitle';
-
-// import PopupPresenter from './popup-presenter';
 import FilmPresenter from './film-presenter';
 
 export default class FilmsBoardPresenter {
@@ -66,17 +63,13 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  _handleFilmAction(userAction, updateType, update) {
-    switch (userAction) {
-      case USER_ACTION.ADD_TO_USER_LIST:
-        this._filmsModel.updateFilm(updateType, update);
-        break;
-    }
+  _handleFilmAction(update) {
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, update);
   }
 
   _handleModelEvent(updateType, data) {
     switch (updateType) {
-      case UPDATE_TYPE.PATCH:
+      case UPDATE_TYPE.CHANGE_FILM_DATA:
         this._mainFilmPresenters.get(data.id) ? this._mainFilmPresenters.get(data.id).init(data) : null;
         this._topFilmPresenters.get(data.id) ? this._topFilmPresenters.get(data.id).init(data) : null;
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
@@ -86,9 +79,9 @@ export default class FilmsBoardPresenter {
           this._renderFilmsBoard();
         }
         break;
-      case UPDATE_TYPE.MINOR:
+      case UPDATE_TYPE.ADD_COMMENT:
         break;
-      case UPDATE_TYPE.MAJOR:
+      case UPDATE_TYPE.NAVIGATION:
         this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
         this._renderFilmsBoard();
         break;

@@ -34,15 +34,13 @@ export const FILM_TYPE = {
   COMMENTED: 'commented',
 };
 
-export const USER_ACTION = {
-  ADD_TO_USER_LIST: 'ADD_TO_USER_LIST',
-  ADD_NEW_COMMENT: 'ADD_NEW_COMMENT',
-};
-
 export const UPDATE_TYPE = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  NAVIGATION: 'NAVIGATION',
+  ADD_COMMENT: 'ADD_COMMENT',
+  CHANGE_FILM_DATA: 'CHANGE_FILM_DATA',
 };
 
 //site blocks

@@ -36,7 +36,7 @@ export default class NavigationPresenter {
 
   _navClickHandler(currentMenuField) {
     if(this._navigationModel.getNavigationField() !== currentMenuField) {
-      this._navigationModel.setNavigationField(UPDATE_TYPE.MAJOR, currentMenuField);
+      this._navigationModel.setNavigationField(UPDATE_TYPE.NAVIGATION, currentMenuField);
     }
   }
 

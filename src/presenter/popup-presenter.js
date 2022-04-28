@@ -103,16 +103,6 @@ export default class PopupPresenter {
     document.addEventListener('keydown', this._onEscKeyDown);
   }
 
-  // _generateComment() {
-  //   return {
-  //     'id': getUNID(),
-  //     'author': fishText.getNames({count: 1, type: 'full'}),
-  //     'comment': this._commentText,
-  //     'date': getNowDate(),
-  //     'emotion': this._commentEmotion,
-  //   };
-  // }
-
   _handleInputComment(evt) {
     this._commentText = evt.target.value;
   }
@@ -123,29 +113,26 @@ export default class PopupPresenter {
   }
 
   _handleWatchlistClick() {
-    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
-    newFilm.user_details.watchlist = !newFilm.user_details.watchlist;
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
+    this._popupCurrentFilm.film.user_details.watchlist = !this._popupCurrentFilm.film.user_details.watchlist;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
   }
 
   _handleWatchedClick() {
-    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
     // eslint-disable-next-line camelcase
-    newFilm.user_details.already_watched = !newFilm.user_details.already_watched;
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
+    this._popupCurrentFilm.film.user_details.already_watched = !this._popupCurrentFilm.film.user_details.already_watched;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
   }
 
   _handleFavoriteClick() {
-    const newFilm = Object.assign({}, this._popupCurrentFilm.film);
-    newFilm.user_details.favorite = !newFilm.user_details.favorite;
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, newFilm);
+    this._popupCurrentFilm.film.user_details.favorite = !this._popupCurrentFilm.film.user_details.favorite;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
   }
 
   _addCommentHandler() {
     const film = this._popupCurrentFilm.film;
     const newComment = generateComment(this._commentText, this._commentEmotion);
     film.comments.push(newComment.id);
-    this._commentsModel.addComment(UPDATE_TYPE.MAJOR, newComment);
-    this._filmsModel.updateFilm(UPDATE_TYPE.PATCH, film);
+    this._commentsModel.addComment(UPDATE_TYPE.ADD_COMMENT, newComment);
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
   }
 }
