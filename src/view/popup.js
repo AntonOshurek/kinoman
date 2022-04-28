@@ -298,7 +298,10 @@ export default class Popup extends AbstractView {
   }
 
   _commentAddHandler(evt) {
-    this._callback.commentAddHandler(evt);
+    if (evt.key === 'Enter') {
+      evt.preventDefault();
+      this._callback.commentAddHandler();
+    }
   }
 
   setCommentAddHandler(callback) {
