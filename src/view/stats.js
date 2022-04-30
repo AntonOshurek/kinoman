@@ -49,7 +49,7 @@ const createStatsTemplate = () => `
   </section>
 `;
 
-export default class stats extends AbstractView {
+export default class Stats extends AbstractView {
   constructor() {
     super();
   }
