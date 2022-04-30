@@ -36,7 +36,12 @@ export default class NavigationPresenter {
 
   _navClickHandler(currentMenuField) {
     if(this._navigationModel.getNavigationField() !== currentMenuField) {
-      this._navigationModel.setNavigationField(UPDATE_TYPE.NAVIGATION, currentMenuField);
+      if(currentMenuField === 'stats') {
+        this._navigationModel.setNavigationField(UPDATE_TYPE.SHOW_STATS, currentMenuField);
+      } else {
+        this._navigationModel.setNavigationField(UPDATE_TYPE.NAVIGATION, currentMenuField);
+      }
+
     }
   }
 

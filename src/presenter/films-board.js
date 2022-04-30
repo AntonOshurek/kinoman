@@ -91,6 +91,10 @@ export default class FilmsBoardPresenter {
         this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
         this._renderFilmsBoard();
         break;
+      case UPDATE_TYPE.SHOW_STATS:
+        this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
+        // this._renderFilmsBoard();
+        break;
     }
   }
 
