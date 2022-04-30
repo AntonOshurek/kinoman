@@ -75,7 +75,7 @@ export default class FilmsBoardPresenter {
         this._commentedFilmPresenters.get(data.id) ? this._commentedFilmPresenters.get(data.id).init(data) : null;
 
         if(this._navigationModel.getNavigationField() !== NAVIGATION_FIELDS.ALL) {
-          this._clearFilmsBoard();
+          this._clearFilmsBoard({resetRenderedFilmsCount: true});
           this._renderFilmsBoard();
         }
         break;
@@ -180,7 +180,6 @@ export default class FilmsBoardPresenter {
       this._renderNoFilms();
       return;
     }
-
     this._renderSort();
     this._renderFilms(films.slice(0, Math.min(films.length, this._renderedFilmsCount)));
     films.length > this._renderedFilmsCount ? this._renderLoadMoreButton() : null;
