@@ -37,7 +37,7 @@ const createpopupTemplate = (data, commentsArray) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${dateFormater(comment.date)}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button class="film-details__comment-delete" data-comment-id='${comment.id}'>Delete</button>
           </p>
         </div>
       </li>
@@ -196,6 +196,7 @@ export default class Popup extends AbstractView {
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._emojiChoiseHandler = this._emojiChoiseHandler.bind(this);
     this._commentAddHandler = this._commentAddHandler.bind(this);
+    this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
   }
 
   static parseDataToState(data) {
@@ -307,5 +308,18 @@ export default class Popup extends AbstractView {
   setCommentAddHandler(callback) {
     this._callback.commentAddHandler = callback;
     this.getElement().querySelector('.film-details__new-comment').addEventListener('keydown', this._commentAddHandler);
+  }
+
+  _deleteCommentHandler(evt) {
+    if(evt.target.tagName === 'BUTTON') {
+      evt.preventDefault();
+      const commentUNID = evt.target.getAttribute('data-comment-id');
+      this._callback.deleteCommentHandler(commentUNID);
+    }
+  }
+
+  setDeleteCommentHandler(callback) {
+    this._callback.deleteCommentHandler = callback;
+    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
   }
 }

@@ -24,6 +24,7 @@ export default class PopupPresenter {
     this._openPopupClickHandler = this._openPopupClickHandler.bind(this);
     this._handleModelPopupEvent = this._handleModelPopupEvent.bind(this);
     this._addCommentHandler = this._addCommentHandler.bind(this);
+    this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
 
     this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
   }
@@ -92,6 +93,7 @@ export default class PopupPresenter {
     this._popupComponent.setCommentInputHandler(this._handleInputComment);
     this._popupComponent.setEmojiChoiseHandler(this._handleEmojiChoise);
     this._popupComponent.setCommentAddHandler(this._addCommentHandler);
+    this._popupComponent.setDeleteCommentHandler(this._deleteCommentHandler);
   }
 
   _openPopup() {
@@ -134,5 +136,13 @@ export default class PopupPresenter {
     film.comments.push(newComment.id);
     this._commentsModel.addComment(UPDATE_TYPE.ADD_COMMENT, newComment);
     this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
+  }
+
+  _deleteCommentHandler(commentUNID) {
+    const film = this._popupCurrentFilm.film;
+    film.comments.splice(film.comments.indexOf(film.comments.find((com) => com === commentUNID)), 1);
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
+
+    this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, this._popupCurrentFilm.comments.find((com) => com.id === commentUNID));
   }
 }
