@@ -83,6 +83,10 @@ export default class FilmsBoardPresenter {
         this._clearTopFilms();
         this._renderTopFilms();
         break;
+      case UPDATE_TYPE.DELETE_COMMENT:
+        this._clearTopFilms();
+        this._renderTopFilms();
+        break;
       case UPDATE_TYPE.NAVIGATION:
         this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
         this._renderFilmsBoard();
