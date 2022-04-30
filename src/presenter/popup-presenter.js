@@ -140,11 +140,9 @@ export default class PopupPresenter {
 
   _deleteCommentHandler(commentUNID) {
     const film = this._popupCurrentFilm.film;
-    const deleteCommentIndex = film.comments.indexOf(film.comments.find((com) => com === commentUNID));
-    film.comments.splice(deleteCommentIndex, 1);
+    film.comments.splice(film.comments.indexOf(film.comments.find((com) => com === commentUNID)), 1);
     this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
 
-    const deletedComment = this._popupCurrentFilm.comments.find((com) => com.id === commentUNID);
-    this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, deletedComment);
+    this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, this._popupCurrentFilm.comments.find((com) => com.id === commentUNID));
   }
 }
