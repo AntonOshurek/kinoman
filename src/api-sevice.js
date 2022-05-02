@@ -27,7 +27,7 @@ export default class Api {
     body = null,
     headers = new Headers(),
   }) {
-    headers.append('Autorization', this._autorization);
+    headers.append('Authorization', this._autorization);
 
     return fetch(`${this._endPoint}/${url}`, {method, body, headers})
       .then(Api.checkStatus)
@@ -39,6 +39,7 @@ export default class Api {
     response.status > SuccessHTTPStatusRange.MAX) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
+    return response;
   }
 
   static toJSON(response) {
