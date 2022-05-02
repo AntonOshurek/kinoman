@@ -16,6 +16,17 @@ import NavigationModel from './model/navigation-model';
 import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';
 
+import Api from './api-sevice';
+
+const AUTORIZATION = 'Basic fjkdskl843aldsDF3';
+const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
+
+const api = new Api(END_POINT, AUTORIZATION);
+
+api.getTasks().then((tasks) => {
+  console.log(tasks);
+});
+
 const navigationModel = new NavigationModel();
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
