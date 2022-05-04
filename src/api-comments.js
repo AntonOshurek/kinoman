@@ -1,29 +1,30 @@
-import { adaptFilmsForClient } from './utils/api-adapter';
+// import { adaptFilmsForClient } from './utils/api-adapter';
 import { Method, SuccessHTTPStatusRange } from './utils/constants';
 
-export default class ApiFilms {
+export default class ApiComments {
   constructor(endPoint, autorization) {
     this._endPoint = endPoint;
     this._autorization = autorization;
   }
 
-  getTasks() {
-    return this._load({url: 'movies'})
-      .then(ApiFilms.toJSON)
-      .then((tasks) => tasks.map(adaptFilmsForClient));
+  getComments(filmId) {
+    return this._load({url: 'comments', filmId: filmId})
+      .then(ApiComments.toJSON);
+    // .then((tasks) => tasks.map(adaptFilmsForClient));
   }
 
   _load({
     url,
+    filmId,
     method = Method.GET,
     body = null,
     headers = new Headers(),
   }) {
     headers.append('Authorization', this._autorization);
 
-    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
-      .then(ApiFilms.checkStatus)
-      .catch(ApiFilms.catchError);
+    return fetch(`${this._endPoint}/${url}/${filmId}`, {method, body, headers})
+      .then(ApiComments.checkStatus)
+      .catch(ApiComments.catchError);
   }
 
   static checkStatus(response) {

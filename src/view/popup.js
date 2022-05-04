@@ -1,10 +1,12 @@
 import AbstractView from './abstract-view';
 import { dateFormater } from '../utils/date';
 import { replace, createElement } from '../utils/render';
-import he from 'he';
+// import he from 'he';
 
-const createpopupTemplate = (data, commentsArray) => {
+const createpopupTemplate = (data) => {
+  // commentsArray = '';
   const {
+    commentsLength,
     poster,
     age,
     title,
@@ -23,30 +25,30 @@ const createpopupTemplate = (data, commentsArray) => {
     alredyWatched,
     favorite} = data;
 
-  const generateFilmComments = () => {
-    let commentsMarkup = '';
+  // const generateFilmComments = () => {
+  //   let commentsMarkup = '';
 
-    commentsArray.map((comment) => {
-      comment ? commentsMarkup += `
-      <li class="film-details__comment">
-        <span class="film-details__comment-emoji">
-          ${comment.emotion ? `<img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">` : ''}
-        </span>
-        <div>
-          <p class="film-details__comment-text">I${he.encode(comment.comment)}</p>
-          <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${dateFormater(comment.date)}</span>
-            <button class="film-details__comment-delete" data-comment-id='${comment.id}'>Delete</button>
-          </p>
-        </div>
-      </li>
-      `: '';
-    });
-    return commentsMarkup;
-  };
+  //   commentsArray ? commentsArray.map((comment) => {
+  //     comment ? commentsMarkup += `
+  //     <li class="film-details__comment">
+  //       <span class="film-details__comment-emoji">
+  //         ${comment.emotion ? `<img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">` : ''}
+  //       </span>
+  //       <div>
+  //         <p class="film-details__comment-text">I${he.encode(comment.comment)}</p>
+  //         <p class="film-details__comment-info">
+  //           <span class="film-details__comment-author">${comment.author}</span>
+  //           <span class="film-details__comment-day">${dateFormater(comment.date)}</span>
+  //           <button class="film-details__comment-delete" data-comment-id='${comment.id}'>Delete</button>
+  //         </p>
+  //       </div>
+  //     </li>
+  //     `: '';
+  //   }) : null;
+  //   return commentsMarkup;
+  // };
 
-  const commentsTemplate = generateFilmComments();
+  // const commentsTemplate = generateFilmComments();
 
   const generateGeneresTemplates = () => {
     let generesItem = '';
@@ -139,11 +141,7 @@ const createpopupTemplate = (data, commentsArray) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsArray.length}</span></h3>
-
-        <ul class="film-details__comments-list">
-          ${commentsTemplate}
-        </ul>
+      <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsLength}</span></h3>
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label"></div>
@@ -196,13 +194,14 @@ export default class Popup extends AbstractView {
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._emojiChoiseHandler = this._emojiChoiseHandler.bind(this);
     this._commentAddHandler = this._commentAddHandler.bind(this);
-    this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
+    // this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
   }
 
   static transformDataForView(data) {
     const info = data.filmInfo;
     const details = data.userDetails;
     return {
+      commentsLength: data.comments.length,
       poster: info.poster,
       age: info.ageRating,
       title: info.title,
@@ -235,7 +234,7 @@ export default class Popup extends AbstractView {
   }
 
   getTemplate() {
-    return createpopupTemplate(this._state, this._commentsArray);
+    return createpopupTemplate(this._state);
   }
 
   _closePopupButtonClickHandler(evt) {
@@ -310,16 +309,23 @@ export default class Popup extends AbstractView {
     this.getElement().querySelector('.film-details__new-comment').addEventListener('keydown', this._commentAddHandler);
   }
 
-  _deleteCommentHandler(evt) {
-    if(evt.target.tagName === 'BUTTON') {
-      evt.preventDefault();
-      const commentUNID = evt.target.getAttribute('data-comment-id');
-      this._callback.deleteCommentHandler(commentUNID);
-    }
-  }
+  // _deleteCommentHandler(evt) {
+  //   if(evt.target.tagName === 'BUTTON') {
+  //     evt.preventDefault();
+  //     const commentUNID = evt.target.getAttribute('data-comment-id');
+  //     this._callback.deleteCommentHandler(commentUNID);
+  //   }
+  // }
 
-  setDeleteCommentHandler(callback) {
-    this._callback.deleteCommentHandler = callback;
-    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
-  }
+  // setDeleteCommentHandler(callback) {
+  //   this._callback.deleteCommentHandler = callback;
+  //   this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
+  // }
 }
+
+
+// <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsArray.length}</span></h3>
+
+// <ul class="film-details__comments-list">
+//   ${commentsTemplate}
+// </ul>
