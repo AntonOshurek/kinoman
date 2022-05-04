@@ -1,12 +1,9 @@
 import { render } from './utils/render';
-import { RenderPosition, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS } from './utils/constants';
-import { FILMS_COUNT } from './utils/constants';
+import { RenderPosition, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS, UPDATE_TYPE } from './utils/constants';
 
 import ProfileView from './view/profile';
 import FilmsView from './view/films';
 import FooterView from './view/footer';
-import { generateFilm, commentsArray } from './mock/mock';
-const filmsData = Array.from({length: FILMS_COUNT}, generateFilm);
 //presenters
 import FilmsBoardPresenter from './presenter/films-board';
 import NavigationPresenter from './presenter/navigation-presenter';
@@ -16,22 +13,16 @@ import NavigationModel from './model/navigation-model';
 import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';
 
-import Api from './api-sevice';
+import ApiFilms from './api-films';
 
 const AUTORIZATION = 'Basic fjkdskl843aldsDF3';
 const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
 
-const api = new Api(END_POINT, AUTORIZATION);
-
-api.getTasks().then((tasks) => {
-  console.log(tasks);
-});
+const apiFilms = new ApiFilms(END_POINT, AUTORIZATION);
 
 const navigationModel = new NavigationModel();
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
-filmsModel.setFilms(filmsData);
-commentsModel.setComments(commentsArray);
 
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
 const siteFilmsView = new FilmsView();
@@ -43,5 +34,13 @@ new PopupPresenter(filmsModel, commentsModel, siteFilmsView);
 
 navigationPresenter.init();
 filmsBoardPresenter.init();
+
+apiFilms.getTasks().then((films) => {
+  filmsModel.setFilms(UPDATE_TYPE.INIT, films);
+});
+// .catch((err) => {
+//   console.log(err)
+//   filmsModel.setFilms(UPDATE_TYPE.INIT, []);
+// });
 
 render(SITE_FOOTER_STATISTICS, new FooterView(filmsModel.getFilms().length), RenderPosition.BEFOREEND);

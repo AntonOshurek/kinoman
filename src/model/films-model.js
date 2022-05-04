@@ -6,8 +6,10 @@ export default class FilmsModel extends AbstractObserver {
     this._films = [];
   }
 
-  setFilms(films) {
+  setFilms(updateType, films) {
     this._films = films;
+
+    this._notify(updateType);
   }
 
   updateFilm(updateType, update) {

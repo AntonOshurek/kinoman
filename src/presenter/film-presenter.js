@@ -41,18 +41,17 @@ export default class FilmPresenter {
   }
 
   _handleWatchlistClick() {
-    this._filmData.user_details.watchlist = !this._filmData.user_details.watchlist;
+    this._filmData.userDetails.watchlist = !this._filmData.userDetails.watchlist;
     this._handleFilmChange(this._filmData);
   }
 
   _handleWatchedClick() {
-    // eslint-disable-next-line camelcase
-    this._filmData.user_details.already_watched = !this._filmData.user_details.already_watched;
+    this._filmData.userDetails.alreadyWatched = !this._filmData.userDetails.alreadyWatched;
     this._handleFilmChange(this._filmData);
   }
 
   _handleFavoriteClick() {
-    this._filmData.user_details.favorite = !this._filmData.user_details.favorite;
+    this._filmData.userDetails.favorite = !this._filmData.userDetails.favorite;
     this._handleFilmChange(this._filmData);
   }
 }

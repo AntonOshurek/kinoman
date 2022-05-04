@@ -40,6 +40,20 @@ export const UPDATE_TYPE = {
   DELETE_COMMENT: 'DELETE_COMMENT',
   CHANGE_FILM_DATA: 'CHANGE_FILM_DATA',
   SHOW_STATS: 'SHOW_STATS',
+  INIT: 'INIT',
+  INIT_COMMENTS: 'INIT_COMMENTS',
+};
+
+export const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
+};
+
+export const SuccessHTTPStatusRange = {
+  MIN: 200,
+  MAX: 299,
 };
 
 //site blocks
