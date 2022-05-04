@@ -21,9 +21,9 @@ import Api from './api-films';
 const AUTORIZATION = 'Basic fjkdskl843aldsDF3';
 const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
 
-const api = new Api(END_POINT, AUTORIZATION);
+const apiFilms = new Api(END_POINT, AUTORIZATION);
 
-api.getTasks().then((tasks) => {
+apiFilms.getTasks().then((tasks) => {
   console.log(tasks);
 });
 
