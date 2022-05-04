@@ -30,26 +30,26 @@ export const generateComment = (commentText, commentEmoji) => ({
 
 export const filter = {
   [NAVIGATION_FIELDS.ALL]: (films) => films.filter((film) => film),
-  [NAVIGATION_FIELDS.FAVORITES]: (films) => films.filter((film) => film.user_details.favorite === true ),
-  [NAVIGATION_FIELDS.WATCHLIST]: (films) => films.filter((film) => film.user_details.watchlist === true ),
-  [NAVIGATION_FIELDS.HISTORY]: (films) => films.filter((film) => film.user_details.already_watched === true),
+  [NAVIGATION_FIELDS.FAVORITES]: (films) => films.filter((film) => film.userDetails.favorite === true ),
+  [NAVIGATION_FIELDS.WATCHLIST]: (films) => films.filter((film) => film.userDetails.watchlist === true ),
+  [NAVIGATION_FIELDS.HISTORY]: (films) => films.filter((film) => film.userDetails.alreadyWatched === true),
   [NAVIGATION_FIELDS.STATS]: (films) => films.filter((film) => film),
 };
 
 export function sortFilmsByField (dataArray, field, count = 0) {
   let result;
   if(field === SORT_FIELDS.RATING) {
-    result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2.film_info[field] - item1.film_info[field]);
+    result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2.filmInfo[field] - item1.filmInfo[field]);
   }
   if(field === SORT_FIELDS.COMMENTS) {
     result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => item2[field].length - item1[field].length);
   }
   if(field === SORT_FIELDS.DATE) {
     result = JSON.parse(JSON.stringify(dataArray)).sort((item1, item2) => {
-      if (item1.film_info.release.date < item2.film_info.release.date) {
+      if (item1.filmInfo.release.date < item2.filmInfo.release.date) {
         return 1;
       }
-      if (item1.film_info.release.date > item2.film_info.release.date) {
+      if (item1.filmInfo.release.date > item2.filmInfo.release.date) {
         return -1;
       }
       // a должно быть равным b

@@ -27,7 +27,7 @@ const createpopupTemplate = (data, commentsArray) => {
     let commentsMarkup = '';
 
     commentsArray.map((comment) => {
-      commentsMarkup += `
+      comment ? commentsMarkup += `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
           ${comment.emotion ? `<img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">` : ''}
@@ -41,7 +41,7 @@ const createpopupTemplate = (data, commentsArray) => {
           </p>
         </div>
       </li>
-      `;
+      `: '';
     });
     return commentsMarkup;
   };
@@ -77,7 +77,7 @@ const createpopupTemplate = (data, commentsArray) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
+          <img class="film-details__poster-img" src="${poster}" alt="">
 
           <p class="film-details__age">${age}+</p>
         </div>
@@ -186,7 +186,7 @@ export default class Popup extends AbstractView {
     super();
 
     this._filmData = filmData;
-    this._state = Popup.parseDataToState(filmData);
+    this._state = Popup.transformDataForView(filmData);
     this._commentsArray = commentsArray;
 
     this._closePopupButtonClickHandler = this._closePopupButtonClickHandler.bind(this);
@@ -199,26 +199,26 @@ export default class Popup extends AbstractView {
     this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
   }
 
-  static parseDataToState(data) {
-    const info = data.film_info;
-    const details = data.user_details;
+  static transformDataForView(data) {
+    const info = data.filmInfo;
+    const details = data.userDetails;
     return {
       poster: info.poster,
-      age: info.age_rating,
+      age: info.ageRating,
       title: info.title,
-      alternativeTitle: info.altertive_title,
-      rating: info.total_rating,
+      alternativeTitle: info.altertiveTitle,
+      rating: info.totalRating,
       director: info.director,
       writers: info.writers.join(', '),
       actors: info.actors.join(', '),
       releaseData: dateFormater(info.release.date),
       runtime: info.runtime,
-      releaseCountry: info.release.release_country,
+      releaseCountry: info.release.releaseCountry,
       genresCount: info.genre.length,
       genres: info.genre,
       description: info.description,
       watchlist: details.watchlist,
-      alredyWatched: details.already_watched,
+      alredyWatched: details.alreadyWatched,
       favorite: details.favorite,
     };
   }

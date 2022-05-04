@@ -13,7 +13,7 @@ const createFilmTemplate = (filmData) => {
         <span class="film-card__duration">${runtime}</span>
         <span class="film-card__genre">${genre}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="${posterALT} poster" class="film-card__poster">
+      <img src="${poster}" alt="${posterALT} poster" class="film-card__poster">
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${commentsLength}</a>
       <div class="film-card__controls">
@@ -37,30 +37,30 @@ export default class Film extends AbstractView {
   }
 
   _checkFilmDesriptionLength() {
-    if(this._filmData.film_info.description.length >= 140) {
-      const sliceString = this._filmData.film_info.description.slice(0, 139);
+    if(this._filmData.filmInfo.description.length >= 140) {
+      const sliceString = this._filmData.filmInfo.description.slice(0, 139);
       const result = `${sliceString}...`;
       return result;
     } else {
-      return this._filmData.film_info.description;
+      return this._filmData.filmInfo.description;
     }
   }
 
   _transformDataForView() {
     return {
       id: this._filmData.id,
-      title: this._filmData.film_info.title,
-      totalRating: this._filmData.film_info.total_rating,
-      releaseDate: dateFormater(this._filmData.film_info.release.date),
-      runtime: transformRuntime(this._filmData.film_info.runtime),
-      genre: this._filmData.film_info.genre.join(', '),
-      poster: this._filmData.film_info.poster,
-      posterALT: this._filmData.film_info.poster.slice(0, this._filmData.film_info.poster.length - 4),
+      title: this._filmData.filmInfo.title,
+      totalRating: this._filmData.filmInfo.totalRating,
+      releaseDate: dateFormater(this._filmData.filmInfo.release.date),
+      runtime: transformRuntime(this._filmData.filmInfo.runtime),
+      genre: this._filmData.filmInfo.genre.join(', '),
+      poster: this._filmData.filmInfo.poster,
+      posterALT: this._filmData.filmInfo.poster.slice(0, this._filmData.filmInfo.poster.length - 4),
       description: this._checkFilmDesriptionLength(),
       commentsLength: this._filmData.comments.length,
-      watchList: this._filmData.user_details.watchlist,
-      alredyWatched: this._filmData.user_details.already_watched,
-      favorite: this._filmData.user_details.favorite,
+      watchList: this._filmData.userDetails.watchlist,
+      alredyWatched: this._filmData.userDetails.alreadyWatched,
+      favorite: this._filmData.userDetails.favorite,
     };
   }
 

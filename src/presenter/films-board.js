@@ -16,7 +16,7 @@ export default class FilmsBoardPresenter {
     this._filmsModel = filmsModel;
     this._navigationModel = navigationModel;
     this._commentsModel = commentsModel;
-    this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
+    this._renderedFilmsCount = null;
     // films presenters arrays
     this._mainFilmPresenters = new Map();
     this._topFilmPresenters = new Map();
@@ -36,6 +36,7 @@ export default class FilmsBoardPresenter {
   }
 
   init() {
+    this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
     this._currentSortField = SORT_FIELDS.DEFAULT;
     this._prevMenuField = NAVIGATION_FIELDS.ALL;
 
@@ -104,6 +105,8 @@ export default class FilmsBoardPresenter {
         }
         this._prevMenuField = data;
         break;
+      case UPDATE_TYPE.INIT:
+        this.init();
     }
   }
 
