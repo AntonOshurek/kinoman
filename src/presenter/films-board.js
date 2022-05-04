@@ -110,7 +110,7 @@ export default class FilmsBoardPresenter {
   destroy() {
     this._clearFilmsBoard({resetRenderedFilmsCount: true, resetSortType: true});
 
-    remove(this._sortFilmsView);
+    this._sortFilmsView ? remove(this._sortFilmsView) : null;
     remove(this._filmsListView);
     remove(this._filmsListTopView);
     remove(this._filmsListCommentedView);
@@ -184,7 +184,7 @@ export default class FilmsBoardPresenter {
     this._mainFilmPresenters.forEach((film) => film.destroy());
     this._mainFilmPresenters.clear();
 
-    remove(this._sortFilmsView);
+    this._sortFilmsView ? remove(this._sortFilmsView) : null;
     remove(this._loadMoreButtonView);
 
     if (this._FilmsListTitleView) {
