@@ -40,6 +40,7 @@ export const UPDATE_TYPE = {
   DELETE_COMMENT: 'DELETE_COMMENT',
   CHANGE_FILM_DATA: 'CHANGE_FILM_DATA',
   SHOW_STATS: 'SHOW_STATS',
+  INIT: 'INIT',
 };
 
 //site blocks
