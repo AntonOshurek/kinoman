@@ -27,10 +27,11 @@ export default class ApiComments {
       .catch(ApiComments.catchError);
   }
 
-  addComment(comment) {
+  addComment(comment, filmUNID) {
     // console.log(comment);
     return this._load({
-      url: `movies/${comment}`,
+      url: 'comments',
+      filmId: filmUNID,
       method: Method.POST,
       body: JSON.stringify(comment),
       headers: new Headers({'Content-Type': 'application/json'}),

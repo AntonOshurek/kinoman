@@ -13,6 +13,7 @@ export default class CommentsModel extends AbstractObserver {
   setComments(updateType, filmId) {
     this._apiComments.getComments(filmId).then((comments) => {
       this._comments = comments;
+      // console.log(this._comments)
       this._notify(updateType);
     });
   }
@@ -26,8 +27,11 @@ export default class CommentsModel extends AbstractObserver {
     this._notify(updateType, deletedComment);
   }
 
-  addComment(updateType, update) {
-    this._comments.push(update);
-    this._notify(updateType, update);
+  addComment(updateType, update, filmUNID) {
+    this._apiComments.addComment(update, filmUNID).then((response) => {
+      // console.log(response);
+      this._comments.push(update);
+      this._notify(updateType, update);
+    });
   }
 }
