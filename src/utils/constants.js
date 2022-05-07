@@ -6,6 +6,9 @@ export const TOP_FILMS_COUNT = 2;
 
 export const FILMS_COUNT_PER_STEP = 5;
 
+export const AUTORIZATION = 'Basic fjkdskl843aldsDF3';
+export const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
+
 export const RenderPosition = {
   BEFOREBEGIN: 'beforebegin',
   AFTERBEGIN: 'afterbegin',

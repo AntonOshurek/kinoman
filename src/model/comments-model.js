@@ -1,12 +1,13 @@
 import AbstractObserver from '../utils/abstract-observer';
-
 import ApiComments from '../api-comments';
+
+import { AUTORIZATION, END_POINT } from '../utils/constants';
 
 export default class CommentsModel extends AbstractObserver {
   constructor() {
     super();
     this._comments = [];
-    this._apiComments = new ApiComments('https://17.ecmascript.pages.academy/cinemaddict', 'Basic fjkdskl843aldsDF3');
+    this._apiComments = new ApiComments(END_POINT, AUTORIZATION);
   }
 
   setComments(updateType, filmId) {

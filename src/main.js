@@ -1,5 +1,5 @@
 import { render } from './utils/render';
-import { RenderPosition, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS, UPDATE_TYPE } from './utils/constants';
+import { RenderPosition, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS, UPDATE_TYPE, AUTORIZATION, END_POINT } from './utils/constants';
 
 import ProfileView from './view/profile';
 import FilmsView from './view/films';
@@ -14,9 +14,6 @@ import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';
 
 import ApiFilms from './api-films';
-
-const AUTORIZATION = 'Basic fjkdskl843aldsDF3';
-const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
 
 const apiFilms = new ApiFilms(END_POINT, AUTORIZATION);
 
