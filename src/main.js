@@ -18,7 +18,7 @@ import ApiFilms from './api-films';
 const apiFilms = new ApiFilms(END_POINT, AUTORIZATION);
 
 const navigationModel = new NavigationModel();
-const filmsModel = new FilmsModel();
+const filmsModel = new FilmsModel(apiFilms);
 const commentsModel = new CommentsModel();
 
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
@@ -32,7 +32,7 @@ new PopupPresenter(filmsModel, commentsModel, siteFilmsView);
 navigationPresenter.init();
 filmsBoardPresenter.init();
 
-apiFilms.getTasks().then((films) => {
+apiFilms.getFilms().then((films) => {
   filmsModel.setFilms(UPDATE_TYPE.INIT, films);
 });
 // .catch((err) => {
