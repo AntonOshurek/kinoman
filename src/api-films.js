@@ -34,6 +34,16 @@ export default class ApiFilms {
     return response;
   }
 
+  updateTask(film) {
+    return this._load({
+      url: `movies/${film.id}`,
+      method: Method.PUT,
+      body: JSON.strigify(film),
+      headers: new Headers({'Content-Type': 'application/sjon'}),
+    })
+      .then(ApiFilms.toJSON);
+  }
+
   static toJSON(response) {
     return response.json();
   }

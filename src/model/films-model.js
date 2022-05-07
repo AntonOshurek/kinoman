@@ -25,6 +25,8 @@ export default class FilmsModel extends AbstractObserver {
       ...this._films.slice(index + 1),
     ];
 
+    // console.log(updateType);
+
     this._notify(updateType, update);
   }
 
