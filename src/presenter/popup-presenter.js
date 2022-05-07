@@ -126,25 +126,25 @@ export default class PopupPresenter {
   }
 
   _handleWatchlistClick() {
-    this._popupCurrentFilm.film.userDetails.watchlist = !this._popupCurrentFilm.film.userDetails.watchlist;
-    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
+    this._popupCurrentFilm.userDetails.watchlist = !this._popupCurrentFilm.userDetails.watchlist;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm);
   }
 
   _handleWatchedClick() {
-    this._popupCurrentFilm.film.userDetails.alreadyWatched = !this._popupCurrentFilm.film.userDetails.alreadyWatched;
-    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
+    this._popupCurrentFilm.userDetails.alreadyWatched = !this._popupCurrentFilm.userDetails.alreadyWatched;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm);
   }
 
   _handleFavoriteClick() {
-    this._popupCurrentFilm.film.userDetails.favorite = !this._popupCurrentFilm.film.userDetails.favorite;
-    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm.film);
+    this._popupCurrentFilm.userDetails.favorite = !this._popupCurrentFilm.userDetails.favorite;
+    this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm);
   }
 
   _addCommentHandler() {
     const film = this._popupCurrentFilm;
     const newComment = generateComment(this._commentText, this._commentEmotion);
     film.comments.push(newComment.id);
-    this._commentsModel.addComment(UPDATE_TYPE.ADD_COMMENT, newComment);
+    this._commentsModel.addComment(UPDATE_TYPE.ADD_COMMENT, newComment, this._filmUNID);
     this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
   }
 
@@ -152,6 +152,5 @@ export default class PopupPresenter {
     this._popupCurrentFilm.comments.splice(this._popupCurrentFilm.comments.indexOf(this._popupCurrentFilm.comments.find((com) => com === commentUNID)), 1);
     this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, this._popupCurrentFilm.comments.find((com) => com.id === commentUNID));
     this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm);
-
   }
 }

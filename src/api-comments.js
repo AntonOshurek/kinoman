@@ -27,6 +27,18 @@ export default class ApiComments {
       .catch(ApiComments.catchError);
   }
 
+  addComment(comment, filmUNID) {
+    // console.log(comment);
+    return this._load({
+      url: 'comments',
+      filmId: filmUNID,
+      method: Method.POST,
+      body: JSON.stringify(comment),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    })
+      .then(ApiComments.toJSON);
+  }
+
   static checkStatus(response) {
     if(response.status < SuccessHTTPStatusRange.MIN ||
     response.status > SuccessHTTPStatusRange.MAX) {

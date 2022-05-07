@@ -1,4 +1,4 @@
-import { adaptFilmsForClient } from './utils/api-adapter';
+import { adaptFilmsForClient, adaptFilmsForServer } from './utils/api-adapter';
 import { Method, SuccessHTTPStatusRange } from './utils/constants';
 
 export default class ApiFilms {
@@ -7,7 +7,7 @@ export default class ApiFilms {
     this._autorization = autorization;
   }
 
-  getTasks() {
+  getFilms() {
     return this._load({url: 'movies'})
       .then(ApiFilms.toJSON)
       .then((tasks) => tasks.map(adaptFilmsForClient));
@@ -32,6 +32,18 @@ export default class ApiFilms {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
     return response;
+  }
+
+  updateFilm(film) {
+    const updateFilm = adaptFilmsForServer(film);
+    // console.log(updateFilm);
+    return this._load({
+      url: `movies/${updateFilm.id}`,
+      method: Method.PUT,
+      body: JSON.stringify(updateFilm),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    })
+      .then(ApiFilms.toJSON);
   }
 
   static toJSON(response) {

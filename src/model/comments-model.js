@@ -1,17 +1,19 @@
 import AbstractObserver from '../utils/abstract-observer';
-
 import ApiComments from '../api-comments';
+
+import { AUTORIZATION, END_POINT } from '../utils/constants';
 
 export default class CommentsModel extends AbstractObserver {
   constructor() {
     super();
     this._comments = [];
-    this._apiComments = new ApiComments('https://17.ecmascript.pages.academy/cinemaddict', 'Basic fjkdskl843aldsDF3');
+    this._apiComments = new ApiComments(END_POINT, AUTORIZATION);
   }
 
   setComments(updateType, filmId) {
     this._apiComments.getComments(filmId).then((comments) => {
       this._comments = comments;
+      // console.log(this._comments)
       this._notify(updateType);
     });
   }
@@ -25,8 +27,11 @@ export default class CommentsModel extends AbstractObserver {
     this._notify(updateType, deletedComment);
   }
 
-  addComment(updateType, update) {
-    this._comments.push(update);
-    this._notify(updateType, update);
+  addComment(updateType, update, filmUNID) {
+    this._apiComments.addComment(update, filmUNID).then(() => {
+      // console.log(response);
+      this._comments.push(update);
+      this._notify(updateType, update);
+    });
   }
 }

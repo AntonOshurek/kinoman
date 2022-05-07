@@ -25,3 +25,31 @@ export const adaptFilmsForClient = (film) => ({
     'favorite': film['user_details']['favorite'],
   },
 });
+
+export const adaptFilmsForServer = (film) => ({
+  'id': film['id'],
+  'comments': film['comments'],
+  'film_info': {
+    'title': film['filmInfo']['title'],
+    'alternative_title': film['filmInfo']['alternativeTitle'],
+    'total_rating': film['filmInfo']['totalRating'],
+    'poster': film['filmInfo']['poster'],
+    'age_rating': film['filmInfo']['ageRating'],
+    'director': film['filmInfo']['director'],
+    'writers': film['filmInfo']['writers'],
+    'actors': film['filmInfo']['actors'],
+    'release': {
+      'date': film['filmInfo']['release']['date'],
+      'release_country': film['filmInfo']['release']['releaseCountry'],
+    },
+    'runtime': film['filmInfo']['runtime'],
+    'genre': film['filmInfo']['genre'],
+    'description': film['filmInfo']['description'],
+  },
+  'user_details': {
+    'watchlist': film['userDetails']['watchlist'],
+    'already_watched': film['userDetails']['alreadyWatched'],
+    'watching_date': film['userDetails']['watchingDate'],
+    'favorite': film['userDetails']['favorite'],
+  },
+});

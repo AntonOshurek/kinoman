@@ -1,5 +1,5 @@
 import { render } from './utils/render';
-import { RenderPosition, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS, UPDATE_TYPE } from './utils/constants';
+import { RenderPosition, SITE_HEADER, SITE_MAIN, SITE_FOOTER_STATISTICS, UPDATE_TYPE, AUTORIZATION, END_POINT } from './utils/constants';
 
 import ProfileView from './view/profile';
 import FilmsView from './view/films';
@@ -15,13 +15,10 @@ import CommentsModel from './model/comments-model';
 
 import ApiFilms from './api-films';
 
-const AUTORIZATION = 'Basic fjkdskl843aldsDF3';
-const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
-
 const apiFilms = new ApiFilms(END_POINT, AUTORIZATION);
 
 const navigationModel = new NavigationModel();
-const filmsModel = new FilmsModel();
+const filmsModel = new FilmsModel(apiFilms);
 const commentsModel = new CommentsModel();
 
 render(SITE_HEADER, new ProfileView(), RenderPosition.BEFOREEND);
@@ -35,7 +32,7 @@ new PopupPresenter(filmsModel, commentsModel, siteFilmsView);
 navigationPresenter.init();
 filmsBoardPresenter.init();
 
-apiFilms.getTasks().then((films) => {
+apiFilms.getFilms().then((films) => {
   filmsModel.setFilms(UPDATE_TYPE.INIT, films);
 });
 // .catch((err) => {
