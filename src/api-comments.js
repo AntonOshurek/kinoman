@@ -8,30 +8,39 @@ export default class ApiComments {
   }
 
   getComments(filmId) {
-    return this._load({url: 'comments', filmId: filmId})
+    return this._load({url: 'comments', id: filmId})
       .then(ApiComments.toJSON);
     // .then((tasks) => tasks.map(adaptFilmsForClient));
   }
 
   _load({
     url,
-    filmId,
+    id,
     method = Method.GET,
     body = null,
     headers = new Headers(),
   }) {
     headers.append('Authorization', this._autorization);
 
-    return fetch(`${this._endPoint}/${url}/${filmId}`, {method, body, headers})
+    return fetch(`${this._endPoint}/${url}/${id}`, {method, body, headers})
       .then(ApiComments.checkStatus)
       .catch(ApiComments.catchError);
   }
 
-  addComment(comment, filmUNID) {
-    // console.log(comment);
+  deleteComment(comment) {
     return this._load({
       url: 'comments',
-      filmId: filmUNID,
+      id: comment.id,
+      method: Method.DELETE,
+      headers: new Headers({'Content-Type': 'application/json'}),
+    })
+      .then(ApiComments.toJSON);
+  }
+
+  addComment(comment, filmUNID) {
+    return this._load({
+      url: 'comments',
+      id: filmUNID,
       method: Method.POST,
       body: JSON.stringify(comment),
       headers: new Headers({'Content-Type': 'application/json'}),
