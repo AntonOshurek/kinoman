@@ -28,7 +28,7 @@ export default class CommentsModel extends AbstractObserver {
   }
 
   addComment(updateType, update, filmUNID) {
-    this._apiComments.addComment(update, filmUNID).then((response) => {
+    this._apiComments.addComment(update, filmUNID).then(() => {
       // console.log(response);
       this._comments.push(update);
       this._notify(updateType, update);
