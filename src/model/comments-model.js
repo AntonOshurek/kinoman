@@ -23,13 +23,14 @@ export default class CommentsModel extends AbstractObserver {
   }
 
   deleteComment(updateType, deletedComment) {
-    this._comments.splice(this._comments.indexOf(deletedComment), 1);
-    this._notify(updateType, deletedComment);
+    this._apiComments.deleteComment(deletedComment).then(() => {
+      this._comments.splice(this._comments.indexOf(deletedComment), 1);
+      this._notify(updateType, deletedComment);
+    });
   }
 
   addComment(updateType, update, filmUNID) {
     this._apiComments.addComment(update, filmUNID).then(() => {
-      // console.log(response);
       this._comments.push(update);
       this._notify(updateType, update);
     });

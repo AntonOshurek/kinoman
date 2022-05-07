@@ -28,7 +28,7 @@ export default class PopupPresenter {
     this._handleModelPopupEvent = this._handleModelPopupEvent.bind(this);
     this._addCommentHandler = this._addCommentHandler.bind(this);
     this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
-    this._checkLoadComments = this._checkLoadComments.bind(this);
+    this._checkComments = this._checkComments.bind(this);
 
     this._siteFilmsView.setOpenPopupClikHandler(this._openPopupClickHandler);
   }
@@ -39,7 +39,7 @@ export default class PopupPresenter {
     this._commentText = null;
 
     this._filmsModel.addObserver(this._handleModelPopupEvent);
-    this._commentsModel.addObserver(this._checkLoadComments);
+    this._commentsModel.addObserver(this._checkComments);
 
     if(prevPopupComponent === null) {
       this._openPopup();
@@ -52,7 +52,7 @@ export default class PopupPresenter {
     remove(prevPopupComponent);
   }
 
-  _checkLoadComments(updateType) {
+  _checkComments(updateType) {
     updateType === UPDATE_TYPE.INIT_COMMENTS ? this._renderComments() : null;
   }
 
@@ -63,8 +63,12 @@ export default class PopupPresenter {
     this._commentsComponent.setDeleteCommentHandler(this._deleteCommentHandler);
   }
 
-  _handleModelPopupEvent() {
-    this.init();
+  _handleModelPopupEvent(updateType) {
+    switch(updateType) {
+      case UPDATE_TYPE.CHANGE_FILM_DATA:
+        this.init();
+        break;
+    }
   }
 
   _searchFilmDataForPopup() {
@@ -149,8 +153,10 @@ export default class PopupPresenter {
   }
 
   _deleteCommentHandler(commentUNID) {
-    this._popupCurrentFilm.comments.splice(this._popupCurrentFilm.comments.indexOf(this._popupCurrentFilm.comments.find((com) => com === commentUNID)), 1);
-    this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, this._popupCurrentFilm.comments.find((com) => com.id === commentUNID));
+    // console.log(commentUNID);
+    this._popupCurrentFilm.comments.splice(this._popupComments.indexOf(this._popupComments.find((com) => com === commentUNID)), 1);
+    this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, this._popupComments.find((com) => com.id === commentUNID));
+
     this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, this._popupCurrentFilm);
   }
 }

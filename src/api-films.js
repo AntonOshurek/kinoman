@@ -36,7 +36,6 @@ export default class ApiFilms {
 
   updateFilm(film) {
     const updateFilm = adaptFilmsForServer(film);
-    // console.log(updateFilm);
     return this._load({
       url: `movies/${updateFilm.id}`,
       method: Method.PUT,
