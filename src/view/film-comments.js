@@ -4,7 +4,7 @@ import { dateFormater } from '../utils/date';
 import he from 'he';
 
 const createCommentsTemplate = (comments) => `
-  <ul class="film-details__comments-list">
+  <div>
     ${comments.map((comment) => `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
@@ -18,9 +18,8 @@ const createCommentsTemplate = (comments) => `
             <button class="film-details__comment-delete" data-comment-id='${comment.id}'>Delete</button>
           </p>
         </div>
-      </li>
-      `)}
-  </ul>
+      </li>`)}
+  </div>
   `;
 
 export default class FilmComments extends AbstractView {

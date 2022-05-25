@@ -59,7 +59,7 @@ export default class PopupPresenter {
   _renderComments() {
     this._popupComments = this._commentsModel.getComments();
     this._commentsComponent = new FilmComments(this._popupComments);
-    render(this._popupComponent.getElement().querySelector('.film-details__comments-wrap'), this._commentsComponent, RenderPosition.AFTERBEGIN);
+    render(this._popupComponent.getElement().querySelector('.film-details__comments-list'), this._commentsComponent, RenderPosition.AFTERBEGIN);
     this._commentsComponent.setDeleteCommentHandler(this._deleteCommentHandler);
   }
 
