@@ -13,7 +13,6 @@ export default class CommentsModel extends AbstractObserver {
   setComments(updateType, filmId) {
     this._apiComments.getComments(filmId).then((comments) => {
       this._comments = comments;
-      // console.log(this._comments)
       this._notify(updateType);
     });
   }

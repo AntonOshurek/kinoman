@@ -34,10 +34,8 @@ filmsBoardPresenter.init();
 
 apiFilms.getFilms().then((films) => {
   filmsModel.setFilms(UPDATE_TYPE.INIT, films);
+}).catch(() => {
+  filmsModel.setFilms(UPDATE_TYPE.INIT, []);
 });
-// .catch((err) => {
-//   console.log(err)
-//   filmsModel.setFilms(UPDATE_TYPE.INIT, []);
-// });
 
 render(SITE_FOOTER_STATISTICS, new FooterView(filmsModel.getFilms().length), RenderPosition.BEFOREEND);

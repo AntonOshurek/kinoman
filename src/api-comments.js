@@ -10,7 +10,6 @@ export default class ApiComments {
   getComments(filmId) {
     return this._load({url: 'comments', id: filmId})
       .then(ApiComments.toJSON);
-    // .then((tasks) => tasks.map(adaptFilmsForClient));
   }
 
   _load({
