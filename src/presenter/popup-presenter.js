@@ -147,13 +147,13 @@ export default class PopupPresenter {
   _addCommentHandler() {
     const film = this._popupCurrentFilm;
     const newComment = generateComment(this._commentText, this._commentEmotion);
+
     film.comments.push(newComment.id);
     this._commentsModel.addComment(UPDATE_TYPE.ADD_COMMENT, newComment, this._filmUNID);
     this._filmsModel.updateFilm(UPDATE_TYPE.CHANGE_FILM_DATA, film);
   }
 
   _deleteCommentHandler(commentUNID) {
-    // console.log(commentUNID);
     this._popupCurrentFilm.comments.splice(this._popupComments.indexOf(this._popupComments.find((com) => com === commentUNID)), 1);
     this._commentsModel.deleteComment(UPDATE_TYPE.DELETE_COMMENT, this._popupComments.find((com) => com.id === commentUNID));
 

@@ -18,7 +18,7 @@ export default class FilmsModel extends AbstractObserver {
       const index = this._films.findIndex((item) => item.id === update.id);
 
       if (index === -1) {
-        throw new Error('Can\'t update unexisting task');
+        throw new Error('Can\'t update unexisting film');
       }
 
       this._films = [
